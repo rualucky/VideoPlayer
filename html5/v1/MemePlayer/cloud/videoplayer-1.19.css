@@ -1,0 +1,1250 @@
+div.memeplayer-container{
+    position:relative !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden;
+}
+
+div.memeplayer-box{
+    position: relative !important;
+    overflow: hidden !important;
+    background: #000 !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+
+div.memeplayer-box.hide-controls video::-webkit-media-controls{
+    display: none !important;
+}
+
+div.memeplayer-controlbar{
+    position: absolute !important;
+    bottom:0 !important;
+    left:0 !important;
+    width:100% !important;
+    background: #333 !important;
+    margin:0 !important;
+    padding:0 !important;
+    /*z-index: 2147483647;*/
+    transition: bottom 0.2s ease 0.05s;
+}
+
+div.memeplayer-controlbar div.controls{
+    position:absolute !important;
+    display:block;
+    cursor:pointer !important;
+    background-color: transparent !important;
+}
+
+
+#main-detail div.memeplayer-controlbar div.controls,
+#main-detail div.memeplayer-controlbar div.controls *,div.memeplayer-controlbar div.controls{
+    color:#aaa !important;
+}
+
+#main-detail div.memeplayer-controlbar div.controls.memeicon,
+div.memeplayer-controlbar div.controls.memeicon{
+    color:white !important;
+}
+
+#main-detail div.memeplayer-controlbar div.controls.memeicon *{
+    color:inherit !important;
+}
+
+#main-detail div.memeplayer-controlbar div.controls:hover,
+#main-detail div.memeplayer-controlbar div.controls *:hover,div.memeplayer-controlbar div.controls:hover{
+    color:white !important;
+}
+
+#main-detail div.memeplayer-controlbar div.controls.memeicon *:hover{
+    color:inherit !important;
+}
+#main-detail div.memeplayer-controlbar div.controls.memeicon:hover, div.memeplayer-controlbar div.controls.memeicon:hover{
+    color:#3ea9f5 !important;
+}
+
+div.memeplayer-controlbar div.controls svg{
+    fill:currentcolor !important;
+}
+
+div.memeplayer-adbackground{
+    position: absolute !important;
+    z-index:14 !important;
+    top:0 !important;
+    left:0 !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+    pointer-events: none;
+}
+
+div.memeplayer-adcontainer{
+    position: absolute !important;
+    z-index:15 !important;
+    top:0 !important;
+    left:0 !important;
+    width:100% !important;
+    height:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+
+div.memeplayer-adcontainer div:first-child{
+    pointer-events: all;
+}
+
+div.memeplayer-thumb{
+    position: absolute !important; 
+    z-index: 1 !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+
+div.memeplayer-video{
+    position: absolute !important; 
+    z-index: 10 !important; 
+    background-color: rgb(0, 0, 0);
+    margin:0 !important;
+    padding:0 !important;
+}
+
+div.memeplayer-countdown{
+    position:absolute !important;
+    z-index: 9999 !important;
+    background: rgba(0,0,0,0.5);
+    color:#fdcc01;
+    margin:0 !important;
+    padding:0 !important;
+    top:5px;
+    left:6px;
+    font-family: Arial !important;
+}
+div.memeplayer-countdown .inner{
+    margin:0 !important;
+    padding:5px !important;
+    font-size:14px !important;
+}
+
+div.memeplayer-skipbtn{
+    position:absolute !important;
+    z-index: 9999 !important;
+    right:0 !important;
+    top:3px !important;
+    width: 160px !important;
+    margin:0 !important;
+    padding:0 !important;
+    pointer-events: all !important;
+    cursor: pointer !important;
+}
+div.memeplayer-skipbtn .inner{
+    padding:10px !important;
+    font-size: 13px;
+    font-family: Tahoma;
+    margin:0 !important;
+    text-align:right;
+}
+
+.memeplayer-play{
+    /*position:absolute !important;*/
+    top:0 !important;
+    left:0 !important;
+    /*z-index: 9000 !important;*/
+    cursor: pointer;
+    margin:0 !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+    padding-bottom:0 !important;
+    background-color: rgba(0,0,0,0.3) !important;
+}
+
+.memeplayer-playbtn {
+}
+
+div.memeplayer-controlbar div.controls .quality-list{
+    position: absolute !important;
+    left: 50% !important;
+    width: 60px !important;
+    bottom: 34px !important;
+    border: solid 1px rgba(255,255,255,0.2) !important;
+    overflow: hidden !important;
+    z-index: 2147483647 !important;
+    background-color: rgba(0,0,0,0.8) !important;
+
+}
+
+div.memeplayer-controlbar div.controls .quality-list .quality-item{
+    width: 80px !important;
+    color: #aaa !important;
+    cursor: pointer !important;
+}
+
+div.memeplayer-controlbar div.controls .quality-list .quality-item.selected{
+    color :#e64b3a;
+
+}
+.loader,
+.loader:before,
+.loader:after {
+    background: rgba(230,75,58,0.7);
+    -webkit-animation: load1 1s infinite ease-in-out;
+    animation: load1 1s infinite ease-in-out;
+    width: 1em;
+    height: 4em;
+}
+.loader:before,
+.loader:after {
+    position: absolute;
+    top: 0;
+    content: '';
+}
+.loader:before {
+    left: -1.5em;
+}
+.loader {
+    text-indent: -9999em;
+    margin: 8em auto;
+    position: relative;
+    font-size: 11px;
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+.loader:after {
+    left: 1.5em;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+@-webkit-keyframes load1 {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 0 rgba(230,75,58,0.7);
+        height: 4em;
+    }
+    40% {
+        box-shadow: 0 -2em rgba(230,75,58,0.7);
+        height: 5em;
+    }
+}
+@keyframes load1 {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 0 rgba(230,75,58,0.7);
+        height: 4em;
+    }
+    40% {
+        box-shadow: 0 -2em rgba(230,75,58,0.7);
+        height: 5em;
+    }
+}
+.wrapper-head-player {
+    position: relative !important;
+    z-index: 999 !important; 
+    padding: 20px !important;
+}
+
+.wrapper-button {
+    float: left !important;
+    margin-right: 20px !important;
+}
+
+.btn-play-large {
+    cursor: pointer !important;
+    border: 3px solid #3da6f1 !important;
+    width: 90px !important;
+    height: 70px !important;
+    background-color: rgba(36,143,219,0.9) !important;
+    line-height: 85px !important;
+    text-align: center !important;
+    box-shadow: 0 0 50px rgba(255,255,255,.25) !important;
+    -webkit-box-shadow: 0 0 50px rgba(255,255,255,.25) !important;
+    -moz-box-shadow: 0 0 50px rgba(255,255,255,.25) !important;
+    -ms-box-shadow: 0 0 50px rgba(255,255,255,.25) !important;
+    border-radius: 20px !important;
+    -webkit-border-radius: 20px !important;
+    -moz-border-radius: 20px !important;
+    -ms-border-radius: 20px !important;
+    -webkit-transition: all 200ms ease-in !important;
+    -moz-transition: all 200ms ease-in !important;
+    -ms-transition: all 200ms ease-in !important;
+    transition: all 200ms ease-in !important;
+}
+
+.btn-play-large svg {
+    fill: #ffffff !important;
+}
+
+.btn-play-large:hover {
+    background-color:#3ea9f5 !important;
+    border-color: #ffffff !important;
+
+    box-shadow: 0 0 70px rgba(255,255,255,1) !important;
+    -webkit-box-shadow: 0 0 70px rgba(255,255,255,1) !important;
+    -moz-box-shadow: 0 0 70px rgba(255,255,255,1) !important;
+    -ms-box-shadow: 0 0 70px rgba(255,255,255,1) !important;
+}
+.title-video-player {
+    background-color:transparent !important;
+}
+
+.title-video-player span {
+    font-size: 20px !important;
+    color: #ffffff !important;
+}
+.title-video-player span {
+    font-family: arial !important;
+    margin: 0 !important; 
+    -webkit-transition: all 200ms ease-in !important;
+    -moz-transition: all 200ms ease-in !important;
+    -ms-transition: all 200ms ease-in !important;
+    transition: all 200ms ease-in !important;
+    text-shadow: 3px 1px 3px #000000 !important;
+    -webkit-text-shadow: 3px 1px 3px #000000 !important;
+    -moz-text-shadow: 3px 1px 3px #000000 !important;
+    -ms-text-shadow: 3px 1px 3px #000000 !important;
+    background-color:transparent !important;
+}
+
+.title-video-player span:hover {
+    text-shadow: 3px 1px 30px rgba(0,0,0,1) !important;
+    -webkit-text-shadow: 3px 1px 30px rgba(0,0,0,1) !important;
+    -moz-text-shadow: 3px 1px 30px rgba(0,0,0,1) !important;
+    -ms-text-shadow: 3px 1px 30px rgba(0,0,0,1) !important;  
+}
+
+.btn-play-mobile {
+    cursor: pointer;
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    top: 50%; 
+    margin-top: -36px;
+    left: 50%;
+    margin-left: -32px;
+    border: 2px solid #ffffff;
+    background-color: rgba(36,143,219,0.7);
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255,255,255,0.25);
+    -webkit-box-shadow: 0 0 20px rgba(255,255,255,0.25);
+    -moz-box-shadow: 0 0 20px rgba(255,255,255,0.25);
+    -ms-box-shadow: 0 0 20px rgba(255,255,255,0.25);
+    -webkit-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+}
+
+.btn-play-mobile svg {
+    fill: #ffffff;
+    margin-left: 15px;
+    margin-top: 13px;
+}
+
+/*
+    SUBTITLE CSS
+*/
+/*
+    Skin Player
+    Author: Tanh Nguyen
+    Version: 0.01
+*/
+/* Font Color */
+/* Background Color */
+/* Mixins */
+/* line 1, scss/_base.scss */
+.mep-player {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: normal;
+  color: #cccccc;
+}
+
+/* skin color */
+/* tooptip-mep */
+/* line 5, scss/_subtitles.scss */
+.tooltip-mep {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 11px;
+  padding: 3px 5px;
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  opacity: 0;
+  visibility: hidden;
+  display: block;
+  z-index: -1;
+  white-space: nowrap;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -ms-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+/* line 22, scss/_subtitles.scss */
+.tooltip-mep:before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-style: solid;
+  border-width: 0 7px 7px 0;
+  border-color: transparent rgba(0, 0, 0, 0.7) transparent transparent;
+  bottom: -7px;
+  left: 50%;
+  margin-left: -3px;
+  position: absolute;
+}
+
+/* line 34, scss/_subtitles.scss */
+.has-tooltip {
+  position: relative;
+}
+
+/* line 37, scss/_subtitles.scss */
+.has-tooltip:hover .tooltip-mep {
+  opacity: 1;
+  z-index: 1;
+  top: -40px;
+  visibility: visible;
+}
+
+/* line 44, scss/_subtitles.scss */
+.wrapper-btn-subtitles {
+    position: relative;
+    padding-top: 11px;
+}
+
+.asset-ele-r{
+    float: right;
+    margin: 0 10px;
+}
+
+/* line 48, scss/_subtitles.scss */
+.btn-subtitles {
+  cursor: pointer;
+  position: relative;
+  border-bottom: 4px solid rgba(255, 255, 255, 0.3);
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  box-sizing:initial;
+  /*
+  left: 660px;
+  padding-top: 15px;
+  */
+}
+/* line 56, scss/_subtitles.scss */
+.btn-subtitles .tooltip-mep {
+  margin-left: -5px;
+}
+/* line 60, scss/_subtitles.scss */
+.btn-subtitles svg {
+  fill: #cccccc;
+  width: 20px;
+  height: 14px;
+  -webkit-transition: fill 0.2s ease-in;
+  -moz-transition: fill 0.2s ease-in;
+  -o-transition: fill 0.2s ease-in;
+  transition: fill 0.2s ease-in;
+  -moz-border-radius: 2px 2px 0 0;
+  -webkit-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+
+}
+/* line 68, scss/_subtitles.scss */
+.btn-subtitles.active {
+  border-color: #3498db;
+}
+/* line 71, scss/_subtitles.scss */
+.btn-subtitles.active svg {
+  fill: #ffffff;
+}
+
+/* line 78, scss/_subtitles.scss */
+.subtitles-config {
+  position: absolute;
+  bottom: 110%;
+  margin-bottom: 13px;
+  left: -90px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px 0;
+  opacity: 0;
+  visibility: hidden;
+  width: 200px;
+  height: 100px;
+  overflow: hidden;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  /* /ul */
+  /* /ul option-language */
+  /* /ul option-language */
+}
+/* line 94, scss/_subtitles.scss */
+.subtitles-config.show {
+  opacity: 1;
+  bottom: 30px;
+  visibility: visible;
+}
+/* line 100, scss/_subtitles.scss */
+.subtitles-config .wrapper-config {
+  width: 1000px;
+  -webkit-transition: margin-left 0.3s ease-in;
+  -moz-transition: margin-left 0.3s ease-in;
+  -o-transition: margin-left 0.3s ease-in;
+  transition: margin-left 0.3s ease-in;
+}
+/* line 106, scss/_subtitles.scss */
+.subtitles-config ul {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+  position: relative;
+  width: 200px;
+  display: table;
+  float: left;
+}
+/* line 115, scss/_subtitles.scss */
+.subtitles-config ul li {
+  font-size: 12px;
+  color: #999999;
+  display: table-row;
+  cursor: pointer;
+  height: 30px;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+/* line 123, scss/_subtitles.scss */
+.subtitles-config ul li:hover {
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+/* line 128, scss/_subtitles.scss */
+.subtitles-config ul li .arrow-config {
+  font-size: 16px;
+  font-weight: normal;
+  margin-left: 3px;
+  color: #cccccc;
+}
+/* line 134, scss/_subtitles.scss */
+.subtitles-config ul li .arrow-config.back {
+  margin-left: 0;
+  margin-right: 10px;
+}
+/* line 141, scss/_subtitles.scss */
+.subtitles-config ul li span {
+  color: #ffffff;
+  font-weight: bold;
+}
+/* line 146, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option {
+  width: 280px;
+  height: 145px;
+  overflow: auto;
+}
+/* line 150, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option::-webkit-scrollbar {
+  width: 10px;
+}
+/* line 154, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+/* line 159, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+/* line 164, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option ul {
+  width: 100%;
+}
+/* line 169, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option ul li .title-config {
+  padding-left: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+/* line 174, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option ul li .active-config {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+/* line 184, scss/_subtitles.scss */
+.subtitles-config ul li .title-config, .subtitles-config ul li .active-config {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+/* line 191, scss/_subtitles.scss */
+.subtitles-config ul li .active-config {
+  text-align: right;
+}
+/* line 194, scss/_subtitles.scss */
+.subtitles-config ul li .active-config.current {
+  color: #ffffff;
+  max-width: 110px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* line 206, scss/_subtitles.scss */
+.subtitles-config ul li:nth-last-child(1) .title-config, .subtitles-config ul li:nth-last-child(1) .active-config {
+  border: none;
+}
+/* line 216, scss/_subtitles.scss */
+.subtitles-config ul.option-language, .subtitles-config ul.option-field {
+  display: none;
+}
+/* line 221, scss/_subtitles.scss */
+.subtitles-config ul.option-language li .title-config, .subtitles-config ul.option-field li .title-config {
+  padding-left: 30px;
+  border: none;
+}
+/* line 225, scss/_subtitles.scss */
+.subtitles-config ul.option-language li .title-config.current, .subtitles-config ul.option-field li .title-config.current {
+  padding-left: 15px;
+  color: #ffffff;
+}
+/* line 229, scss/_subtitles.scss */
+.subtitles-config ul.option-language li .title-config.current svg, .subtitles-config ul.option-field li .title-config.current svg {
+  margin-right: 5px;
+}
+/* line 237, scss/_subtitles.scss */
+.subtitles-config ul.option-language li:nth-child(1) .title-config, .subtitles-config ul.option-field li:nth-child(1) .title-config {
+  padding-left: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+/* line 246, scss/_subtitles.scss */
+.subtitles-config ul.option-subtitles {
+  display: none;
+  width: 280px;
+}
+/* line 252, scss/_subtitles.scss */
+.subtitles-config ul.option-subtitles li:nth-last-child(1):hover {
+  background: none;
+}
+/* line 256, scss/_subtitles.scss */
+.subtitles-config ul.option-subtitles li .title-config {
+  padding-left: 30px;
+}
+/* line 259, scss/_subtitles.scss */
+.subtitles-config ul.option-subtitles li .title-config.current {
+  padding-left: 15px;
+  color: #ffffff;
+}
+/* line 263, scss/_subtitles.scss */
+.subtitles-config ul.option-subtitles li .title-config.current svg {
+  margin-right: 5px;
+}
+/* line 271, scss/_subtitles.scss */
+.subtitles-config ul.option-subtitles li:nth-child(1) .title-config {
+  padding-left: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* line 281, scss/_subtitles.scss */
+.switch-checkbox {
+  display: inline-block;
+  position: relative;
+}
+/* line 285, scss/_subtitles.scss */
+.switch-checkbox .sc-toggle {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+/* line 291, scss/_subtitles.scss */
+.switch-checkbox .sc-toggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 302, scss/_subtitles.scss */
+.switch-checkbox input.sc-toggle-round-flat + label {
+  padding: 1px;
+  width: 50px;
+  height: 24px;
+  -moz-border-radius: 13px;
+  -webkit-border-radius: 13px;
+  border-radius: 13px;
+}
+/* line 309, scss/_subtitles.scss */
+.switch-checkbox input.sc-toggle-round-flat + label:before, .switch-checkbox input.sc-toggle-round-flat + label:after {
+  display: block;
+  position: absolute;
+  content: "";
+}
+/* line 315, scss/_subtitles.scss */
+.switch-checkbox input.sc-toggle-round-flat + label:before {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  -moz-border-radius: 13px;
+  -webkit-border-radius: 13px;
+  border-radius: 13px;
+  -webkit-transition: background-color 0.3s ease-in;
+  -moz-transition: background-color 0.3s ease-in;
+  -o-transition: background-color 0.3s ease-in;
+  transition: background-color 0.3s ease-in;
+}
+/* line 325, scss/_subtitles.scss */
+.switch-checkbox input.sc-toggle-round-flat + label:after {
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: 18px;
+  background-color: #dddddd;
+  -moz-border-radius: 9px;
+  -webkit-border-radius: 9px;
+  border-radius: 9px;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+/* line 337, scss/_subtitles.scss */
+.switch-checkbox input.sc-toggle-round-flat:checked + label:before {
+  background-color: #3498db;
+}
+/* line 343, scss/_subtitles.scss */
+.switch-checkbox input.sc-toggle-round-flat:checked + label:after {
+  margin-left: 26px;
+  background-color: #ffffff;
+}
+
+/* line 146, scss/_subtitles.scss */
+.subtitles-config ul li .wrapper-option-languages {
+  width: 110px;
+  height: 145px;
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-weight: bold
+}
+
+.subtitles-config ul li .wrapper-option-languages::-webkit-scrollbar {
+  width: 10px;
+}
+
+.subtitles-config ul li .wrapper-option-languages::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.subtitles-config ul li .wrapper-option-languages::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.subtitles-config ul li .wrapper-option-languages ul {
+  width: 100%;
+}
+
+.subtitles-config ul li .wrapper-option-languages ul li .title-config {
+  padding-left: 15px;
+  border-bottom: 0 !important;
+}
+
+.subtitles-config ul li .wrapper-option-languages ul li .active-config {
+}
+/*
+END SUBTITLE CSS
+*/
+
+/*
+PAUSE AD IMG CSS
+*/
+.memeplayer-pause-ad-img {
+  display:block;max-width:100%;height:auto;
+}
+/*
+END PAUSE AD IMG CSS
+*/
+
+/*
+RELATED VIDEO CSS
+*/
+/* Font Color */
+/* Background Color */
+/* Mixins */
+/******************************************/
+/*** relate video ***/
+/******************************************/
+.meme-relate-video {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  padding-bottom: 43px;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.meme-wrapper-relate-video {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.meme-head-relate-video {
+  height: 80px;
+  background-color: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+.meme-head-relate-video .title {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-family: arial;
+  line-height: 80px;
+  padding-left: 20px;
+}
+
+.meme-item-relate-video {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-repeat: no-repeat;
+  display: block;
+  float: left;
+  width: 33.33333333%;
+  height: 33.33333333%;
+  overflow: hidden;
+  background-size: 130% auto;
+  -webkit-background-size: 130% auto;
+  -moz-background-size: 130% auto;
+  background-position: center center;
+  border-right: 1px solid #000;
+  box-sizing: border-box;
+  border-bottom: 1px solid #000;
+  -webkit-transition: background-size 0.2s ease-in;
+  -moz-transition: background-size 0.2s ease-in;
+  -o-transition: background-size 0.2s ease-in;
+  transition: background-size 0.2s ease-in;
+}
+.meme-item-relate-video:hover {
+  background-size: 170% auto;
+  -webkit-background-size: 170% auto;
+  -moz-background-size: 170% auto;
+}
+.meme-item-relate-video:hover .meme-info-relate-video {
+  margin-top: 0;
+  top: 34px;
+}
+.meme-item-relate-video:hover .meme-info-relate-video:before {
+  opacity: 1;
+}
+.meme-item-relate-video:hover .meme-info-relate-video:after {
+  opacity: 0;
+  top: -10px;
+}
+
+.meme-content-relate-video {
+  height: 100%;
+}
+
+.meme-info-relate-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 100%;
+  left: 0;
+  font-family: arial;
+  margin-top: -34px;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+.meme-info-relate-video:before, .meme-info-relate-video:after {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  content: "";
+  left: 0;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+.meme-info-relate-video:before {
+  background-color: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  height: 100%;
+}
+.meme-info-relate-video:after {
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.7)));
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+  opacity: 1;
+  height: 40px;
+  animation-delay: 0.2s;
+  -moz-animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s;
+  -o-animation-delay: 0.2s;
+  transition-delay: 0.2s;
+  -webkit-transition-delay: 0.2s;
+  -moz-transition-delay: 0.2s;
+  -o-transition-delay: 0.2s;
+}
+
+.meme-info-relate-video span {
+  position: relative;
+  z-index: 1;
+}
+.meme-info-relate-video .meme-title-relate-video {
+  display: block;
+  margin: 10px 10px 5px;
+  font-weight: bold;
+  line-height: 22px;
+  color: #fff;
+  font-size: 13px;
+  -webkit-transition: margin-top 0.3s ease-in;
+  -moz-transition: margin-top 0.3s ease-in;
+  -o-transition: margin-top 0.3s ease-in;
+  transition: margin-top 0.3s ease-in;
+  max-height: 50px;
+  overflow: hidden;
+}
+.meme-info-relate-video .meme-channel-relate-video {
+  margin: 0 10px;
+  font-size: 13px;
+  color: #9b9a9a;
+}
+.meme-info-relate-video .meme-duration-relate-video {
+  font-size: 12px;
+  color: #9b9a9a;
+  position: absolute;
+  display: block;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* fix 9 item */
+.meme-relate-video.nine-item .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.nine-item .meme-item-relate-video {
+  /*height: 30%;*/
+}
+.meme-relate-video.nine-item .meme-item-relate-video:nth-child(3n+3) {
+  border-right-width: 0;
+}
+.meme-relate-video.nine-item .meme-item-relate-video:nth-child(n+6) {
+  border-bottom-width: 0;
+}
+
+/* fix 8 item */
+.meme-relate-video.eight-item .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.eight-item .meme-item-relate-video {
+  /*height: 30%;*/
+}
+.meme-relate-video.eight-item .meme-item-relate-video:nth-last-child(2) {
+  margin-left: 16%;
+}
+.meme-relate-video.eight-item .meme-item-relate-video:nth-child(3), .meme-relate-video.eight-item .meme-item-relate-video:nth-child(6), .meme-relate-video.eight-item .meme-item-relate-video:nth-child(8) {
+  border-right-width: 0;
+}
+.meme-relate-video.eight-item .meme-item-relate-video:nth-last-child(1), .meme-relate-video.eight-item .meme-item-relate-video:nth-last-child(2) {
+  border-bottom-width: 0;
+}
+
+/* fix 7 item */
+.meme-relate-video.seven-item .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.seven-item .meme-item-relate-video {
+  /*height: 30%;*/
+}
+.meme-relate-video.seven-item .meme-item-relate-video:nth-last-child(2), .meme-relate-video.seven-item .meme-item-relate-video:nth-last-child(4) {
+  margin-left: 16%;
+}
+.meme-relate-video.seven-item .meme-item-relate-video:nth-child(3), .meme-relate-video.seven-item .meme-item-relate-video:nth-child(5), .meme-relate-video.seven-item .meme-item-relate-video:nth-child(7) {
+  border-right-width: 0;
+}
+.meme-relate-video.seven-item .meme-item-relate-video:nth-last-child(1), .meme-relate-video.seven-item .meme-item-relate-video:nth-last-child(2) {
+  border-bottom-width: 0;
+}
+
+/* fix 6 item */
+.meme-relate-video.six-item .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.six-item .meme-item-relate-video {
+  height: 44%;
+}
+.meme-relate-video.six-item .meme-item-relate-video:nth-child(3n+3) {
+  border-right-width: 0;
+}
+.meme-relate-video.six-item .meme-item-relate-video:nth-child(n+3) {
+  border-bottom-width: 0;
+}
+.meme-relate-video.six-item .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  /*max-height: 40px;*/
+  max-height: 50px;
+  overflow: hidden;
+}
+.meme-relate-video.six-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.six-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: -10px;
+}
+
+/* fix 5 item */
+.meme-relate-video.five-item .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.five-item .meme-item-relate-video {
+  height: 44%;
+}
+.meme-relate-video.five-item .meme-item-relate-video:nth-last-child(2) {
+  margin-left: 16%;
+}
+.meme-relate-video.five-item .meme-item-relate-video:nth-child(3), .meme-relate-video.five-item .meme-item-relate-video:nth-child(5) {
+  border-right-width: 0;
+}
+.meme-relate-video.five-item .meme-item-relate-video:nth-child(n+4) {
+  border-bottom-width: 0;
+}
+.meme-relate-video.five-item .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  max-height: 50px;
+  overflow: hidden;
+}
+.meme-relate-video.five-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.five-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: -10px;
+}
+
+/* fix 4 item */
+.meme-relate-video.four-item .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.four-item .meme-item-relate-video {
+  height: 50%;
+  width: 50%;
+}
+.meme-relate-video.four-item .meme-item-relate-video:nth-child(2n+2) {
+  border-right-width: 0;
+}
+.meme-relate-video.four-item .meme-item-relate-video:nth-child(3), .meme-relate-video.four-item .meme-item-relate-video:nth-child(4) {
+  border-bottom-width: 0;
+}
+.meme-relate-video.four-item .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  max-height: 50px;
+  overflow: hidden;
+}
+.meme-relate-video.four-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.four-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: -10px;
+}
+
+/* fix 3 item */
+.meme-relate-video.three-item .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.three-item .meme-item-relate-video {
+  height: 50%;
+  width: 50%;
+}
+.meme-relate-video.three-item .meme-item-relate-video:nth-last-child(1) {
+  margin-left: 25%;
+}
+.meme-relate-video.three-item .meme-item-relate-video:nth-child(2) {
+  border-right-width: 0;
+}
+.meme-relate-video.three-item .meme-item-relate-video:nth-child(n+3) {
+  border-bottom-width: 0;
+  border-right-width: 0;
+}
+.meme-relate-video.three-item .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  max-height: 50px;
+  overflow: hidden;
+}
+.meme-relate-video.three-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.three-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: -10px;
+}
+
+/* fix 2 item */
+.meme-relate-video.two-item .meme-content-relate-video {
+  padding: 12% 10%;
+}
+.meme-relate-video.two-item .meme-item-relate-video {
+  height: 100%;
+  width: 50%;
+}
+.meme-relate-video.two-item .meme-item-relate-video:nth-child(2) {
+  border-right-width: 0;
+  border-bottom-width: 0;
+}
+.meme-relate-video.two-item .meme-item-relate-video:nth-child(1) {
+  border-bottom-width: 0;
+}
+
+/* fix 1 item */
+.meme-relate-video.one-item .meme-content-relate-video {
+  padding: 10% 20%;
+}
+.meme-relate-video.one-item .meme-item-relate-video {
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+
+/* mobile fix 1 item */
+/*
+.meme-relate-video.one-item.mobile .meme-content-relate-video {
+  padding: 10% 20% !important;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video {
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  max-height: 50px;
+  overflow: hidden;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: -10px;
+}
+*/
+
+/* mobile fix 2 item */
+/*
+.meme-relate-video.two-item.mobile .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video {
+  height: 65%;
+  width: 50%;
+  background-size: 150% auto;
+  -webkit-background-size: 150% auto;
+  -moz-background-size: 150% auto;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  max-height: 50px;
+  overflow: hidden;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: -10px;
+}
+*/
+/* mobile fix 2 item */
+.meme-relate-video.two-item.mobile .meme-wrapper-relate-video {
+  padding-top: 20px;
+}
+.meme-relate-video.two-item.mobile .meme-content-relate-video {
+  padding: 3%;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video {
+  height: 100%;
+  width: 50%;
+  background-size: 150% auto;
+  -webkit-background-size: 150% auto;
+  -moz-background-size: 150% auto;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video .meme-info-relate-video {
+  margin-top: -50px;
+  top: 100%;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: 100%;
+}
+.meme-relate-video.two-item.mobile .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  line-height: 16px;
+  max-height: 32px;
+}
+.meme-relate-video.two-item.mobile .meme-autoplay-next {
+  left: 3%;
+  width: 84%;
+}
+
+/* mobile fix 1 item */
+.meme-relate-video.one-item.mobile {
+  padding-top: 25px;
+}
+.meme-relate-video.one-item.mobile .meme-wrapper-relate-video {
+  padding-top: 4px;
+}
+.meme-relate-video.one-item.mobile .meme-content-relate-video {
+  padding: 7% 21%;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video {
+  height: 100%;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video .meme-info-relate-video {
+  margin-top: -50px;
+  top: 100%;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video .meme-info-relate-video:before {
+  opacity: 0.3;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video .meme-info-relate-video:after {
+  opacity: 0;
+  top: 100%;
+}
+.meme-relate-video.one-item.mobile .meme-item-relate-video .meme-info-relate-video .meme-title-relate-video {
+  line-height: 16px;
+  max-height: 32px;
+}
+.meme-relate-video.one-item.mobile .meme-autoplay-next {
+  left: 21%;
+  width: 58%;
+}
+/*
+END RELATED VIDEO CSS
+*/

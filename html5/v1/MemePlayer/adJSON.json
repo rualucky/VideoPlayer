@@ -1,0 +1,92 @@
+{
+"pre": {
+                            "id": 30,
+                            "adtag": [{
+                                "adtagUrl": "http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+                                "skippable": true,
+                                "skipTime": 5,
+                                "adType": "VAST",
+                                "adtagId": 32
+                            }],
+                            "displayRule": "FULL_TIME",
+                            "selectRule": "LINEAR",
+                            "interval": 0,
+                            "delay": 0,
+                            "maxDisplay": 1
+                        },
+"mid":[
+{
+"id":781,
+"adtag":[
+{
+"adtagUrl":"http://googleads.g.doubleclick.net/pagead/ads?ad_type=text_flash&client=ca-video-pub-7266710804606728&description_url=&videoad_start_delay=0&hl=vi&overlay=1",
+"skippable":true,
+"skipTime":3,
+"adType":"IMA",
+"adtagId":61
+},
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":5,
+"adType":"VAST",
+"adtagId":62
+}
+],
+"displayRule":"FULL_COUNT",
+"selectRule":"LINEAR",
+"interval":0,
+"delay":6,
+"maxDisplay":1
+}
+],
+"post":{
+"id":710,
+"adtag":[
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":5,
+"adType":"VAST",
+"adtagId":41
+},
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":3,
+"adType":"VAST",
+"adtagId":31
+}
+],
+"displayRule":"NOT_DUPLICATE",
+"selectRule":"LINEAR",
+"interval":0,
+"delay":0,
+"maxDisplay":0
+},
+"pausead":{
+"id":711,
+"adtag":[
+{
+"url":"http://tinhte.vn/threads/trinh-dien-cong-nghe-moi-tren-chip-mediatek-helio-man-hinh-120hz-camera-do-nhip-tim-lay-net-0-2s.2495978/",
+"type":"jpg",
+"fileLink":"https://i.ytimg.com/vi/oxN-lyaGjg4/maxresdefault.jpg",
+"adType":"PAUSE",
+"adtagId":22
+},
+{
+"url":"https://www.tinhte.vn/threads/nhung-chiec-dien-thoai-dang-chu-y-cua-samsung-trong-10-nam-tro-lai-day.2495927/",
+"type":"jpg",
+"fileLink":"https://photo.tinhte.vn/store/2015/08/3111939_Tinhte_Dien_thoai_Samsung_dang_chu_y_10_nam.jpg",
+"adType":"PAUSE",
+"adtagId":18
+}
+],
+"displayRule":"NOT_DUPLICATE",
+"selectRule":"LINEAR",
+"interval":0,
+"delay":0,
+"maxDisplay":0
+}
+}
+
