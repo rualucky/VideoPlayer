@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Player</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="meplayer.js" type="text/javascript"></script>
+        <link href="videoplayer-1.00.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <div id="player"></div>
+        <script>
+            meplayer('player').setup({
+        					"title": 'Một tên video rất là dài dòng và lủng củng',
+        					"image": "http://imgs.meme.vn/video/clip/2015/01/30/16/26/1b37fd6036b50ae4c0ea214af3e067d3MEME1422610427.jpg",
+        					width:500,
+        					height:400,
+        					mp4prefix:"start",
+                                                primary:"html5",
+                            "file": "http://123.30.135.217/video/multi2/video4140.mp4",
+                            autoplay:true/*,
+                            advertising: {
+							    client: 'vast',
+							    "pre": {
+							        tag: [
+							        {client:"vast",tag:'http://localhost/vast.xml',skipoffset:5},
+							        //{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'},
+							        	//{client:"vast",tag:'http://demo.jwplayer.com.s3.amazonaws.com/player-demos/assets/overlay.xml'}
+							        	{client:"vast",tag:'http://localhost/jwoverlay.xml'}
+							         
+							       ]
+							      },
+							     "mid": [
+							     {
+							        offset: 10,
+							       	tag: [
+							       	{client:"vast",tag:'http://demo.jwplayer.com.s3.amazonaws.com/player-demos/assets/overlay.xml'},
+							       	{client:"vast",tag:'http://localhost/vast.xml'},
+							       	{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'}],
+							       	active:2
+							      },
+							      {
+							        offset: 30,
+							       	tag: [{client:"vast",tag:'http://localhost/vast.xml'},{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'}]
+							      }
+							      ], 
+							     "post": {
+							       	tag: [
+							       
+							       	{client:"vast",tag:'http://localhost/jwoverlay.xml'},
+							       	{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'},
+							       	 {client:"vast",tag:'http://localhost/vast1.xml'},
+							       	 {client:"vast",tag:'http://localhost/vast.xml'},
+							       	]
+							      }
+							    
+							},*/
+							//ga:"UA-51485813-1"
+        				});
+            
+        </script>
+    </body>
+</html>

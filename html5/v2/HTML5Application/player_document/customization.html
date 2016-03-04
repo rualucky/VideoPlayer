@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>MeCloud Help | MeCloud Online Video Platform</title>
+    <script type="text/javascript" src="http://document.mecloud.vn/sdk/loader"></script>
+    <link href="../template.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <header>
+        <!-- Static navbar -->
+        <nav class="navbar">
+            <div class="container">
+                <!-- Static navbar -->
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="logo-cloud" href="http://mecloud.vn/product">Me Cloud</a>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right navbar-action">
+                                <li><a class="btn-smallText" href="http://login.mecloud.vn">Đăng nhập</a></li>
+                                <li><a class="btn-smallText" href="http://mecloud.vn/product/signup.html">Đăng ký</a></li>
+                                <li>
+                                    <a href="#" class="language" title="English"><img src="http://static.mecloud.vn/sdk/helper/images/flag-en.jpg" /></a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Tính năng</a></li>
+                                <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#client">Khách hàng</a></li>
+                                <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#plan">Gói sản phẩm</a></li>
+                                <li><a href="http://mecloud.vn/product/videoPlayer.html">Video Player</a></li>
+                            </ul>
+                        </div>
+                        <!--/.nav-collapse -->
+                    </div>
+                    <!--/.container-fluid -->
+                </nav>
+            </div>
+            <!--/.container-fluid -->
+        </nav>
+    </header>
+    <!-- end header -->
+    <section class="help">
+        <div class="head-help">
+            <div class="container">
+                <div class="inner-head-help">
+                    <h1>MECLOUD PLAYER</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="nav-help clearfix">
+                        <div class="nav-help clearfix">
+                            <ul class="list-help">
+                                <li class="nav-head">CHỌN MỘT CHỦ ĐỀ:</li>
+                                <li><a href="embedding.html">Nhúng Video </a></li>
+                                <li class="active"><a href="customization.html">Tùy chỉnh Video </a></li>
+                                <li><a href="video-ads.html">Quảng cáo trên Video </a></li>
+                                <li><a href="javascript-api.html">Javascript API</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end nav-help -->
+                </div>
+                <div class="col-md-9">
+                    <div class="content-help">
+                        <h2>Cài đặt MeCloud Player</h2>
+                        <hr />
+                        <p>Phần viết này sẽ hướng dẫn cài đặt toàn bộ các lựa chọn(options) mà MeCloud Player hỗ trợ.</p>
+                        <h3>Các lựa chọn cơ bản</h3>
+<div>
+<h4>primary</h4>
+<p style="margin-left:30px">Lựa chọn khởi tạo player hỗ trợ Flash hoặc HTML5 ("flash" hoặc "html5").</p>	
+</div>
+<div>
+<h4>autoplay</h4>
+<p style="margin-left:30px">Lựa chọn tự động phát video(true/false).</p>	
+</div>
+<div>
+	<h4>title</h4>
+	<p style="margin-left:30px">Tên tiêu đề của video.</p>
+</div>
+<div>
+	<h4>image</h4>
+	<p style="margin-left:30px">Hình ảnh hiển thị(thumbs) của video.</p>
+</div>
+<div>
+<h4>width</h4>
+	<p style="margin-left:30px">Chiều rộng của video.</p>
+</div>
+<div>
+<h4>height</h4>
+	<p style="margin-left:30px">Chiều cao của video.</p>
+</div>
+<div>
+<h4>aspectration</h4>
+	<p style="margin-left:30px">Tỉ lệ chiều rộng / chiểu cao của video. Vd: "16:9", khi chiều rộng của video thay đổi thì chiều cao của video cũng thay đổi theo tỉ lệ trên. Khi đã lựa chọn <strong>aspectration</strong> thì lựa chọn <strong>height</strong> sẽ bị bỏ qua.</p>
+</div>
+<div>
+<h4>mp4prefix</h4>
+	<p style="margin-left:30px">Cho phép hỗ trợ file MP4 có thể phát tại giây bất kỳ ("start").</p>
+</div>
+<div>
+<h4>file</h4>
+	<p style="margin-left:30px">Video muốn phát.</p>
+</div>
+<h5>Ví dụ cài đặt cơ bản:</h5>
+	 <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+	&lt;script>
+    	meplayer('player').setup({
+        	primary: "html5",
+        	autoplay: false,
+        	title: 'MeCloud Video Demo',
+        	image: "http://mecloud.vn/images/android.png",
+        	width: 640,
+        	height: 360,
+        	mp4prefix: "start",
+        	aspectration: "16:9",
+        	file: "http://mecloud.vn/videos/android.mp4",
+    	});
+    &lt;/script></code></pre>
+
+<p>Video tương ứng</p>
+<div id="player"></div>
+<hr>
+<h3>Chất lượng Video</h3>
+<p>Lựa chọn <strong>sources</strong> là một tập hợp các file video có cùng nội dung nhưng có chất lượng khác nhau.</p>
+<div>
+<h4>sources[].label</h4>
+	<p style="margin-left:30px">Tên tiêu đề video.</p>
+</div>
+<div>
+<h4>sources[].file</h4>
+	<p style="margin-left:30px">Video muốn phát.</p>
+</div>
+<h5>Ví dụ cài đặt <strong>sources</strong>:</h5>
+	 <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+	&lt;script>
+    	meplayer('player').setup({
+    		"sources":[{
+				"label":"360p",
+				"file":"http://mecloud.vn/videos/video360p.mp4"
+    		},{
+				"label":"480p",
+				"file":"http://mecloud.vn/videos/video480p.mp4"
+    		},{
+				"label":"720p",
+				"file":"http://mecloud.vn/videos/video720p.mp4"
+    		},{
+				"label":"1080p",
+				"file":"http://mecloud.vn/videos/video1080p.mp4"
+    		}]
+    	});
+    &lt;/script></code></pre>
+
+<p>Video tương ứng</p>
+<div id="playerWithQuality"></div>
+                        <hr />
+<h3>Danh sách Video</h3>
+<p>Tính năng <strong>playlist</strong> giúp cho MeCloud Player có thể phát nhiều video với nội dung khác nhau.</p>
+<div>
+<h4>playlist[].title</h4>
+	<p style="margin-left:30px">Tên tiêu đề của video.</p>
+</div>
+<div>
+<h4>playlist[].file</h4>
+	<p style="margin-left:30px">Video muốn phát.</p>
+</div>
+<h5>Ví dụ cài đặt <strong>playlist</strong>:</h5>
+	 <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+	&lt;script>
+    	meplayer('player').setup({
+    		"playlist":[{
+				"title":"Video 1",
+				"file":"http://mecloud.vn/videos/video360p.mp4"
+    		},{
+				"title":"Video 2",
+				"file":"http://mecloud.vn/videos/video480p.mp4"
+    		},{
+				"title":"Video 3",
+				"file":"http://mecloud.vn/videos/video720p.mp4"
+    		}]
+    	});
+    &lt;/script></code></pre>
+
+<p>Video tương ứng</p>
+<div id="playerWithPlayList"></div>
+<hr>
+<h3>Cài đặt quảng cáo cho video</h3>
+<div>
+	<h4>advertising.pre</h4>
+	<p style="margin-left:30px">Cài đặt quảng cáo ở đầu video.</p>
+</div>
+<div style="margin-left:30px">
+	<h4>advertising.pre.tag[]</h4>
+	<div style="margin-left:30px">
+		<p>Các tùy chọn dành cho quảng cáo.</p>
+		<h4>advertising.pre.tag[].client</h4>
+		<p style="margin-left:30px">Cài đặt hê thống quảng cáo mà các bạn sử dụng. Có thể là "<strong>vast</strong>" (IAB VAST/VPAID/VMAP) hoặc "<strong>ima</strong>" (Google Interactive Media Ads).</p>
+		<h4>advertising.pre.tag[].tag</h4>
+		<p style="margin-left:30px">Đường dẫn cài đặt VAST hoặc IMA.</p>
+		<h4>advertising.pre.tag[].skipoffset</h4>
+		<p style="margin-left:30px">Lựa chọn này cho phép bỏ qua quảng cáo dạng video sau một khoảng thời gian (tính bằng giây). Đôi khi có những quảng cáo video có thể bỏ qua nên không cần dùng lựa chọn này.</p>
+	</div>
+</div>
+<div style="margin-left:30px">
+	<h4>advertising.pre.active</h4>
+	<p style="margin-left:30px">Số quảng cáo được chạy(mặc định là 1). Ví dụ: trong <strong>pre.tag[]</strong> có 10 quảng cáo. <strong>pre.active</strong> là 2 thì sẽ chạy 2 quảng cáo lần lượt theo thứ tự. Nếu quảng cáo xảy ra lỗi thì quảng cáo kế tiếp sẽ được chạy.</p>
+</div>
+<p> Để biết thêm về cài đặt <strong>advertising</strong> ở giữa, cuối video... vui lòng xem tại <a href="video-ads.html" title="Quảng cáo trên video.">Quảng cáo trên video.</a>
+<h5>Ví dụ cài đặt <strong>advertising</strong> vị trí đầu video:</h5>
+	 <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+	&lt;script>
+    	meplayer('player').setup({
+    		advertising : 
+    		{
+				pre:{
+					tag:[
+						{
+							client:"vast",
+							tag:"http://mecloud.vn/ads/vast.xml",
+							skipoffset:5
+						},
+						{
+							client:"ima",
+							tag:"http://mecloud.vn/ads/ima.xml",
+						}
+					],
+					active:2
+				}
+    		}
+    	});
+    &lt;/script></code></pre>
+
+<p>Video tương ứng</p>
+<div id="playerWithPreAds"></div>
+<hr>
+<h3>Logo Video</h3>
+<p>Hiển thị logo trên video player. Hỗ trợ hình ảnh dạng PNG, GIF, JPEG.</p>
+<div>
+	<h4>logo.icon</h4>
+	<p style="margin-left:30px">Đường dẫn đến file logo gốc.</p>
+</div>
+<div>
+	<h4>logo.hover</h4>
+	<p style="margin-left:30px">Đường dẫn đến file logo - khi trỏ chuột lên logo gốc sẽ thay thành logo này.</p>
+</div>
+<div>
+	<h4>logo.link</h4>
+	<p style="margin-left:30px">Đường dẫn đến website khi click vào logo.</p>
+</div>
+<h5>Ví dụ cài đặt <strong>logo</strong> trong video:</h5>
+	 <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+	&lt;script>
+    	meplayer('player').setup({
+    		logo:{
+    			icon:"http://mecloud.vn/images/icon.png",
+    			hover:"http://mecloud.vn/images/hover.png",
+    			link:"http://mecloud.vn"
+    		}
+    	});
+    &lt;/script></code></pre>
+
+<p>Video tương ứng</p>
+<div id="playerWithLogo"></div>
+<hr>
+                        <p class="bg-info"><i class="icon fmm-info-circled"></i>Hãy đặt những câu hỏi và liên hệ với <a href="mailto:support@mecloud.vn" class="btn-email">support@mecloud.vn</a>, để MeCloud có thể phục vụ các bạn tốt hơn. Cảm ơn các bạn đã sử dụng dịch vụ của chúng tôi! </p>
+                    </div>
+                    <!-- end content-help -->
+                </div>
+            </div>
+            <!--/.row -->
+        </div>
+        <!--/.container -->
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-contact clearfix">
+                                <h3>Liên hệ</h3>
+                                <ul class="contact">
+                                    <li><i class="icon fmm-home"></i>217 Nam Kỳ Khởi Nghĩa, Phường 7, Quận 3, Thành phố Hồ Chí Minh, Việt Nam.</li>
+                                    <li><i class="icon fmm-phone"></i>0904916386</li>
+                                    <li><i class="icon fmm-paperplane-ico"></i><a href="mailto:support@mecloud.vn" class="btn-email">support@mecloud.vn</a></li>
+                                    <li>Copyright MemeCloud. All Rights Reserved 2015</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="footer-contact clearfix">
+                                <h3>Tính năng</h3>
+                                <ul class="footer-menu">
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Xem trên mọi thiết bị</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Hỗ trợ tất cả chuẩn video</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Độ phân giải FullHD</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Player đa nền tảng</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Hệ thống CDN</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Công nghệ CloudStorage</a></li>
+                                </ul>
+                                <ul class="footer-menu">
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">CMS chuyên nghiệp</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Toà soạn điện tử</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Báo cáo & thống kê</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Tự khai thác quảng cáo</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Tối đa hoá doanh thu </a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">API mở rộng</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="footer-support clearfix">
+                                <h3>Hỗ trợ</h3>
+                                <ul class="footer-menu">
+                                    <li><a href="http://mecloud.vn/product/index.html#">Lợi ích</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Giới thiệu công ty</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Khiếu nại bản quyền</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Điều khoản sử dụng</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Chính sách nội dung video</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/row-->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+    </footer>
+    <!-- end footer -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../meplayer.js" type="text/javascript"></script>
+   	<script>
+    	meplayer('player').setup({
+        	primary: "html5",
+        	autoplay: false,
+        	title: 'MeCloud Video Demo',
+        	image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        	width: 640,
+        	height: 360,
+        	mp4prefix: "start",
+        	aspectration: "16:9",
+        	file: "http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4",
+    	});
+    	meplayer('playerWithQuality').setup({
+        	primary: "html5",
+        	autoplay: false,
+        	title: 'MeCloud Video với nhiều chất lượng khác nhau',
+        	image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        	width: 640,
+        	mp4prefix: "start",
+        	aspectration: "16:9",
+        	"sources":[
+        		{
+        			"label":"360p",
+        			"file":"http://123.30.135.217/video/multi2/video4140.mp4",
+        			"default":true
+        		},
+        		{
+        			"label":"480p",
+        			"file":"http://123.30.135.217/video/multi2/video4250.mp4"
+        		},
+        		{
+        			"label":"720p",
+        			"file":"http://123.30.135.217/video/multi2/video4500.mp4"
+        		},
+        		{
+        			"label":"1080p",
+        			"file":"http://123.30.135.217/video/multi2/video41000.mp4"
+        		}
+        	]
+    	});
+    	meplayer('playerWithPlayList').setup({
+        	primary: "html5",
+        	autoplay: false,
+        	title: 'MeCloud Video với danh sách các video khác nhau',
+        	image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        	width: 640,
+        	mp4prefix: "start",
+        	aspectration: "16:9",
+        	"playlist":[
+        		{
+        			"title":"Video 1",
+        			"file":"http://123.30.135.217/video/multi2/video4140.mp4",
+        		},
+        		{
+        			"title":"Video 2",
+        			"file":"http://123.30.135.217/video/multi2/video4250.mp4"
+        		},
+        		{
+        			"title":"Video 3",
+        			"file":"http://123.30.135.217/video/multi2/video4500.mp4"
+        		}
+        	]
+    	});
+    	meplayer('playerWithPreAds').setup({
+        	primary: "html5",
+        	autoplay: false,
+        	title: 'MeCloud Video với quảng cáo ở vị trí đầu video',
+        	image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        	width: 640,
+        	mp4prefix: "start",
+        	aspectration: "16:9",
+        	file:"http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4",
+        	advertising:{
+        		pre:{
+        			tag:[
+        				{
+        					client:"vast",
+        					tag:"http://player.tuyenbui.com/vast/vast.xml",
+        					skipoffset:5
+        				},
+        				{
+        					client:"ima",
+        					tag:"https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D"
+        				}
+        			],
+        			active:2
+        		}
+        	}
+    	});
+    	meplayer('playerWithLogo').setup({
+        	primary: "html5",
+        	autoplay: false,
+        	title: 'MeCloud Video với hình ảnh Logo',
+        	image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        	width: 640,
+        	mp4prefix: "start",
+        	aspectration: "16:9",
+        	file:"http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4",
+        	logo:{
+        		icon:"../logo2.png",
+        		hover:"../logo1.png",
+        		link:"http://mecloud.vn"
+        	}
+    	});
+    </script>
+</body>
+
+</html>

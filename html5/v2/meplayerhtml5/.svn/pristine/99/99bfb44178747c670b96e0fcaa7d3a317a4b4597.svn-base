@@ -1,0 +1,574 @@
+(function(w,d){
+    var AdControl = function (player) {
+        this.player = player;
+        var self = this;
+        this.init();
+       
+        player.on("play", function (ev) {
+            if (!self.prePlay&&self.pre) {
+                    self.prePlay = true;
+                    
+                    playGroup(self.pre,"pre");
+            }
+        });
+        player.on("complete", function (ev) {
+            if (!self.postPlay) {
+                    self.postPlay = true;
+                    playGroup(self.post,"post");
+                    
+            }
+        });
+        var next=-1;
+        player.on("playing", function (ev) {
+            //var p=this.player;
+            var c = player.getCurrentTime();
+            //console.log(c);
+
+            if (self.midPlay.length > 0) {
+                if (next === -1 || self.midPlay[next].isPlay) {
+                    next = 0;
+                    for (var i = 0; i < self.midPlay.length; i++) {
+                        if(!self.midPlay[i].isPlay&&self.midPlay[i].offset>c){
+                        if ( self.midPlay[next].offset > self.midPlay[i].offset||
+                                self.midPlay[next].isPlay) {
+                            next = i;
+                        }
+                        }
+                        
+                    }
+                }
+                //console.log("play:"+next+" played:"+self.midPlay[next].isPlay );
+                if (!self.midPlay[next].isPlay&&self.midPlay[next].offset<c&&c<self.midPlay[next].offset+5) {
+                   // player.pause();
+                   playGroup(self.midPlay[next],"mid");
+                   self.midPlay[next].isPlay=true;
+                }
+            }
+
+        });
+        var imads=new IMAd(self.player);
+        function playGroup(g,type){
+            if(!g.tag) return;
+            var fallback=g.active;
+                    var c=0;
+                    var success=0;
+                    imads.on("ad_success_finished",function(){
+                            c++;
+                            success++;
+                            console.log("ssfn");
+                            if(g.tag[c]&&success<fallback)
+                            playAd(g.tag[c]);
+                            else imads.onContentResumeRequested();
+                        });
+                    imads.on("ad_cancelable",function(){
+                            c++;
+                            success++;
+                            console.log("cancelable");
+                            if(g.tag[c]&&success<fallback){
+                                imads.onSuccessFinished();
+                                playAd(g.tag[c]);
+                            }
+                            //else imads.onContentResumeRequested();
+                        });
+                        
+                    imads.on("ad_unsuccess_finished",function(){
+                            c++;
+                            
+                            if(g.tag[c]&&success<fallback)
+                            playAd(g.tag[c]);
+                            else imads.onContentResumeRequested();
+                        });
+                    function playAd(ad){
+                        console.log("play:"+c+": "+ad.tag);
+                        imads.type=type;
+                        imads.skipoffset=ad.skipoffset||imads.skipoffset;
+                        imads.requestAds(ad.tag);
+                    }
+                    playAd(g.tag[c]);
+        }
+    };
+    AdControl.prototype={
+        player:null,
+        load:function(config){},
+        pre:{},
+        mid:[],
+        post:{},
+        prePlay: false,
+        postPlay: false,
+        midPlay:[],
+        resetAds:function(){
+            this.prePlay=false;
+            this.postPlay=false;
+            for(var i=0;i<this.midPlay.length;i++){
+                this.midPlay[i].isPlay=false;
+            }
+        },
+        init:function(){
+            var player=this.player;
+            var self=this;
+            if (player._cfg.advertising) {
+                var acfg = player._cfg.advertising;
+                if (acfg.pre) {
+                    if (typeof acfg.pre.tag === "string") {
+                        var client=acfg.pre.client==="ima"?"ima":"vast";
+                        var skipoffset=acfg.pre.skipoffset||5;
+                        this.pre = {
+                            active:1,
+                            tag:[{tag:acfg.pre.tag,client:client,skipoffset:skipoffset}]
+                        };
+                    }else {
+                        this.pre=acfg.pre;
+                        if(!this.pre.active) this.pre.active=1;
+                    }
+                }
+                if (acfg.mid) {
+                    if (typeof acfg.mid.tag === "string") {
+                        var client="vast";
+                        if(acfg.mid.client)
+                        client=acfg.mid.client==="ima"?"ima":"vast";
+                        var offset=acfg.mid.offset||15;
+                        this.mid = [
+                        {offset: offset,
+                        tag: [{client:client,tag:acfg.mid.tag}],
+                        active:1,
+                        isPlay:false
+                        }
+                    ];
+                    }else {
+                        acfg.mid.forEach(function (obj) {
+                            obj.offset=obj.offset||15;
+                            if (typeof obj.tag === "string") {
+                                var client=acfg.pre.client==="ima"?"ima":"vast";
+                                obj.active=1;
+                                obj.tag=[{tag:obj.tag,client:client}];
+                            }else{
+                                obj.active=obj.active||1;
+                                obj.tag.forEach(function (o) {
+                                    o.skipoffset=o.skipoffset||5;
+                                    o.client=o.client||client;
+                                });
+                            }
+                            obj.isPlay=false;
+                            //obj.tag.forEach
+                        });
+                        this.mid=acfg.mid;
+                    }
+                    acfg.mid.forEach(function (obj) {
+                        //console.log(obj.offset);
+                         self.midPlay.push(obj);
+                    });
+                }
+                if (acfg.post) {
+                    if (typeof acfg.post.tag === "string") {
+                        var client=acfg.post.client==="ima"?"ima":"vast";
+                        var skipoffset=acfg.pre.skipoffset||5;
+                        this.pre = {
+                            active:1,
+                            tag:[{tag:acfg.post.tag,client:client,skipoffset:skipoffset}]
+                        };
+                    }else {
+                        acfg.post.tag.forEach(function (obj) {
+                            if(obj.client)
+                            if(obj.client!=="ima") obj.client="vast";
+                        });
+                        this.post=acfg.post;
+                    }
+                }
+            }
+        }
+    };
+    var IMAd = function (player) {
+        this.cte = player.ads;
+        this.player = player;
+        var self = this;
+        player.on("fullscreenchange", function () {
+            if (self.adsManager) {
+                if (!self.ad.isLinear() && (self.type === "pre"||self.type === "post")) {
+                    var h = (self.player.stage.offsetHeight - self.ad.getHeight()) / 2 + self.ad.getHeight();
+                    self.resizeAd(player.stage.offsetWidth,h,true );
+//                    self.adsManager.resize(self.player.stage.offsetWidth, h, player.isFullScreen ? google.ima.ViewMode.FULLSCREEN : google.ima.ViewMode.NORMAL);
+                } else {
+//                    self.adsManager.resize(player.stage.offsetWidth, player.stage.offsetHeight, player.isFullScreen ? google.ima.ViewMode.FULLSCREEN : google.ima.ViewMode.NORMAL);
+
+                    self.resizeAd(player.stage.offsetWidth,player.stage.offsetHeight,self.ad.isLinear() );
+                }
+            }
+
+        });
+    };
+IMAd.prototype = {
+    adsManager: null,
+    adsLoader: null,
+    adDisplayContainer: null,
+    intervalTimer: null,
+    player: null,
+    cte: null, //ad container element
+    type:"pre",
+    ad:null,//current ad
+    adtimeout:0,
+    client:"vast",
+    skipoffset:5,
+    isPlaying:false,
+    __handler:{},
+    on: function (ev, fn) {
+            if (!this.__handler[ev])
+                this.__handler[ev] = [];
+            this.__handler[ev].push(fn);
+        },
+    trigger: function (ev) {
+            if (this.__handler[ev] && this.__handler[ev].length) {
+                for (var i = 0; i < this.__handler[ev].length; i++)
+                    this.__handler[ev][i].call(this);
+            }
+    },
+    onContentPauseRequested:function() {
+        this.player.pause();
+        this.player.ads.show();
+        this.player.controls.hide();
+    },
+
+    onContentResumeRequested:function() {
+        clearTimeout( this.adtimeout);
+        this.adsManager.destroy();
+        this.player.controls.show();
+        this.player.ads.hide();
+        this.getControlBar().hide();
+        if(this.type!=="post")
+            this.player.play();
+
+    },
+    onSuccessFinished:function(){
+        clearTimeout( this.adtimeout);
+        clearTimeout(this.adcancelable);
+        this.adsManager.destroy();
+        this.getSkipBtn().hide();
+        this.trigger("ad_success_finished");
+    },
+    onCancelAble:function(){
+        clearTimeout( this.adtimeout);
+        clearTimeout(this.adcancelable);
+        //this.adsManager.destroy();
+        this.getSkipBtn().hide();
+        this.trigger("ad_cancelable");
+    },
+    
+    onUnSuccessFinished:function(){
+        clearTimeout( this.adtimeout);
+        clearTimeout(this.adcancelable);
+        this.adsManager.destroy();
+        this.getSkipBtn().hide();
+        this.trigger("ad_unsuccess_finished");
+    }
+};
+IMAd.prototype.requestAds = function (adTagUrl) {
+    var self = this;
+    if(!this.adDisplayContainer)
+    this.createAdDisplayContainer();
+    this.cte.show();
+    this.adDisplayContainer.initialize();
+    this.adsLoader = new google.ima.AdsLoader(this.adDisplayContainer);
+    function onAdEvent(adEvent) {
+        //console.log(adEvent.type);
+        self.ad = adEvent.getAd();
+        switch (adEvent.type) {
+            case google.ima.AdEvent.Type.LOADED:
+                if (!self.ad.isLinear()) {
+                    self.getControlBar().hide();
+                    if(self.type==="pre"||self.type==="post"){
+                        var h=(self.player.stage.offsetHeight-self.ad.getHeight())/2+self.ad.getHeight();
+                        //self.adsManager.resize(self.player.stage.offsetWidth,h,self.player.isFullScreen?google.ima.ViewMode.FULLSCREEN:google.ima.ViewMode.NORMAL);
+                        //console.log("full ne ");
+                        self.resizeAd(self.player.stage.offsetWidth,h,true );
+                        self.onContentPauseRequested();
+                        self.player.ads.style.backgroundColor="#dbdbdb";
+                        self.adtimeout = setTimeout(function(){self.onSuccessFinished();}, 20000);
+                    }else{
+                        self.player.ads.style.backgroundColor="transparent";
+                        //self.adtimeout = setTimeout(function(){self.onSuccessFinished();}, 30000);
+                        //self.adcancelable = setTimeout(function(){self.onCancelAble();}, 5000);
+                        self.resizeAd(self.player.stage.offsetWidth,self.ad.getHeight(),false);
+                    }
+                }else{
+                    self.getControlBar().show();
+                    self.getControlBar().info.setText(self.ad.getDescription());
+                    if(!self.ad.isSkippable()){
+                        self.getSkipBtn().show();
+                    }
+                     self.resizeAd(self.player.stage.offsetWidth,self.player.stage.offsetHeight,true );
+                }
+                break;
+                case google.ima.AdEvent.Type.USER_CLOSE:
+                if (!self.ad.isLinear()&&(self.type==="pre"||self.type==="post")) {
+                    console.log("user_close");
+                   self.onSuccessFinished();
+                }else{
+                    if(!self.ad.isLinear()){
+                        self.onCancelAble();
+                    }
+                } 
+                break;
+                case google.ima.AdEvent.Type.SKIPPED:
+                    if(self.intervalTimer!=0){
+                        clearInterval(self.intervalTimer);
+                    }
+                break;
+                
+            case google.ima.AdEvent.Type.STARTED:
+                if (self.ad.isLinear()) {
+                    self.intervalTimer = setInterval(
+                            function () {
+                                var remainingTime = self.adsManager.getRemainingTime();
+                                if(self.ad.getDuration()-remainingTime<self.skipoffset&&!self.getSkipBtn().active){
+                                    self.getSkipBtn().setText(Math.round(self.skipoffset-(self.ad.getDuration()-remainingTime)));
+                                }else{
+                                    self.getSkipBtn().enable();
+                                    self.getSkipBtn().setText("Bỏ qua");
+                                }
+                            },
+                    300); // every 300ms
+                    self.isPlaying=true;
+                }else{
+                    
+                }
+                break;
+            case google.ima.AdEvent.Type.COMPLETE:
+                if (self.ad.isLinear()) {
+                     if(self.intervalTimer!=0){
+                        clearInterval(self.intervalTimer);
+                    }
+                }
+                self.onSuccessFinished()
+                
+                break;
+            case google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
+                    if(self.intervalTimer!=0){
+                        clearInterval(self.intervalTimer);
+                    }
+                    self.onSuccessFinished();
+                break;
+        }
+    }
+    this.adsLoader.addEventListener(
+            google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+            function (adsManagerLoadedEvent) {
+                // Get the ads manager.
+                var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+                adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+                //console.log(adsManagerLoadedEvent);
+                adsRenderingSettings.useStyledNonLinearAds = true;
+                // videoContent should be set to the content video element.
+                self.adsManager = adsManagerLoadedEvent.getAdsManager(
+                        self.player.stage, adsRenderingSettings);
+
+                // Add listeners to the required events.
+                self.adsManager.addEventListener(
+                        google.ima.AdErrorEvent.Type.AD_ERROR,
+                        onAdError);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
+                        function(){
+                            console.log("pause request!");
+                            self.onContentPauseRequested();
+                        });
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
+                        function(){
+                            console.log("resume request!");
+                            self.onSuccessFinished();
+                        });
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.SKIPPED,
+                        onAdEvent);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.USER_CLOSE,
+                        onAdEvent);
+
+                // Listen to any additional events, if necessary.
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.LOADED,
+                        onAdEvent);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.STARTED,
+                        onAdEvent);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.COMPLETE,
+                        onAdEvent);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.PAUSED ,
+                        function(){self.isPlaying=false;});
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.RESUMED ,
+                        function(){self.isPlaying=true;});
+                try {
+                    // Initialize the ads manager. Ad rules playlist will start at this time.
+                    self.adsManager.init(self.player.stage.offsetWidth, self.player.stage.offsetHeight, google.ima.ViewMode.NORMAL);
+                    // Call play to start showing the ad. Single video and overlay ads will
+                    // start at this time; the call will be ignored for ad rules.
+                    self.adsManager.start();
+                } catch (adError) {
+                    // An error may be thrown if there was a problem with the VAST response.
+                    self.player.play();
+                }
+            }, false);
+    function onAdError(adErrorEvent) {
+        // Handle the error logging.
+        console.log(adErrorEvent.getError());
+        console.log("Error nè!!!!!!");
+        self.onUnSuccessFinished();
+        self.adsManager.destroy();
+        if(self.intervalTimer!=0){
+            clearInterval(self.intervalTimer);
+        }
+    }
+
+    
+    this.adsLoader.addEventListener(
+            google.ima.AdErrorEvent.Type.AD_ERROR,
+            onAdError,
+            false);
+
+    var adsRequest = new google.ima.AdsRequest();
+    adsRequest.adTagUrl = adTagUrl;
+
+//console.log("w:"+this.player.stage.offsetWidth+ " h:"+this.player.stage.offsetHeight);
+    adsRequest.linearAdSlotWidth = this.player.stage.offsetWidth;
+    adsRequest.linearAdSlotHeight =this.player.stage.offsetHeight;
+
+    adsRequest.nonLinearAdSlotWidth = this.player.stage.offsetWidth;
+    adsRequest.nonLinearAdSlotHeight = this.player.stage.offsetHeight;
+
+    this.adsLoader.requestAds(adsRequest);
+};
+IMAd.prototype.resizeAd = function (w,h,full) {
+    var self=this;
+    var p=this.player;
+    if(full){ 
+        p.ads.style.height=p.stage.offsetHeight;
+//        p.ads.style.height =h+"px";
+        p.ads.style.top=0;
+        //p.ads.style.position="absolute";
+    }else{
+        p.ads.style.height =h+"px";
+        if(self.player.isFullScreen) p.ads.style.top=(p.stage.offsetHeight-h-30)+"px";
+        else p.ads.style.top=(p.stage.offsetHeight-h)+"px";
+        p.ads.style.position="absolute";
+    }
+    
+    self.adsManager.resize(w,h,self.player.isFullScreen?google.ima.ViewMode.FULLSCREEN:google.ima.ViewMode.NORMAL);
+};
+IMAd.prototype.createAdDisplayContainer = function () {
+    this.adDisplayContainer =
+            new google.ima.AdDisplayContainer(
+                    this.cte, this.player.stage);
+};
+IMAd.prototype.playerPop=function(group){
+    
+};
+IMAd.prototype._controlbar=null;
+IMAd.prototype.getControlBar=function(){
+    var self=this;
+    if(this._controlbar===null){
+        var e=d.createElement("div");
+        e.style.cssText="display:none;left:0;display: block; width: 100%; height: 21px; position: absolute; visibility: visible; cursor: auto; top: 0px; z-index: 2147483647; background-color: rgba(0, 0, 0, 0.498039);";
+        var mbtn=d.createElement("img");
+        
+        e.btnMute=mbtn;
+        mbtn.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAAEnQB3mYfeAAAAJVJREFUOE/tk1ENwCAMREEJEpCABCQgAQlIQQoSkIIEdkkXtizA6PjdfTT8vHLptbLWKj5JSim+wSe1DmutrbXkkgeHEACg8mB8mHMGOYONMWjc5JzDJ957wl5gMtaUUgKM+sODqLYG1o0qxrg07dF1IOpSykvOk9NSSlHg7PVsTWEB4u121xHvqh4tLvg+z8U3bf6WDjULsaN9YNkfAAAAAElFTkSuQmCC";
+        mbtn.mute=function(){
+            this.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAIAAADtKeFkAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAASdAAAEnQB3mYfeAAAAOhJREFUOE+lk1ERhCAQQCWBEYhABCMYgQhGMAIRjGIEIxjBCNy72RvOw0XU48NBZx/7dhdN0zQxRp4PljHmTT3jvxS7dV27rqsqOOf6vpewH54XVgihbdvSKeM4EsNT4UmOQkmEtMuySA6d50gyk/8oMgyDfKzwYnUUmabpKu+9hz+KoLBtWz2/dEi6mIlYa+d5PqsfeeFTF1URXJT+y6fE71VLoyHmM+m0y3iEicBcHY3Ck4oj0qKd8PRf7YjCl24eNXN/stHc4KUKykkiMou8/ur/g8hZ/6v8PuBJ/iK/v+EX9zLdf9cL1wScCm37SQgAAAAASUVORK5CYII=";
+            
+        };
+        mbtn.unmute=function(){
+            this.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAAEnQB3mYfeAAAAJVJREFUOE/tk1ENwCAMREEJEpCABCQgAQlIQQoSkIIEdkkXtizA6PjdfTT8vHLptbLWKj5JSim+wSe1DmutrbXkkgeHEACg8mB8mHMGOYONMWjc5JzDJ957wl5gMtaUUgKM+sODqLYG1o0qxrg07dF1IOpSykvOk9NSSlHg7PVsTWEB4u121xHvqh4tLvg+z8U3bf6WDjULsaN9YNkfAAAAAElFTkSuQmCC";
+        };
+        mbtn.addEventListener("click",function(){
+            if(self.adsManager.getVolume()===0){
+                self.adsManager.setVolume(1);
+                this.unmute();
+            }else{
+                self.adsManager.setVolume(0);
+                this.mute();
+            }
+        });
+        var pbtn=d.createElement("img");
+        e.btnPlay=pbtn;
+        pbtn.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAVCAIAAADNQonCAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAAEnQB3mYfeAAAAF1JREFUOE9jYKAK+E8uQNgONIEMp6DognPs7e3rkYC8vDzQaCCJLAhUA7EPuxFApch+gqgGksiCQDWjRkADZDQsECljpIQFFbIZSVkee06lyAgyyq39+/eTZCU+xQDTtEcPk8Cw2gAAAABJRU5ErkJggg==";
+        pbtn.pause = function(){
+            this.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAVCAIAAADNQonCAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAASdAAAEnQB3mYfeAAAAJ9JREFUOE+t1G0RgCAMAFAaEIEoRCEKUYhCFCIQQXe3O9QJG5vyz3M89oE698s6rOs6HQRDKo9d4yGlFGPc5OZEzhle1FpDCCLEEdgZ4Lz3DCQTENF7h9JWyhaB6UBd0wYpCIRKKaQuNYF1QYNGXRaCDEtNtNZIRxQEyV9dyLuLCmI1yy2Cv1EyId5rgRA/rXvAfCKfCMN/C/qtOpILPgG3iNE9V6J34wAAAABJRU5ErkJggg==";
+            
+        };
+        pbtn.play =function(){
+            this.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAVCAIAAADNQonCAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAAEnQB3mYfeAAAAF1JREFUOE9jYKAK+E8uQNgONIEMp6DognPs7e3rkYC8vDzQaCCJLAhUA7EPuxFApch+gqgGksiCQDWjRkADZDQsECljpIQFFbIZSVkee06lyAgyyq39+/eTZCU+xQDTtEcPk8Cw2gAAAABJRU5ErkJggg==";
+        };
+        pbtn.addEventListener("click",function(){
+            if(self.isPlaying===true){
+                self.adsManager.pause();
+                this.pause();
+            }else{
+                self.adsManager.resume();
+                this.play();
+            }
+        });
+        var info =d.createElement("span");
+        e.info=info;
+        info.setText=function(val){
+            this.textContent=val;
+        };
+        info.style.cssText="color: #fff; font-size: 14px; margin: 0; padding: 0; line-height: 20px; display: block; float: right;";
+        
+        e.appendChild(pbtn);
+        e.appendChild(mbtn);
+        e.appendChild(info);
+        this.player.ele.appendChild(e);
+        e.show=function(){this.style.display="block";};
+        e.hide=function(){this.style.display="none";};
+        this._controlbar=e;
+    }
+    return this._controlbar;
+    
+};
+IMAd.prototype._btnSkip=null;
+IMAd.prototype.getSkipBtn=function(){
+    var self=this;
+    if(this._btnSkip===null){
+       var e=d.createElement("div");
+       e.style.cssText="position: absolute;display: inline;background-color: #000;bottom: 10px;z-index: 2147483647;color: #fff;padding: 5px;line-height: 18px;right: 10px;cursor: pointer;";
+       e.text=d.createElement("span");
+       e.appendChild(e.text);
+       e.setText=function(val){e.text.textContent=val;};
+       e.getText=function(){return e.text.textContent;};
+       e.icon=d.createElement("img");
+       e.icon.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3FpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1NmRhY2MyNy0yNzM4LTBjNDktODEyOC04OTU4MjRhNWZiYWIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QjU4MDQxQzZFOTcyMTFFNEE0RDNENjE3RENCOUZCQTkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QjU4MDQxQzVFOTcyMTFFNEE0RDNENjE3RENCOUZCQTkiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOmQxM2JjYjA2LTcwNTEtNmM0OC1iMGY3LTRhMGQyY2ExMzZmMSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1NmRhY2MyNy0yNzM4LTBjNDktODEyOC04OTU4MjRhNWZiYWIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4qj63NAAAAm0lEQVR42mL8//8/AzUAExC7A3E/ENuSoO8wEP+H0hAAdNHT/wiwCYiVQK4kgJEBWAxdEAS+AXE9EHNSahAM3AFiH2oYhM+7ZBmEzbtkG4TuXQyDGP9TnpAYYemIagmSFHAPiP2wypAQ2A2UBvZmIFamJPrvArEvpVmkgZws8pKAN4g2yB6IK4DYjAgDYPgw1JAjyAmSKukIIMAAk0MMDUomYjoAAAAASUVORK5CYII=";
+       e.icon.style.cssText="display: inline; float: right; margin-left: 5px;";
+       e.icon.show=function(){this.style.display="inline";};
+       e.icon.hide=function(){this.style.display="none";};
+       e.appendChild(e.icon);
+       e.show=function(){this.style.display="inline";};
+       e.hide=function(){this.style.display="none";};
+       e.enable=function(){this.active=true;this.icon.show();this.style.cursor="pointer";};
+       e.disable=function(){this.active=false;this.icon.hide();this.style.cursor="default";};
+       e.disable();
+       e.addEventListener("click",function(){
+           if(this.active){
+               self.onSuccessFinished();
+           }else{
+               
+           }
+       });
+       this.player.ele.appendChild(e);
+       this._btnSkip=e;
+        
+    }
+    
+    return this._btnSkip;
+    
+};
+
+
+
+
+
+w.IMAd=IMAd;
+w.AdControl=AdControl;
+
+})(window,document);

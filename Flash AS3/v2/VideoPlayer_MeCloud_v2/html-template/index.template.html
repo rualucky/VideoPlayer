@@ -1,0 +1,894 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+    <head>
+        <meta name="google" value="notranslate" />         
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css" media="screen"> 
+            html, body  { height:100%; }
+            body { margin:0; padding:0; overflow:auto; text-align:center; 
+                   background-color: ${bgcolor}; }   
+            object:focus { outline:none; }
+            #flashContent { display:none; }
+        </style>
+        <style type="text/css" media="screen">
+        a:hover {
+        text-decoration: underline;
+        color:red;
+        }
+        </style>
+         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+        <script type="text/javascript" src="swfobject.js"></script>
+
+        <script type="text/javascript">
+            var MeCloudVideoPlayer = {
+                initFlash: function(session){
+                    console.log("Flash init complete " + session);
+                    
+                    var e = document.getElementById('VideoPlayer_'+session);
+
+                    if (e && e.importData) {
+                        if (session == '111')
+                        {
+                            e.importData({
+                            	"videoPoster":{
+                            		"title":"Hương Đêm bay Xa - Hari Won bien nien su Shannara nguoi den tu trieu chau anh yeu nguoi khac roi",
+                            		"image":"http://localhost/img/poster.png",
+                            		"position":"top", //center, bottom, top
+                            		"autoplay":false,
+                            		"offTitle":false,
+                            		"buttonPlay":true,
+                            		"showControlBar":false
+                            	},
+                            	"videoBrand":{
+                            		"link":"http://zing.vn",
+                    				"image": "http://localhost/img/brand_icon_style.png",
+                    				"imageHover": "http://localhost/img/brand_hover_icon_style.png",
+                    				"styleBrand": "icon"
+                            	},
+                            	"videoSkin":{
+                            	 	"color":"#00cc99",
+									"live":false,
+									"online":false,
+                            	},
+                            	"logo":{
+                            		"icon":"http://localhost/VideoPlayer2MeCloud/bin-debug/img/mecloud.png",
+                            		"hover":"http://localhost/VideoPlayer2MeCloud/bin-debug/img/netlink.png",
+                            		"link":"http://zing.vn"
+                            	},
+                            	"ga":{
+                            		"id": ["UA-68205954-1","UA-67703167-2"],
+                            	},
+                               	//"autoplay":true,
+                                "vid":"ZEh89uu6Bn",
+                                "analyticsUrl":"http://analytics.dev.mecloud.vn:8888/bridge",
+                               	"width":960,
+                               	"height":540,
+                               	"liveStream":false,
+                                //"title": "x &gt; 3 <font color='#123'>ABC</font>",
+                                //"title":" x &gt; 3 <font color='red'>ABC</font> Trọng t\u0026agrave;i bị rượt đuổi đ\u0026aacute;nh hội đồng tr\u0026ecirc;n s\u0026acirc;n",
+                                //"thumbnail": "http://imgs.cloud.memefiles.com/thumb/clip/2015/12/18/14/33/434c059cc22a140636273a707ebd994a_3.jpg",
+								"title":"Hương Đêm bay Xa - Hari Won",
+								"thumbnail":"http://localhost/img/poster.png",
+/*
+"video": [{
+                        "quality": "360p",
+                        "url": "http://stream1.dev.mecloud.vn/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb_360.mp4?e\u003d1454052390\u0026t\u003dd2ef1edcf573e0be1d627bcb9ba00ac4\u0026z\u003d1454037990050753954"
+                    }, {
+                        "quality": "480p",
+                        "url": "http://stream1.dev.mecloud.vn/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb_480.mp4?e\u003d1454052390\u0026t\u003dd2ef1edcf573e0be1d627bcb9ba00ac4\u0026z\u003d1454037990050753954"
+                    }, {
+                        "quality": "720p",
+                        "url": "http://stream1.dev.mecloud.vn/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb_720.mp4?e\u003d1454052390\u0026t\u003dd2ef1edcf573e0be1d627bcb9ba00ac4\u0026z\u003d1454037990050753954"
+                    }],
+               */
+               
+               "video": [{
+                        "quality": "360p",
+                        //"url": "http://d.dev.mecloud.vn/videojs/hariwon_360.mp4",
+                        //"url":"http://localhost/video/video1.mp4",
+                        "url":"http://stream.dev.mecloud.vn/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb_360.mp4?e\u003d1457016253\u0026t\u003dcf3c575d07a2fb4b65015c7dc48491f5\u0026z\u003d1457001853072683636",
+                        "size": 40108718
+                    }, {
+                        "quality": "480p",
+                        "url": "http://stream.dev.mecloud.vn/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb_480.mp4?e\u003d1457016253\u0026t\u003dcf3c575d07a2fb4b65015c7dc48491f5\u0026z\u003d1457001853072683636",
+                        "size": 71885347
+                    }, {
+                        "quality": "720p",
+                        "url": "http://stream1.dev.mecloud.vn/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb_720.mp4?e\u003d1454336400\u0026t\u003d15cc981f9738d6155b3c00f7ba1266ee\u0026z\u003d1454322000744672098",
+                        "size": 163643686
+                    }],
+               
+                              /*
+                                "video": [
+                                    {
+                                        "quality": "360p",
+                                        //"url":"http://alkass-i.akamaihd.net/hls/live/205534/1/live_16s.m3u8"
+                                    "url":"http://hls.dev.mecloud.vn/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb.m3u8",
+                                   	//"url":"http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8"
+                                   	//"url":"http://www.nacentapps.com/m3u8/index.m3u8"
+                                   	//"url":"http://wms.shared.streamshow.it/canale8/canale8/playlist.m3u8"
+                                   	//"url":"http://www.streambox.fr/playlists/test_001/stream.m3u8"
+                                    },{
+                                        "quality": "480p",
+                                        "url": "http://localhost/video/video5.mp4"
+                                        
+                                    }, {
+                                        "quality": "720p", 
+                                        "url": "http://localhost/video/video6.mp4"
+                                    }, 
+                                    {
+                                        "quality": "1080p", 
+                                        "url": "http://localhost/video/video7.mp4"
+                                    }
+                                ],
+                                */
+                                
+                                "displayTitle":true,
+                                /*
+                                "subtitle":{
+"autotrack":true,
+"tracks":[
+{
+"file":"http://localhost/sub/ka192.srt",
+"label":"english",
+"isDefault":true
+}
+]
+},
+*/
+//AD
+
+/*                       
+                                   "ad":{
+"pre":{
+"id":111,
+"adtag":[
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":false,
+"skipTime":5,
+"adType":"VAST",
+"adtagId":11
+},
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":5,
+"adType":"VAST",
+"adtagId":66
+}
+],
+"displayRule":"FULL_TIME",
+"selectRule":"LINEAR",
+"interval":5,
+"delay":10,
+"maxDisplay":2
+},
+"mid":[
+{
+"id":781,
+"adtag":[
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":5,
+"adType":"VAST",
+"adtagId":31
+},
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":3,
+"adType":"VAST",
+"adtagId":32
+}
+],
+"displayRule":"FULL_COUNT",
+"selectRule":"LINEAR",
+"interval":5,
+"delay":6,
+"maxDisplay":1
+},
+{
+"id":782,
+"adtag":[
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":5,
+"adType":"VAST",
+"adtagId":40
+}
+],
+"displayRule":"FULL_TIME",
+"selectRule":"RANDOM",
+"interval":5,
+"delay":30,
+"maxDisplay":1
+}
+],
+"post":{
+"id":88,
+"adtag":[
+{
+"adtagUrl":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]",
+"skippable":true,
+"skipTime":5,
+"adType":"VAST",
+"adtagId":30
+}
+],
+"displayRule":"FULL_TIME",
+"selectRule":"RANDOM",
+"interval":0,
+"delay":0,
+"maxDisplay":1
+},
+"pausead":{
+"id":89,
+"adtag":[
+{
+"url":"http://globe-views.com/dreams/earth.html",
+"type":"jpg",
+"fileLink":"http://globe-views.com/dcim/dreams/earth/earth-01.jpg",
+"adType":"PAUSE",
+"adtagId":37
+}
+],
+"displayRule":"FULL_COUNT",
+"selectRule":"RANDOM",
+"interval":0,
+"delay":0,
+"maxDisplay":10
+}
+},
+*/
+
+//RELATED VIDEO
+/*
+"related": [{
+                        "id": 11304,
+                        "alias": "MfvpBIyZN7",
+                        "img": "http://img.dev.mecloud.vn/thumb/clip/2015/11/20/14/33/286581c8673bcc7be1db7ab086b007e0_3.jpg",
+                        "title": "Cách Làm Món Sườn Xào Chua Ngọt - Sweet and Sour Ribs",
+                        "description": "",
+                        "duration": 444000,
+                        "playToken": "ep8030XE6yuo7Z37B18Rampu1T08a8LNs53jROs3H6iLv861",
+                        "embed": "http://embed.dev.mecloud.vn/play/MfvpBIyZN7"
+                    }, {
+                        "id": 11410,
+                        "alias": "ArQwzP5SLS",
+                        "img": "http://img.dev.mecloud.vn/thumb/clip/2016/1/8/10/48/783de686aa2afd3ec7dd3097bcb71dbb_5.jpg",
+                        "title": "Worth it - Fifth Harmony ft.Kid Ink / May J Lee Choreography",
+                        "description": "",
+                        "duration": 507000,
+                        "playToken": "67XrF38eRDX4E67L95lXA9oT7eRi2N4i87eTB3y2sFR633o3",
+                        "embed": "http://embed.dev.mecloud.vn/play/ArQwzP5SLS"
+                    }, {
+                        "id": 11378,
+                        "alias": "k7IQbuAJhR",
+                        "img": "http://img.dev.mecloud.vn/thumb/clip/2015/12/21/15/7/8349e9c2e29ba466a448bb07f92722e0_3.jpg",
+                        "title": "Thách Thức Danh Hài mùa 2 | Dì ghẻ và Bạch Tuyết tái hợp",
+                        "description": "",
+                        "duration": 464000,
+                        "playToken": "87hsjvpjOgBFh7f6OZjRAv83p4mh86HXug6jTWas3pCQgIXI",
+                        "embed": "http://embed.dev.mecloud.vn/play/k7IQbuAJhR"
+                    }, {
+                        "id": 11389,
+                        "alias": "Y6JpaPYzgx",
+                        "title": "She - Groove Coverage [Kara+Vietsub]",
+                        "description": "",
+                        "duration": 230000,
+                        "playToken": "2NIF0cfZv879mCa32ICfLjRU770TlEBrLX5eI8pRbh29HOUl",
+                        "embed": "http://embed.dev.mecloud.vn/play/Y6JpaPYzgx"
+                    }],
+                    */
+
+"related":[
+
+{
+    "id": 192489,
+    "alias": "PAZyJlUYSe",
+    "title": " x &gt; 3 <font color='red'>ABC Phim Ngắn Tình Ngốc - Chấn Hào [Official - Phim Ngắn Cảm Động] Những màn biểu diễn khiến cho Trấn Thành - Việt Hương cười lăn lộn trong Thách Thức Danh Hài!",
+    //"img":"http://localhost/img/honda.jpg",
+    //"img": "http://i.ytimg.com/vi/zZEiBStItAg/hqdefault.jpg",
+    "img":"http://localhost/img/king.jpg",
+    "createTime": 1450103064089,
+    "duration": 5344000,
+    //"channel": "GD Production",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+    "embed":""
+}/*
+, {
+    "id": 192452,
+    "alias": "biCq4NvF4J",
+    "title": "[PHIM NGẮN]: YÊU KHÔNG SỢ CẬU EM!",
+    //"img": "http://i.ytimg.com/vi/Ee18BdIFNUI/hqdefault.jpg",
+    //"img": "http://localhost/img/test.jpg",
+    //"img":"http://localhost/img/king.jpg",
+    "createTime": 1450095905076,
+    "duration": 2192000,
+    "channel": "GD Production",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+}/*
+, {
+    "id": 192051,
+    "alias": "pRsGr2FGhP",
+    "title": "[Phim Ngắn] TRAI QUÊ - FU PRODUCTION",
+    //"img": "http://i.ytimg.com/vi/eQot61FVjMA/hqdefault.jpg",
+    "createTime": 1450068947420,
+    "duration": 3509000,
+    "channel": "Fu Production",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+
+}/*
+,{"id": 192489,
+    "alias": "PAZyJlUYSe",
+    "title": "[Phim Ngắn] Ai Bảo Mọt Sách Không Biết Yêu",
+    //"img": "http://i.ytimg.com/vi/3ErdQpwIQEY/hqdefault.jpg",
+    "createTime": 1450103064089,
+    "duration": 5944000,
+    "channel": "MP Production",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+}/*
+, {
+    "id": 192452,
+    "alias": "biCq4NvF4J",
+    "title": "Những màn biểu diễn khiến cho Trấn Thành - Việt Hương cười lăn lộn trong Thách Thức Danh Hài!",
+    "img": "http://thumb.imgs.memefiles.com/medium/thumb/clip/biCq4NvF4J-1450095956960.jpg",
+    "createTime": 1450095905076,
+    "duration": 292000,
+    "channel": "Clash of Clans",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+}/*
+, {
+    "id": 192452,
+    "alias": "biCq4NvF4J",
+    "title": "Những màn biểu diễn khiến cho Trấn Thành - Việt Hương cười lăn lộn trong Thách Thức Danh Hài!",
+    "img": "http://img.mecloud.vn/vi/biCq4NvF4J/medium/1.jpg",
+    "createTime": 1450095905076,
+    "duration": 292000,
+    "channel": "Clash of Clans",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+}/*
+, {
+    "id": 192452,
+    "alias": "biCq4NvF4J",
+    "title": "Những màn biểu diễn khiến cho Trấn Thành - Việt Hương cười lăn lộn trong Thách Thức Danh Hài!",
+    "img": "http://img.mecloud.vn/vi/biCq4NvF4J/medium/1.jpg",
+    "createTime": 1450095905076,
+    "duration": 292000,
+    "channel": "Clash of Clans",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+}/*
+, {
+    "id": 192452,
+    "alias": "biCq4NvF4J",
+    "title": "Những màn biểu diễn khiến cho Trấn Thành - Việt Hương cười lăn lộn trong Thách Thức Danh Hài!",
+    "img": "http://img.mecloud.vn/vi/biCq4NvF4J/medium/1.jpg",
+    "createTime": 1450095905076,
+    "duration": 292000,
+    "channel": "Clash of Clans",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+}/*
+, {
+    "id": 192452,
+    "alias": "biCq4NvF4J",
+    "title": "Những màn biểu diễn khiến cho Trấn Thành - Việt Hương cười lăn lộn trong Thách Thức Danh Hài!",
+    "img": "http://img.mecloud.vn/vi/biCq4NvF4J/medium/1.jpg",
+    "createTime": 1450095905076,
+    "duration": 292000,
+    "channel": "Clash of Clans",
+    "description":"",
+    "playToken":"gxvfKNGd4Fx0co68XrK2ZGj8Qy8fJrWfJ3GxoOhKa6JJ855Z",
+}
+*/
+],
+                            });
+                        }  
+                        else if (session == '222')
+                        {
+                            e.importData({
+                            	
+                                "vid": "vid2",
+                                "title": "See you again",
+                                "thumbnail": "http://imgs.meme.vn/video/clip/2015/01/30/16/26/1b37fd6036b50ae4c0ea214af3e067d3MEME1422610427.jpg",
+                                "video": [
+                                    {
+                                        "quality": "360p",
+                                        //"url":"http://stream1.mecloud.vn/clip/2015/10/8/15/59/abb31e1f4b3248abb674c81ab9138159_360.mp4?e=1444311242&s=Gmq1B8L-wzVwxdFhgk_SuQ"
+                                        "url":"http://localhost/video/video1.mp4"
+                                        //"url": "http://stream.cloud.meme.vn/clip/2015/6/22/16/25/1ee7db05ac6a1481cb87e3f2f6136a23_360.mp4?e=1435236498&s=zydEwBeNcUhIsmv8vGwRn9TlZFw="
+                                        //"url":"http://stream.cloud.meme.vn/clip/2015/7/3/13/55/6e931f3f269fea3671f173f452d3df12_360.mp4?e=1435924963&s=6StuIHWf1I4lWPQ_tTtDAkHxCYs="
+                                        //"url":"http://www.streambox.fr/playlists/test_001/stream.m3u8"
+                                        //"url":"http://cdnvtn4.mecloud.vn/ksgbwtr/_definst_/mp4:ksgbwtr/clip/2015/7/13/15/50/3a43a81816302d88f0e5701524bb18ea_360.mp4/playlist.m3u8?e=1437073948&t=88cbe947cc97662c99f10346e04ac2ef"
+                                        //"url":"http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8"
+                                        //"url":"http://123.30.135.217/video/phim/index.m3u8"
+
+                                    } ,
+                                    {
+                                        "quality": "480p",
+                                        "url": "http://stream1.mecloud.vn/clip/2015/10/8/15/59/abb31e1f4b3248abb674c81ab9138159_480.mp4?e=1444311242&s=aX8-NVZu-ym1P8aEROauLw"
+                                       // "url":"http://stream.cloud.meme.vn/clip/2015/7/3/13/55/6e931f3f269fea3671f173f452d3df12_360.mp4?e=1435924963&s=6StuIHWf1I4lWPQ_tTtDAkHxCYs="
+                                       //"url":"http://cdnvtn4.mecloud.vn/ksgbwtr/_definst_/mp4:ksgbwtr/clip/2015/7/13/15/50/3a43a81816302d88f0e5701524bb18ea_480.mp4/playlist.m3u8?e=1437073948&t=88cbe947cc97662c99f10346e04ac2ef"
+                                    } ,
+                                     {
+                                       "quality": "720p",
+                                      // "url":"http://cdnvtn4.mecloud.vn/ksgbwtr/_definst_/mp4:ksgbwtr/clip/2015/7/13/15/50/3a43a81816302d88f0e5701524bb18ea_720.mp4/playlist.m3u8?e=1437073948&t=88cbe947cc97662c99f10346e04ac2ef"
+                                      "url":"http://stream1.mecloud.vn/clip/2015/10/8/15/59/abb31e1f4b3248abb674c81ab9138159_720.mp4?e=1444311242&s=ndWHI7UIsV5fdhcn2Mtz-A"
+                                    } ,
+                                    {
+                                       "quality": "1080p",
+                                       //"url":"http://cdnvtn4.mecloud.vn/ksgbwtr/_definst_/mp4:ksgbwtr/clip/2015/7/13/15/50/3a43a81816302d88f0e5701524bb18ea_1080.mp4/playlist.m3u8?e=1437073948&t=88cbe947cc97662c99f10346e04ac2ef"
+                                       
+                                    }                                  
+                                    
+                                ],
+                                "ad":{
+                                    "pre":{
+                                        "index":{
+                                            "type":"vast",
+                                            "adtag":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]"
+                                            //"adtag":"https://ima3vpaid.appspot.com/?adTagUrl=https%3A%2F%2Fgoogleads.g.doubleclick.net%2Fpagead%2Fads%3Fad_type%3Dskippablevideo%26client%3Dca-video-pub-7266710804606728%26description_url%3Dhttp%253A%252F%252Fmecloud.vn%26videoad_start_delay%3D0%26hl%3Den"
+                                            //"adtag" : "https://servedbyadbutler.com/vast.spark?setID=1324&ID=166584&pid=18874"
+                                            //"adtag":"http://cdn-01.yumenetworks.com/ym/72K6cH27X672/3560/dPyQHeey/MemeVN_VPAID_2193gDhFcRPs.xml"
+                                          	//"adtag":"https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]"
+                                          
+                                        },
+                                        "replace":[{
+                                        	"type":"ima",
+                                        	"adtag" : "https://googleads.g.doubleclick.net/pagead/ads?client=ca-video-pub-3588767303886532&slotname=1659698366&ad_type=video_text_image_flash&description_url=http%3A%2F%2Ftinmoi.vn&max_ad_duration=30000&videoad_start_delay=0"
+                                        },                                        
+                                        {
+                                        	"type":"ima",
+                                        	"adtag" : "https://11pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]"
+                                        },
+                                        {
+                                        	"type":"ima",
+                                        	"adtag" : "https://11pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]"
+                                        },
+                                        {
+                                        	"type":"ima",
+                                        	"adtag" : "https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]"
+                                        }
+                                        ]
+                                    },
+                                    "mid":{
+                                        "index":{
+                                            "type":"vast",
+                                            //"adtag":"https://ima3vpaid.appspot.com/?adTagUrl=https%3A%2F%2Fgoogleads.g.doubleclick.net%2Fpagead%2Fads%3Fad_type%3Dskippablevideo%26client%3Dca-video-pub-7266710804606728%26description_url%3Dhttp%253A%252F%252Fmecloud.vn%26videoad_start_delay%3D0%26hl%3Den"
+                                           //"adtag" : "http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]"
+                                           //"adtag":"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]"
+                                           "adtag":"https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]"
+                                           //"adtag":"http://www.meme.vn/player/overlay_vast.xml"
+                                           //"adtag":"http://googleads.g.doubleclick.net/pagead/ads?ad_type=text_image_flash&adk=2604851684&adsafe=high&channel=&client=ca-video-pub-7266710804606728&correlator=1436753766155&dt=1436753787697&ea=0&flash=18.0.0.203&frm=0&ged=ta1_ve3_pt445.443.u_td445_ed1c1m363_ed2c2m783_tt23_pd23_bs10_es1_tv1_is0_er159.40.459.520_sv2_sp1_vi0.0.650.717_vp100_ct1_vb1_vl1_vr1_ts7_eb24171&hl=vi&image_size=480x70%2C468x60%2C450x50&num_ads=3&osd=6&output=xml_vast3&ref=http%3A%2F%2Flogin.cloud.meme.vn%2F%3Furl%3Dhttp%253A%252F%252Fcloud.meme.vn%252Fvideo%252Fme&sdkv=3.201.0&sdr=1&sz=480x180&t_pyv=allow&u_ah=728&u_asa=1&u_aw=1366&u_cd=24&u_h=768&u_his=6&u_java=true&u_nmime=8&u_nplug=6&u_tz=420&u_w=1366&unviewed_position_start=1&url=http%3A%2F%2Fcloud.meme.vn%2Fvideo%2Fview%3Fid%3DBJBKDWZYnA&video_product_type=0&video_url_to_fetch=http%3A%2F%2Fcloud.meme.vn%2Fvideo%2Fview%3Fid%3DBJBKDWZYnA&videoad_start_delay=1"
+                                           //"adtag":"http://ima3vpaid.appspot.com/?adTagUrl=http%3A%2F%2Fgoogleads.g.doubleclick.net%2Fpagead%2Fads%3Fad_type%3Dtext_image_flash%26client%3Dca-video-pub-7266710804606728%26description_url%3Dhttp%253A%252F%252Ftinmoi.vn%26videoad_start_delay%3D0%26hl%3Den%26max_ad_duration%3D30000"
+                                           //"adtag":"http://ima3vpaid.appspot.com/?adTagUrl=http%3A%2F%2Fgoogleads.g.doubleclick.net%2Fpagead%2Fads%3Fad_type%3Dskippablevideo%26client%3Dca-video-pub-7266710804606728%26description_url%3Dhttp%253A%252F%252Fmecloud.vn%26videoad_start_delay%3D0%26hl%3Den"
+                                        }
+                                    },
+                                    "post":{
+                                        "index":{
+                                            "type":"vast",
+                                            //"adtag":"https://ima3vpaid.appspot.com/?adTagUrl=https%3A%2F%2Fgoogleads.g.doubleclick.net%2Fpagead%2Fads%3Fad_type%3Dskippablevideo%26client%3Dca-video-pub-7266710804606728%26description_url%3Dhttp%253A%252F%252Fmecloud.vn%26videoad_start_delay%3D0%26hl%3Den"
+                                            "adtag" : "http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]"
+                                           //"adtag":"https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]"
+                                        }
+                                    }
+
+                                }
+                            });
+                        }   
+                         else if (session == '333')
+                        {
+                            e.importData({
+                                "vid": "vid3",
+                                "title": "blablalala",
+                                "thumbnail": "http://img.cloud.meme.vn/thumb/clip/2015/5/18/10/57/ed40ac71c200f6af9664cd31014d2e06_1.jpg",
+                                "video": [
+                                    {
+                               
+                                    //"url":"http://www.streambox.fr/playlists/test_001/stream.m3u8"                                       
+                                    "url":"http://123.30.135.217/video/phim/index.m3u8"
+                                        //"url":"http://stream.cloud.meme.vn/clip/2015/6/19/11/0/e4a1a2e9ba43c125bbd22de433140f75_360.mp4?s=8aYHoQd4ZmNhI9Mdv1RWwYZABvM=&e=1434722718"
+                                        //"url": "http://cdn.mecloud.vn/clip/2015/5/7/4/2/777068c2283c1bcf4ae9f9849f8ea104_360.mp4?e=1434459352&s=Z1RTGTpw3YQJSwUQhSmcTcOrSPQ="
+                                    }/*
+                                    ,
+                                    {
+                                        "quality": "480p",
+                                        "url": "http://cdn.mecloud.vn/clip/2015/6/16/14/27/6a1fecdd177bec49a18240c141824ca4_360.mp4?e=1434461276&s=MvqPqrv9U0CtVrlLTEKtcMPvqMU="
+                                    }, {
+                                        "quality": "720p", 
+                                        "url": "http://stream2.memeclip.com/clip/2015/01/30/16/26/1b37fd6036b50ae4c0ea214af3e067d3_720.mp4?st=ntEWxOeQXlxOaKI6twL9SA&e=1423669524257"
+                                    }*/
+                                ],
+                                "ad":{
+                                    "pre":{
+                                        "index":{
+                                            "type":"vast",                                            
+                                            //"adtag" : "http://googleads.g.doubleclick.net/pagead/ads?ad_type=text_image_flash&client=ca-video-pub-7266710804606728&description_url=&hl=vi&max_ad_duration=40000&overlay=1"
+                                            "adtag" : "http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]"
+                                            
+                                        }
+                                    },
+                                    "post":{
+                                        "index":{
+                                            "type":"vast",
+                                            
+                                            //"adtag" : "http://googleads.g.doubleclick.net/pagead/ads?ad_type=text_image_flash&client=ca-video-pub-7266710804606728&description_url=&hl=vi&max_ad_duration=40000&overlay=1"
+                                            "adtag" : "http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]"
+                                            
+                                        }
+                                    }
+                                }
+                            });
+                        }                     
+                    }
+                }
+            }        
+        
+            // For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. 
+            var swfVersionStr = "${version_major}.${version_minor}.${version_revision}";
+            // To use express install, set to playerProductInstall.swf, otherwise the empty string. 
+            var xiSwfUrlStr = "${expressInstallSwf}";
+            var flashvars = {
+                session: "111"
+            };
+            var params = {};
+            params.quality = "high";
+            params.bgcolor = "${bgcolor}";
+            params.allowscriptaccess = "sameDomain";
+            params.allowfullscreen = "true";
+            var attributes = {};
+            attributes.id = "VideoPlayer_111";
+            attributes.name = "${application}";
+            attributes.align = "middle";
+            
+            swfobject.embedSWF(
+                "${swf}.swf", "flashContent", 
+                //"940", "528.75", 
+                "640","360",
+                //"480","240",
+                swfVersionStr, xiSwfUrlStr, 
+                flashvars, params, attributes);
+            // JavaScript enabled so display the flashContent div in case it is not replaced with a swf object.
+            swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+
+         </script>
+    </head>
+
+    <body>
+      
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div id="flashContent" style="width:640px;height:350px;">
+            <p>
+                To view this page ensure that Adobe Flash Player version 
+                ${version_major}.${version_minor}.${version_revision} or greater is installed. 
+            </p>
+            <script type="text/javascript"> 
+                var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://"); 
+                document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+                                + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>" ); 
+            </script> 
+		<script>
+			
+			(function(w, d, s) {
+				/*
+    s = document.getElementById('memeplayerK34TY9');
+    if (!s) {
+        return;
+    }
+    */
+    // //load javascript function
+	var loadScript = function(url){
+		var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.charset="UTF-8"
+		script.src = url;
+        document.head.appendChild(script);
+	}
+
+    console.log('KEEP');
+    if (!w.$_VConfig) {
+        try {
+            w.$_VConfig = {
+                "plugins": {
+                    "sharing": "1.02",
+                    "ads": "1.06",
+                    "playlist": "1.01",
+                    "analytics": "1.01",
+                    "skin": "1.07",
+                    "related": "1.03"
+                },
+                "pluginFolder": "//static.mecloud.vn/player/plugins/",
+                "JS": "//static.mecloud.vn/player/js/videoplayer-2.12.js",
+                "videoJS": "//static.mecloud.vn/player/js/videojs-1.02.js",
+                "CSS": "//static.mecloud.vn/player/css/videojs-1.02.css",
+                "adsPluginKey": "dcdac9ddbc6aff249fc1fc9f8a15f5fa",
+                "imageDomain": "//image.mecloud.vn/",
+                "staticDomain": "//static.mecloud.vn"
+            };
+            console.log('ka 192');
+           	//loadScript(w.$_VConfig.JS);
+            //(w.$_VConfig.pluginFolder + "skin/skin-1.07.js");
+            console.log(w.$_VConfig.pluginFolder + "skin/skin-1.07.js");
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+    /*
+    s.innerHTML += '<div id ="MeCloudVideoPlayer_ufHidyeJHI_1457063348525039664" vid="ufHidyeJHI" session="1457063348525039664" style="min-width: 240px;width: 100%;"></div>';
+    function loadScript(url, callback, r) {
+        if (w.MeCloudVideoPlayer) {
+            callback();
+            return;
+        }
+        r = document.querySelectorAll('script[src="' + url + '"]');
+        if (r && r.length) {
+            setTimeout(function() {
+                loadScript(url, callback);
+            }, 500);
+            return;
+        }
+        var script = d.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        script.onreadystatechange = function() {
+            if (this.readyState == 'complete' || this.readyState == 'loaded')
+                callback();
+        }
+        script.onload = callback;
+        d.head.appendChild(script);
+    }
+    var i;
+    loadScript($_VConfig.JS, function() {
+        if (i)
+            return;
+        i = true;
+        var p = d.getElementById('MeCloudVideoPlayer_ufHidyeJHI_1457063348525039664');
+        if (p) {
+            MeCloudVideoPlayer.ready(function() {
+                var q;
+                MeCloudVideoPlayer.load(p, {
+                    "vid": "ufHidyeJHI",
+                    "title": "Những sai lầm trong việc giảm cân của phái nữ",
+                    "thumbnail": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/31/af7a3d34775b786d998897b4b564e9ef_3.jpg",
+                    "video": [{
+                        "quality": "360p",
+                        "url": "//stream1.mecloud.vn/clip/2016/3/4/10/31/af7a3d34775b786d998897b4b564e9ef_360.mp4?e\u003d1457077748\u0026s\u003djJBVdo4UnO5Bj4QoYvkCLg\u0026z\u003d1457063348525039664",
+                        "size": 30420007
+                    }, {
+                        "quality": "480p",
+                        "url": "//stream1.mecloud.vn/clip/2016/3/4/10/31/af7a3d34775b786d998897b4b564e9ef_480.mp4?e\u003d1457077748\u0026s\u003d6ZcY0Pp6DMhsQski7XG8pg\u0026z\u003d1457063348525039664",
+                        "size": 54566205
+                    }, {
+                        "quality": "720p",
+                        "url": "//stream1.mecloud.vn/clip/2016/3/4/10/31/af7a3d34775b786d998897b4b564e9ef_720.mp4?e\u003d1457077748\u0026s\u003d4ZpSdcEZn71rNCl0rg3cFA\u0026z\u003d1457063348525039664",
+                        "size": 61168563
+                    }],
+                    "ad": {
+                        "pre": {
+                            "id": 97,
+                            "adtag": [{
+                                "adtagUrl": "http://googleads.g.doubleclick.net/pagead/ads?ad_type\u003dvideo_image_flash\u0026client\u003dca-video-pub-3073985723087695\u0026description_url\u003dhttp%3A%2F%2Fwww.xaluan.com%2Fmodules.php%3Fname%3DNews%26file%3Darticle%26sid%3D1393752\u0026hl\u003dvi\u0026max_ad_duration\u003d15000\u0026overlay\u003d0\u0026videoad_start_delay\u003d0\u0026channel\u003d9133277362+9133277362",
+                                "skippable": false,
+                                "skipTime": 0,
+                                "adType": "IMA",
+                                "adtagId": 22
+                            }],
+                            "displayRule": "NOT_DUPLICATE",
+                            "selectRule": "LINEAR",
+                            "interval": 0,
+                            "delay": 0,
+                            "maxDisplay": 1
+                        },
+                        "mid": [],
+                        "post": {
+                            "id": 99,
+                            "adtag": [{
+                                "adtagUrl": "http://googleads.g.doubleclick.net/pagead/ads?ad_type\u003dvideo_image_flash\u0026client\u003dca-video-pub-3073985723087695\u0026description_url\u003dhttp%3A%2F%2Fwww.xaluan.com%2Fmodules.php%3Fname%3DNews%26file%3Darticle%26sid%3D1393752\u0026hl\u003dvi\u0026max_ad_duration\u003d15000\u0026overlay\u003d0\u0026videoad_start_delay\u003d-1\u0026channel\u003d4563476969+3963373405",
+                                "skippable": false,
+                                "skipTime": 0,
+                                "adType": "IMA",
+                                "adtagId": 24
+                            }],
+                            "displayRule": "NOT_DUPLICATE",
+                            "selectRule": "LINEAR",
+                            "interval": 0,
+                            "delay": 0,
+                            "maxDisplay": 1
+                        }
+                    },
+                    "session": "1457063348525039664",
+                    "defaultQuality": 0,
+                    "forceHTML5": false,
+                    "duration": 384000,
+                    "analyticsUrl": "//analytics.mecloud.vn",
+                    "autoplay": false,
+                    "related": [{
+                        "id": 240830,
+                        "alias": "iJOh02qRoU",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/33/06baca0d9975d76fdf00031677d3e18c_3.jpg",
+                        "title": "Daniela Chalbaud en Miss Intercontinental 2012",
+                        "description": "",
+                        "duration": 41000,
+                        "playToken": "6l2N4fuC1v72agbH7oJE6EKF1iG5ydL2QvQ6AKKo78823D11",
+                        "embed": "//embed.mecloud.vn/play/iJOh02qRoU"
+                    }, {
+                        "id": 240812,
+                        "alias": "OMLKm7XEfe",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/16/c93ad0c06b41d0f0969153f051ea318f_3.jpg",
+                        "title": "Kỳ hân tình tứ mạc hồng quân",
+                        "description": "",
+                        "duration": 314000,
+                        "playToken": "BI4T6yF0eFO7IL05OUF6vX0554ANGTK4C03vAhHACuR703Ur",
+                        "embed": "//embed.mecloud.vn/play/OMLKm7XEfe"
+                    }, {
+                        "id": 240809,
+                        "alias": "t71iGivpO9",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/14/e3cc87dbba6f1a466dd0c2d80fd2ebda_3.jpg",
+                        "title": "FBNC - Con gái Whitney Houston qua đời ở tuổi 22",
+                        "description": "",
+                        "duration": 57000,
+                        "playToken": "H92R50R21bc5f971Z7f8yZ0p45yBe6X45i0mx7oD0dWWHegj",
+                        "embed": "//embed.mecloud.vn/play/t71iGivpO9"
+                    }, {
+                        "id": 240803,
+                        "alias": "MtvcuYvHZx",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/9/46f116cfa0557cfdedf81424d1f3aad8_3.jpg",
+                        "title": "Giang hồ truy sát  đâm chết nạn nhân o quan 4",
+                        "description": "",
+                        "duration": 41000,
+                        "playToken": "Rd9FaUvl9ay8X5J1ouiFB96gg6l9C0RUlC50148BmEaCm8fi",
+                        "embed": "//embed.mecloud.vn/play/MtvcuYvHZx"
+                    }, {
+                        "id": 240799,
+                        "alias": "ybp0LAGo9v",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/6/0f5d3c3883ce28a35032dde1d36645d4_3.jpg",
+                        "title": "Triệt phá đường dây buôn lậu xăng dầu quy mô lớn",
+                        "description": "",
+                        "duration": 114000,
+                        "playToken": "921d4F4b6U4Ua5A72RvDR3f7eGBjHFKhfxQ6QUFUKHcQjcI2",
+                        "embed": "//embed.mecloud.vn/play/ybp0LAGo9v"
+                    }, {
+                        "id": 240786,
+                        "alias": "xsWx2XWdzm",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/9/57/9f132defc8f85c6da6edccac0ee3bdca_3.jpg",
+                        "title": "Truy tìm ô tô “điên” cán chết 2 người bỏ chạy trong đêm",
+                        "description": "",
+                        "duration": 62000,
+                        "playToken": "oKW2C6415eN379Q42AWfluf1gyhToT4KEQfI1ZCoDl5OrA4a",
+                        "embed": "//embed.mecloud.vn/play/xsWx2XWdzm"
+                    }, {
+                        "id": 240810,
+                        "alias": "FCWCtXrg6r",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/14/75bbbb50956b417ede7f74becf613cf3_3.jpg",
+                        "title": "Nhã Phương Cười Liên Tục Trong Buổi Ra Mắt \"Taxi Em Tên Gì\"",
+                        "description": "",
+                        "duration": 129000,
+                        "playToken": "o3Dsop4R5T7T01J6DKLA6Ks0X8y2EIQf9up5N14UT8lLRCaj",
+                        "embed": "//embed.mecloud.vn/play/FCWCtXrg6r"
+                    }, {
+                        "id": 240789,
+                        "alias": "bMDb9aYXKI",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/9/59/1769c7a23bc4a96d299603d5d6adda54_3.jpg",
+                        "title": "Thu Minh hát dỗ con trai bằng tiếng Anh cực hay",
+                        "description": "",
+                        "duration": 125000,
+                        "playToken": "x0eojK8C4L55a7ZEXcu9fDjIh0L0LfIsX6ANBIQU2Na4O03R",
+                        "embed": "//embed.mecloud.vn/play/bMDb9aYXKI"
+                    }, {
+                        "id": 240795,
+                        "alias": "qIcHz0gX3K",
+                        "img": "//imgs.cloud.memefiles.com/thumb/clip/2016/3/4/10/2/3f5548a7a7bd6568fb504b59580010b1_3.jpg",
+                        "title": "Possible MH370 debris going to Malaysia for examination",
+                        "description": "",
+                        "duration": 113000,
+                        "playToken": "o034IKCxaU9ebib91e1eRB1EJL0OE6JHNeKh4chNf2W52Q0y",
+                        "embed": "//embed.mecloud.vn/play/qIcHz0gX3K"
+                    }],
+                    "displayTitle": true,
+                    "playerProfile": {
+                        "styling": {
+                            "useCustomColor": false,
+                            "color": "#3eaaf5",
+                            "playButtonPosition": 0,
+                            "titleDisplay": true,
+                            "placeholder": "",
+                            "__isset_bitfield": 7
+                        },
+                        "advancedStyling": {
+                            "css": "",
+                            "js": ""
+                        },
+                        "branding": {
+                            "enable": true,
+                            "logo": "default-branding.png",
+                            "logoHover": "default-branding-hover.png",
+                            "url": "//mecloud.vn/product",
+                            "style": 0,
+                            "__isset_bitfield": 3
+                        },
+                        "endScreen": {
+                            "option": "DISABLE",
+                            "facebook": true,
+                            "google": true,
+                            "website": true,
+                            "embed": true,
+                            "html": "",
+                            "__isset_bitfield": 15
+                        },
+                        "general": {
+                            "html5": false,
+                            "autoplay": false,
+                            "defaultQuality": 360,
+                            "langage": 2,
+                            "__isset_bitfield": 15
+                        },
+                        "playScreen": {
+                            "showSharing": false,
+                            "facebook": true,
+                            "google": true,
+                            "website": true,
+                            "embed": true,
+                            "showRelatedButton": true,
+                            "__isset_bitfield": 63
+                        },
+                        "watermark": {
+                            "enable": false,
+                            "logo": "",
+                            "url": "",
+                            "maxWidth": 15,
+                            "transparency": 50,
+                            "position": "BOTTOM_RIGHT",
+                            "posX": 10,
+                            "posY": 10,
+                            "autohide": true,
+                            "__isset_bitfield": 63
+                        },
+                        "sizing": {
+                            "responsive": true,
+                            "ratio": "R16_9",
+                            "size": {
+                                "width": 960,
+                                "height": 540,
+                                "unit": "PX",
+                                "__isset_bitfield": 3
+                            },
+                            "minHeight": 300,
+                            "__isset_bitfield": 3
+                        }
+                    }
+                });
+                setTimeout(function() {
+                    var ph = s.querySelectorAll('.mecloud-placeholder');
+                    if (ph && ph.length) {
+                        ph[0].style.visibility = "hidden";
+                    }
+                }, 500);
+            });
+        }
+    });
+*/
+})(window, document);
+
+		</script>
+   </body>
+</html>

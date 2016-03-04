@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="2.0">
+
+<Ad id="1435134276">
+    
+    <InLine>
+    
+        <AdSystem><![CDATA[Ad Serving System]]></AdSystem>
+        
+        <AdTitle><![CDATA[coke]]></AdTitle>
+        <Description><![CDATA[coke]]></Description>
+        
+        <Impression><![CDATA[http://imp.adnetwork.vn/247/adServer/act_impression/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/imp_8ztg5fwhl0r/sid_oortinc8eqj/cb_678599932]]></Impression>
+        <Impression><![CDATA[http://b.scorecardresearch.com/p?c1=8&c2=12346470&c3=1000000000000000026&c4=thethaohd.net&c6=VideoOVA&c15=&cv=2.0&cj=1]]></Impression>
+        <Impression><![CDATA[http://pix04.revsci.net/F09828/b3/0/3/noscript.gif?D=DM_LOC%3Dhttp%253A%252F%252Fthethaohd.net%253FCategory%253D1000000000000000026%2526bpid%253Dambientdigital%26DM_EOM%3D1&C=F09828&L=0]]></Impression>
+        
+        
+        
+        <Impression><![CDATA[http://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=tf&c=19&mc=imp&pli=13702726&PluID=0&ord=1437380331989&rtu=-1]]></Impression>
+        
+        
+        
+        <Impression><![CDATA[http://campaigns.ambient-platform.com/campaigns_vn.html?utm_medium=Preroll&utm_content=FMCG&utm_campaign=Coke_Sac_Jul_B2632]]></Impression>
+        
+        
+        
+        
+        <Creatives>
+            <Creative id="1435134276" AdID="1435134276" sequence="1">
+                
+                <Linear>
+                    
+                    <Duration>00:00:30</Duration>
+                    
+                    
+                    <TrackingEvents>
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        <Tracking event="start"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdStartPlayed/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        <Tracking event="firstQuartile"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdPlayed25/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        <Tracking event="midpoint"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdPlayed50/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                    
+                        
+                    
+                        
+                    
+                        
+                        <Tracking event="midpoint"><![CDATA[http://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=tf&c=19&mc=imp&pli=13776646&PluID=0&ord=1437380331989&rtu=-1]]></Tracking>
+                        
+                    
+                        <Tracking event="thirdQuartile"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdPlayed75/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        <Tracking event="complete"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdFullyPlayed/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                        <Tracking event="mute"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdMuted/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                        <Tracking event="unmute"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdUnMuted/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                        <Tracking event="pause"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdPaused/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                        <Tracking event="fullscreen"><![CDATA[http://metrics.adnetwork.vn/247/adServer/act_video_metric/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/vlen_30/vtype_abdFullScreen/imp_8ztg5fwhl0r/cb_678599932/]]></Tracking>
+                    </TrackingEvents>
+                    <VideoClicks>
+                        
+                        <ClickThrough><![CDATA[http://track.adnetwork.vn/247/adServer/act_click/cid_1435133153/bid_1435134276/pid_1335342353/wid_1430973174/zid_1430973880/sid_oortinc8eqj/cb_678599932]]></ClickThrough>
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                    
+                    </VideoClicks>
+                    
+                    
+                    <MediaFiles>
+                    
+                        
+                        
+                        <MediaFile id="1435134276" height="480" width="640" bitrate="487" type="video/mp4" maintainAspectRatio="false" scalable="true" delivery="progressive"><![CDATA[http://media.adnetwork.vn/banner/video/2015/06/1435136064.mp4]]></MediaFile>
+                        
+                        
+                    
+                    </MediaFiles>
+                    
+                </Linear>
+                
+            </Creative>
+            <Creative id="1435134276" AdID="1435134276" sequence="1">
+                <CompanionAds></CompanionAds>
+            </Creative>
+        </Creatives>
+    
+    </InLine>
+    
+</Ad>
+
+</VAST>

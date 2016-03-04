@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Tryit Editor v2.5</title>
+<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="static/css.css">
+<!--[if lt IE 8]>
+<style>
+.textareacontainer, .iframecontainer {width:48%;}
+.textarea, .iframe {height:800px;}
+#textareaCode, #iframeResult {height:700px;}
+.menu img {display:none;}
+</style>
+<![endif]-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-13266687-19', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script>
+
+<script type="text/javascript">
+function submitTryit(newtab)
+{
+var t=document.getElementById("textareaCode").value;
+t=t.replace(/=/gi,"w3equalsign");
+
+var pos=t.search(/script/i)
+while (pos>0)
+	{
+	t=t.substring(0,pos) + "w3" + t.substr(pos,3) + "w3" + t.substr(pos+3,3) + "tag" + t.substr(pos+6);
+	pos=t.search(/script/i);
+	}
+if ( navigator.userAgent.match(/Safari/i) ) {
+	    //t=escape(t);
+	    document.getElementById("bt").value="1";
+	}
+	
+document.getElementById("code").value=t;
+document.getElementById("tryitform").action="tryit_view.php?x=" + Math.random();
+validateForm();
+document.getElementById("iframeResult").contentWindow.name = "view";
+if(newtab) document.getElementById("tryitform").target="_blank";
+else document.getElementById("tryitform").target="view";
+document.getElementById("tryitform").submit();
+}
+function validateForm()
+{
+var code=document.getElementById("code").value;
+if (code.length>10000)
+	{
+	document.getElementById("code").value="<h1>Error</h1>";
+	}
+}
+</script>
+<style>
+
+</style>
+</head>
+<body>
+<div id='tryitLeaderboard'>
+<!-- TryitLeaderboard -->
+<div id='div-gpt-ad-1428407818244-0'>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- quảng cáo cho vinabooking 728 x 90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-5508841915033077"
+     data-ad-slot="3944335067"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<div class="container">
+  <div class="textareacontainer">
+    <div class="textarea">
+      <div style="overflow:auto;">
+        <div class="headerText">Edit This Code:</div>
+        <button class="seeResult" type="button" onclick="submitTryit()">See Result &raquo;</button>
+        <button class="seeResult" type="button" onclick="submitTryit(true)">See Result new tab&raquo;</button>
+      </div>
+      <div class="textareawrapper">
+        <textarea autocomplete="off" class="code_input" id="textareaCode" wrap="logical" spellcheck="false"><script src="http://player.tuyenbui.com/meplayer.js?1"></script>
+<div id="player" style="width:100%;height: 100%;"></div>
+<script>
+meplayer('player').setup({
+	"title": 'Video name example may be belong to second line',
+	"image": "http://imgs.meme.vn/video/clip/2015/01/30/16/26/1b37fd6036b50ae4c0ea214af3e067d3MEME1422610427.jpg",
+	'width':400,
+	height:400,
+	aspectration:"16:9",
+	'mp4prefix':"start",
+	"file": "http://123.30.135.217/video/video1.mp4"
+});		
+</script></textarea>
+          <form autocomplete="off" style="margin:0px;display:none;" action="tryit_view.php" method="post" target="view" id="tryitform" name="tryitform" onsubmit="validateForm();">
+            <input type="hidden" name="code" id="code" />
+            <input type="hidden" id="bt" name="bt" />
+          </form>
+       </div>
+    </div>
+  </div>
+  <div class="iframecontainer">
+    <div class="iframe">
+      <div style="overflow:auto;">
+        <div class="headerText">Result:</div>
+      </div>
+      <div class="iframewrapper">
+        <iframe id="iframeResult" allowfullscreen=true class="result_output" frameborder="0" name="view"></iframe>
+      </div>
+    </div>
+  </div>
+  <div class="footerText">Try it Yourself - &copy; <a href="http://html.tuyenbui.com">tuyenbui.com</a></div>      
+</div>
+<script>submitTryit()</script>
+</body>
+</html>

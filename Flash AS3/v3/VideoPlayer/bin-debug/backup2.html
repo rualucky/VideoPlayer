@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0014)about:internet -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+    <head>
+        <title>${title}</title>      
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+       
+        
+       <script src="http://localhost/VideoPlayer/js/meplayer.js"></script>
+        <script type="text/javascript">
+        var seg=Math.floor(Date.now() / 1000);
+        </script>
+    
+    </head>
+    <body>
+    <div class="video_panel" >
+  <div>
+  <button type="" onclick="clickP()">PAUSE</button>
+  <button type="" onclick="clickPlay()">PLAY</button>
+   <button type="" onclick="test()">TEST</button>
+   <script>
+   function test(){
+   document.getElementById("flashContent1-stage").abcd();
+   }
+   </script>
+    <h2>Single ad:</h2>
+        <div id="flashContent1">    
+        </div>
+    </div>
+
+    <!--
+   <div>
+    <h2>Schedule:</h2>
+        <div id="flashContent2">  
+        </div>
+     </div>
+      
+     <div>
+    <h2>M3u8 Multi quality mp4:</h2>
+        <div id="flashContent3">  
+        </div>
+     </div>
+     <div>
+    <h2>RTMP VOD:</h2>
+        <div id="flashContent4">
+        </div>
+     </div>  
+     
+     <div>
+    <h2>RTMP Live:</h2>
+        <div id="flashContent5">
+        </div>
+     </div>  
+     
+      <div>
+    <h2>M3U8 Live:</h2>
+        <div id="flashContent6">
+        </div>
+     </div>  
+    -->
+     </div>   
+      
+   </body>
+   <script>
+    
+        meplayer('flashContent1').setup({
+        "title": 'Video name example may be belong to second line',
+        "image": "http://imgs.meme.vn/video/clip/2015/01/30/16/26/1b37fd6036b50ae4c0ea214af3e067d3MEME1422610427.jpg",
+        'width':400,
+        aspectration:"16:9",
+        'mp4prefix':"start",
+        "file":"http://stream.dev.mecloud.vn/clip/2015/9/17/11/11/cbc3fa31272d515407b31b932d51eebf_360.mp4?e=1442570278&t=8ac7e7d7963a18541da926d2d21bc752",
+		'playlist':[{
+			"title":"Thoi hoc sinh",
+			"image":"http://img.cloud.meme.vn/thumb/clip/2015/7/13/13/45/4fd54887173141696bc8866261ec27e6_2.jpg",
+			"file":"http://stream.cloud.meme.vn/clip/2015/7/13/13/45/4fd54887173141696bc8866261ec27e6_480.mp4?e=1440079104&t=3ba70531fade02090ebab28713b42fd3"
+		},
+		{
+			"title": 'ENGLISH for everyone',
+        	"image": "http://imgs.meme.vn/video/clip/2015/01/30/16/26/1b37fd6036b50ae4c0ea214af3e067d3MEME1422610427.jpg",
+        	"file":"http://stream.dev.mecloud.vn/clip/2015/9/17/11/11/cbc3fa31272d515407b31b932d51eebf_360.mp4?e=1442570278&t=8ac7e7d7963a18541da926d2d21bc752",
+        	/*advertising: {
+							    client: 'vast',
+							    "pre": {
+							        tag: [
+							        {client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml',skipoffset:5},
+							        //{client:"vast",tag:'http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]',skipoffset:5},	
+							        {client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'},
+							        	//{client:"vast",tag:'http://demo.jwplayer.com.s3.amazonaws.com/player-demos/assets/overlay.xml'}
+							        	{client:"vast",tag:'http://player.tuyenbui.com/vast/jwoverlay.xml'}
+							         
+							       ],
+							       active:2
+							      },
+							     "mid": [{
+							        offset: 10,
+							       	tag: [{client:"vast",tag:'http://demo.jwplayer.com.s3.amazonaws.com/player-demos/assets/overlay.xml'},
+							       	{client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml'},
+							       	{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'}],
+							       	active:2
+							      },{
+							        offset: 30,
+							       	tag: [{client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml'},{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'}]
+							      }], 
+							     "post": {
+							       	tag: [
+							       
+							       	{client:"vast",tag:'http://player.tuyenbui.com/vast/jwoverlay.xml'},
+							       	{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'},
+							       	 {client:"vast",tag:'http://player.tuyenbui.com/vast/vast1.xml'},
+							       	 {client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml'},
+							       	]
+							      }
+							    
+							}*/
+		},
+		{
+			"title":"\"Ế - Karik ft Windy Quyên\"",
+			"image":"http://img.cloud.meme.vn/thumb/clip/2015/7/13/13/51/ff6c9076ab99b671e968a1fa57b2114f_2.jpg",
+			"file":"http://stream.cloud.meme.vn/clip/2015/7/13/13/51/ff6c9076ab99b671e968a1fa57b2114f_480.mp4?e\u003d1440079175\u0026t\u003d09eb58b092e31612d6eedca046bc9133"		
+		}
+		],
+		advertising: {
+							    client: 'vast',
+							  //s timelineposition:"none",
+							    "pre": {
+							        tag: [
+							        {client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml',skipoffset:5},
+							        {client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'},
+							        	//{client:"vast",tag:'http://demo.jwplayer.com.s3.amazonaws.com/player-demos/assets/overlay.xml'}
+							        	{client:"vast",tag:'http://player.tuyenbui.com/vast/jwoverlay.xml'}
+							         
+							       ],
+							       active:1
+							       
+							      },
+							     "mid": [{
+							        offset: 10,
+							       	tag: [{client:"vast",tag:'http://demo.jwplayer.com.s3.amazonaws.com/player-demos/assets/overlay.xml'},
+							       	{client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml'},
+							       	{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'}],
+							       	active:1
+							      },{
+							        offset: 30,
+							       	tag: [{client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml'},{client:"ima",tag:'https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D'}]
+							      }], 
+							     "post": {
+							       	tag: [
+							       
+							       	 {client:"vast",tag:'http://player.tuyenbui.com/vast/vast1.xml'},
+							       	 {client:"vast",tag:'http://player.tuyenbui.com/vast/vast.xml'},
+							       	], active : 2
+							      }
+							    
+							}
+        
+}); 	
+   </script>
+       <script>
+    var d = document.getElementById("flashContent1-stage"); 	
+    function clickP(){
+    	d.pause();
+    }
+    function clickPlay(){
+    d.play2();
+    }
+    </script>
+   <style>
+   .video_panel>div {
+  width: 411px;
+  float: left;
+  display: inline-block;
+   </style>
+</html>
+s

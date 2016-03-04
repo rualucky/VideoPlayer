@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>IMA HTML5 Simple Demo</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+<style>
+i.tiny {font-size: 1em; color: blue;}
+i.small {font-size: 2em;}
+i.medium {font-size: 4em;}
+i.large {font-size: 6em; color: red;}
+</style>
+  </head>
+
+  <body>
+  <br>
+  <br>
+  <h1>Keep Moving Forward</h1>
+   <br>
+    <!--
+    
+       <video id="contentElement" controls>
+          <source src="videos/E0.mp4"></source>
+        </video>
+      -->
+     <div id="mainContainer">
+      <div id="content">
+        <video id="contentElement" controls>
+          <source src="videos/E6.mp4"></source>
+        </video>
+      </div>
+      <div id="adContainer">     
+    </div>
+    </div>
+       
+    
+    <br>
+
+     <button id="playBtn"> <i class="fa fa-play tiny"></i> Play</button>
+    <button id="pauseBtn"> <i class="fa fa-pause tiny"></i> Pause</button>
+    Time: <label id='timeVideo'></label>
+    <script type="text/javascript" src="http://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script type="text/javascript" src="js/ads/ima/ads_ima.js"></script>
+  </body>
+</html>

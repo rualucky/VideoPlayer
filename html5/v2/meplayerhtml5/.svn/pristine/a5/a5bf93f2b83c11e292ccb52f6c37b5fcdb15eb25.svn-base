@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="ads_duy/js/ads/vast/vast-client.js" type="text/javascript"></script>
+        
+    </head>
+    <body>
+        <div id="my-player">
+            <video id="">
+                
+            </video>
+        </div>
+        <script>
+            //"http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]"
+            
+          DMVAST.client.get("http://player.tuyenbui.com/vast/jwoverlay.xml", function(response)
+{
+    if (response)
+    {
+        for (var adIdx = 0, adLen = response.ads.length; adIdx < adLen; adIdx++)
+        {
+            var ad = response.ads[adIdx];
+            for (var creaIdx = 0, creaLen = ad.creatives.length; creaIdx < creaLen; creaIdx++)
+            {
+                var creative = ad.creatives[creaIdx];
+
+                switch (creative.type) {
+                    case "linear":
+                        //console.log(creative);
+                        for (var mfIdx = 0, mfLen = creative.mediaFiles.length; mfIdx < mfLen; mfIdx++)
+                        {
+                            var mediaFile = creative.mediaFiles[mfIdx];
+                            if (mediaFile.mimeType != "video/mp4") continue;
+
+//                            player.vastTracker = new DMVAST.tracker(ad, creative);
+//                            player.vastTracker.on('clickthrough', function(url)
+//                            {
+//                                document.location.href = url;
+//                            });
+//                            player.on('canplay', function() {this.vastTracker.load();});
+//                            player.on('timeupdate', function() {this.vastTracker.setProgress(this.currentTime);});
+//                            player.on('play', function() {this.vastTracker.setPaused(false);});
+//                            player.on('pause', function() {this.vastTracker.setPaused(true);});
+//
+//                            player.href = mediaFile.fileURL;
+                            // put player in ad mode
+                        }
+                    break;
+
+                    case "non-linear":
+                        
+                        console.log(creative);
+                    break;
+
+                    case "companion":
+                        //console.log("Companion: ");
+                        //console.log(creative);
+                        for (var cpIdx = 0, cpLen = creative.variations.length; cpIdx < cpLen; cpIdx++)
+                        {
+                            var companionAd = creative.variations[cpIdx];
+                            var docElement = document.createElement("div");
+                            var aElement = document.createElement('a');
+                            var companionAsset = new Image();
+                            aElement.setAttribute('target', '_blank');
+
+                            if (companionAd.type != "image/jpeg") continue;
+
+                            companionAsset.src = creative.variations[cpIdx].staticResource;
+                            companionAsset.width = creative.variations[cpIdx].width;
+                            companionAsset.height = creative.variations[cpIdx].height;
+
+                            aElement.href = creative.variations[cpIdx].companionClickThroughURLTemplate;
+                            aElement.appendChild(companionAsset);
+
+                            docElement.appendChild(aElement);
+                            document.body.appendChild(docElement);
+                        }
+
+                    break;
+
+                    default:
+                    break;
+                }
+
+            }
+
+//            if (player.vastTracker)
+//            {
+//                break;
+//            }
+//            else
+//            {
+//                // Inform ad server we can't find suitable media file for this ad
+//                DMVAST.util.track(ad.errorURLTemplates, {ERRORCODE: 403});
+//            }
+        }
+    }
+
+//    if (!player.vastTracker)
+//    {
+//        // No pre-roll, start video
+//    }
+});  
+            
+            
+            
+        </script>
+    </body>
+</html>

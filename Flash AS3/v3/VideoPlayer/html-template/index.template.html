@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0014)about:internet -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+    <head>
+        <title>${title}</title>      
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+       
+        
+       <script src="http://localhost/VideoPlayer/js/meplayer.js"></script>
+        <script type="text/javascript">
+        var seg=Math.floor(Date.now() / 1000);
+        </script>
+    
+    </head>
+    <body>
+    <div class="video_panel" >
+  <div>
+  <button type="" onclick="clickP()">PAUSE</button>
+  <button type="" onclick="clickPlay()">PLAY</button>
+   <button type="" onclick="test()">TEST</button>
+   <script>
+   function test(){
+   document.getElementById("flashContent1-stage").abcd();
+   }
+   </script>
+    <h2>Single ad:</h2>
+        <div id="flashContent1">    
+        </div>
+    </div>
+
+    <!--
+   <div>
+    <h2>Schedule:</h2>
+        <div id="flashContent2">  
+        </div>
+     </div>
+      
+     <div>
+    <h2>M3u8 Multi quality mp4:</h2>
+        <div id="flashContent3">  
+        </div>
+     </div>
+     <div>
+    <h2>RTMP VOD:</h2>
+        <div id="flashContent4">
+        </div>
+     </div>  
+     
+     <div>
+    <h2>RTMP Live:</h2>
+        <div id="flashContent5">
+        </div>
+     </div>  
+     
+      <div>
+    <h2>M3U8 Live:</h2>
+        <div id="flashContent6">
+        </div>
+     </div>  
+    -->
+     </div>   
+      
+   </body>
+   <script>
+    
+        meplayer('flashContent1').setup({
+        "title": 'Video name example may be belong to second line 192221',
+        "image": "http://imgs.meme.vn/video/clip/2015/01/30/16/26/1b37fd6036b50ae4c0ea214af3e067d3MEME1422610427.jpg",
+        'width':400,
+        aspectration:"16:9",
+        'mp4prefix':"start",
+        //"file":"http://stream.dev.mecloud.vn/clip/2015/9/17/11/11/cbc3fa31272d515407b31b932d51eebf_360.mp4?e=1442570278&t=8ac7e7d7963a18541da926d2d21bc752",
+        "file": "http://localhost/video/video1.mp4",
+        "label":"360p",
+        /*
+        playlist: [{
+            "title": "MeCloud Player Playlist",
+            "file": "http://123.30.135.217/video/multi2/video4140.mp4"
+        }, {
+            "title": "Video 2",
+            "file": "http://123.30.135.217/video/multi2/video4250.mp4"
+        }, {
+            "title": "Video 3",
+            "file": "http://123.30.135.217/video/multi2/video4500.mp4"
+        }],
+        "logo":{
+        	"icon":"http://localhost/VideoPlayer/bin-debug/images/logo2.png",
+        	"hover":"http://localhost/VideoPlayer/bin-debug/images/logo1.png",
+        	"link":"http://zing.vn"
+        },*/
+        
+            advertising: {
+       // timelineposition:"top",
+        pre: {
+            tag: [{
+             	//client: "vast",
+                //tag: "http://www.adotube.com/php/services/player/OMLService.php?avpid=oRYYzvQ&platform_version=vast20&ad_type=linear&groupbypass=1&HTTP_REFERER=http://www.longtailvideo.com&video_identifier=longtailvideo.com,test",
+                client: "ima",
+                tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=image_text_flash&client=ca-video-pub-4968145218643279&description_url=http%3A%2F%2Fwww.google.com&max_ad_duration=40000&adtest=on",
+                //tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=video&client=ca-video-pub-7266710804606728&description_url=null&videoad_start_delay=0&hl=vi&overlay=1",
+                skipoffset: 5
+            },{
+                client: "ima",
+                //client: "vast",
+                //tag: "http://www.adotube.com/php/services/player/OMLService.php?avpid=oRYYzvQ&platform_version=vast20&ad_type=linear&groupbypass=1&HTTP_REFERER=http://www.longtailvideo.com&video_identifier=longtailvideo.com,test",
+                tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=image_text_flash&client=ca-video-pub-4968145218643279&description_url=http%3A%2F%2Fwww.google.com&max_ad_duration=40000&adtest=on",
+            }],
+            active: 1
+        },
+        mid: [{
+            offset: 2, // run ad tag when the current time of video is 10 seconds.
+            tag: [{
+           client: "vast",
+                tag: "http://www.adotube.com/php/services/player/OMLService.php?avpid=oRYYzvQ&platform_version=vast20&ad_type=linear&groupbypass=1&HTTP_REFERER=http://www.longtailvideo.com&video_identifier=longtailvideo.com,test",
+                
+                //client: "ima",
+                //tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=video&client=ca-video-pub-7266710804606728&description_url=null&videoad_start_delay=0&hl=vi&overlay=1",
+            },{
+                client: "ima",
+                tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=image_text_flash&client=ca-video-pub-7266710804606728&description_url=null&videoad_start_delay=0&hl=vi&overlay=1",
+                skipoffset: 5 // Can skip this ad after 5 seconds.
+            }, ],
+            active: 2 //run ad tag 2 times. (default is 1)
+        }, {
+            offset: 30, // run ad tag when the current time of video is 30 seconds.
+            tag: [{
+                client: "ima",
+                tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=text_image_flash&client=ca-video-pub-7266710804606728&description_url=&videoad_start_delay=0&hl=vi&overlay=1",
+                skipoffset: 5 // Can skip this ad after 5 seconds.
+            }, {
+                client: "ima",
+                tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=text_image_flash&client=ca-video-pub-7266710804606728&description_url=&videoad_start_delay=0&hl=vi&overlay=1",
+            }],
+        }],
+        post: {
+            tag: [{
+                client: "ima",
+                tag: "http://googleads.g.doubleclick.net/pagead/ads?ad_type=standardvideo_image_text_flash&client=ca-video-pub-4968145218643279&description_url=http%3A%2F%2Fwww.google.com&max_ad_duration=40000&adtest=on",
+            }, {
+                client: "vast",
+                tag: "http://www.adotube.com/php/services/player/OMLService.php?avpid=oRYYzvQ&platform_version=vast20&ad_type=linear&groupbypass=1&HTTP_REFERER=http://www.longtailvideo.com&video_identifier=longtailvideo.com,test",
+                skipoffset: 5 // Can skip this ad after 5 seconds
+            }],
+            active: 2
+        }
+    },
+    logo: {
+        icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/HP_New_Logo_2D.svg/120px-HP_New_Logo_2D.svg.png",
+        hover: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/HP_New_Logo_2D.svg/120px-HP_New_Logo_2D.svg.png",
+        link: "http://mecloud.vn"
+    },
+    
+}); 	
+   </script>
+       <script>
+    var d = document.getElementById("flashContent1-stage"); 	
+    function clickP(){
+    	d.pause();
+    }
+    function clickPlay(){
+    d.play2();
+    }
+    </script>
+   <style>
+   .video_panel>div {
+  width: 411px;
+  float: left;
+  display: inline-block;
+   </style>
+</html>

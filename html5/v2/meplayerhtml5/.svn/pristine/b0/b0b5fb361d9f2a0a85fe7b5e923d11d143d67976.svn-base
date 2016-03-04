@@ -1,0 +1,256 @@
+(function(w,d){
+    var AdControl = function (player) {
+        this.player = player;
+        var self = this;
+        //console.log(player);
+        if (player._cfg.advertising) {
+            var acfg = player._cfg.advertising;
+            if (acfg.pre) {
+                //console.log(player._cfg.advertising.pre);
+                if (typeof acfg.pre.tag === "string") {
+                    var client=acfg.pre.client==="ima"?"ima":"vast";
+                    this.pre = {
+                        active:1,
+                        tag:[{tag:acfg.pre.tag,client:client}]
+                    };//
+                }else {
+                    this.pre=acfg.pre;
+                }
+            }
+            if (acfg.mid) {
+                if (typeof acfg.mid.tag === "string") {
+                    var client="vast";
+                    if(acfg.mid.client)
+                    client=acfg.mid.client==="ima"?"ima":"vast";
+                    var offset=acfg.mid.offset?acfg.mid.offset:15;
+                    this.mid = [
+                    {offset: offset,
+                    tag: [{client:client,tag:acfg.mid.tag}],
+                    active:1
+                    }
+                ];//
+                }else {
+                    this.mid=acfg.mid;
+                }
+            }
+                 
+            
+            if (acfg.post) {
+                if (typeof acfg.post.tag === "string") {
+                    var client=acfg.post.client==="ima"?"ima":"vast";
+                    this.pre = {
+                        active:1,
+                        tag:[{tag:acfg.post.tag,client:client}]
+                    };//
+                }else {
+                    acfg.post.tag.forEach(function (obj) {
+                        //console.log(obj);
+                        if(obj.client)
+                        if(obj.client!=="ima") obj.client="vast";
+                    });
+                    this.post=acfg.post;
+                }
+            }
+        }
+    };
+    AdControl.prototype={
+        player:null,
+        load:function(config){
+            
+        },
+        pre:{},
+        mid:[],
+        post:{},
+    };
+var IMAd = function (player) {
+    this.cte = player.ads;
+    this.player = player;
+    var self = this;
+    //console.log(player);
+    if (player._cfg.advertising) {
+
+    }
+    player.on("fullscreenchange",function(){
+        //if(player.isFullScreen){}else{}
+        if(self.adsManager)
+        self.adsManager.resize(player.stage.offsetWidth,player.stage.offsetHeight,player.isFullScreen?google.ima.ViewMode.FULLSCREEN:google.ima.ViewMode.NORMAL);
+        
+    });
+    player.on("play", function (ev) {
+        //player.pause();
+        if (!self.prePlay) {
+                self.prePlay = true;
+            //self.requestAds("http://delivery.adnetwork.vn/247/xmlvideoad/zid_1430973880/wid_1430973174/type_inline/cb_[timestamp]");
+            //self.requestAds("http://pubads.g.doubleclick.net/gampad/ads?sz=480x70&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dnonlinear&correlator=");
+                
+            
+        }
+    });
+};
+IMAd.prototype = {
+    adsManager: null,
+    adsLoader: null,
+    adDisplayContainer: null,
+    intervalTimer: null,
+    player: null,
+    cte: null, //ad container element
+    prePlay: false,
+};
+IMAd.prototype.requestAds = function (adTagUrl) {
+    var self = this;
+    this.createAdDisplayContainer();
+    // Initialize the container. Must be done via a user action on mobile devices.
+    this.adDisplayContainer.initialize();
+    //this.videoContent.load();
+    // Create ads loader.
+    this.adsLoader = new google.ima.AdsLoader(this.adDisplayContainer);
+    // Listen and respond to ads loaded and error events.
+    function onAdEvent(adEvent) {
+        // Retrieve the ad from the event. Some events (e.g. ALL_ADS_COMPLETED)
+        // don't have ad object associated.
+        console.log(adEvent.type);
+        var ad = adEvent.getAd();
+        switch (adEvent.type) {
+            case google.ima.AdEvent.Type.LOADED:
+                // This is the first event sent for an ad - it is possible to
+                // determine whether the ad is a video ad or an overlay.
+                if (!ad.isLinear()) {
+                    // Position AdDisplayContainer correctly for overlay.
+                    // Use ad.width and ad.height.
+                    //self.stage.play();
+                }
+                break;
+            case google.ima.AdEvent.Type.STARTED:
+                // This event indicates the ad has started - the video player
+                // can adjust the UI, for example display a pause button and
+                // remaining time.
+                
+                if (ad.isLinear()) {
+                    // For a linear ad, a timer can be started to poll for
+                    // the remaining time.
+                    self.intervalTimer = setInterval(
+                            function () {
+                                var remainingTime = self.adsManager.getRemainingTime();
+                                console.log(ad.isSkippable());
+                            },
+                            300); // every 300ms
+                }
+                break;
+            case google.ima.AdEvent.Type.COMPLETE:
+                // This event indicates the ad has finished - the video player
+                // can perform appropriate UI actions, such as removing the timer for
+                // remaining time detection.
+                if (ad.isLinear()) {
+                    clearInterval(self.intervalTimer);
+                }
+                break;
+            case google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
+                
+                break;
+        }
+    }
+    this.adsLoader.addEventListener(
+            google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+            function (adsManagerLoadedEvent) {
+                // Get the ads manager.
+                var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+                adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+                //console.log(adsManagerLoadedEvent);
+                adsRenderingSettings.useStyledNonLinearAds = true;
+                // videoContent should be set to the content video element.
+                self.adsManager = adsManagerLoadedEvent.getAdsManager(
+                        self.player.stage, adsRenderingSettings);
+
+                // Add listeners to the required events.
+                self.adsManager.addEventListener(
+                        google.ima.AdErrorEvent.Type.AD_ERROR,
+                        onAdError);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
+                        onContentPauseRequested);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
+                        onContentResumeRequested);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
+                        onAdEvent);
+
+                // Listen to any additional events, if necessary.
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.LOADED,
+                        onAdEvent);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.STARTED,
+                        onAdEvent);
+                self.adsManager.addEventListener(
+                        google.ima.AdEvent.Type.COMPLETE,
+                        onAdEvent);
+
+                try {
+                    // Initialize the ads manager. Ad rules playlist will start at this time.
+                    self.adsManager.init(self.player.stage.offsetWidth, self.player.stage.offsetHeight, google.ima.ViewMode.NORMAL);
+                    // Call play to start showing the ad. Single video and overlay ads will
+                    // start at this time; the call will be ignored for ad rules.
+                    self.adsManager.start();
+                } catch (adError) {
+                    // An error may be thrown if there was a problem with the VAST response.
+                    self.player.play();
+                }
+            }, false);
+    function onAdError(adErrorEvent) {
+        // Handle the error logging.
+        console.log(adErrorEvent.getError());
+        self.adsManager.destroy();
+    }
+
+    function onContentPauseRequested() {
+        self.player.pause();
+    }
+
+    function onContentResumeRequested() {
+        self.player.play();
+
+    }
+    this.adsLoader.addEventListener(
+            google.ima.AdErrorEvent.Type.AD_ERROR,
+            onAdError,
+            false);
+
+    var adsRequest = new google.ima.AdsRequest();
+    adsRequest.adTagUrl = adTagUrl;
+
+    adsRequest.linearAdSlotWidth = this.player.stage.offsetWidth;
+    adsRequest.linearAdSlotHeight =this.player.stage.offsetHeight;
+
+    adsRequest.nonLinearAdSlotWidth = this.player.stage.offsetWidth;
+    adsRequest.nonLinearAdSlotHeight = this.player.stage.offsetHeight;
+
+    this.adsLoader.requestAds(adsRequest);
+};
+IMAd.prototype.createAdDisplayContainer = function () {
+    this.adDisplayContainer =
+            new google.ima.AdDisplayContainer(
+                    this.cte, this.player.stage);
+};
+IMAd.prototype.playerPop=function(group){
+    
+};
+
+
+//IMAd.prototype.onAdsManagerLoaded=;
+
+/*
+ var ads=new IMAd();
+ ads.videoContent=document.getElementById("contentElement");
+ ads.cte=document.getElementById("adContainer");
+ var adTagUrl='http://pubads.g.doubleclick.net/gampad/ads?sz=400x300&' +
+ 'iu=%2F6062%2Fiab_vast_samples&ciu_szs=300x250%2C728x90&gdfp_req=1&' +
+ 'env=vp&output=vast&unviewed_position_start=1&url=' +
+ '[referrer_url]&correlator=[timestamp]&cust_params=iab_vast_samples' +
+ '%3Dlinear';
+ ads.requestAds(adTagUrl);
+ */
+w.IMAd=IMAd;
+w.AdControl=AdControl;
+
+})(window,document);

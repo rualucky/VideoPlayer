@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>MeCloud Help | MeCloud Online Video Platform</title>
+    <script type="text/javascript" src="http://document.mecloud.vn/sdk/loader"></script>
+    <link href="../template.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <header>
+        <!-- Static navbar -->
+        <nav class="navbar">
+            <div class="container">
+                <!-- Static navbar -->
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="logo-cloud" href="http://mecloud.vn/product">Me Cloud</a>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right navbar-action">
+                                <li><a class="btn-smallText" href="http://login.mecloud.vn">Đăng nhập</a></li>
+                                <li><a class="btn-smallText" href="http://mecloud.vn/product/signup.html">Đăng ký</a></li>
+                                <li>
+                                    <a href="#" class="language" title="English"><img src="http://static.mecloud.vn/sdk/helper/images/flag-en.jpg" /></a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Tính năng</a></li>
+                                <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#client">Khách hàng</a></li>
+                                <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#plan">Gói sản phẩm</a></li>
+                                <li><a href="http://mecloud.vn/product/videoPlayer.html">Video Player</a></li>
+                            </ul>
+                        </div>
+                        <!--/.nav-collapse -->
+                    </div>
+                    <!--/.container-fluid -->
+                </nav>
+            </div>
+            <!--/.container-fluid -->
+        </nav>
+    </header>
+    <!-- end header -->
+    <section class="help">
+        <div class="head-help">
+            <div class="container">
+                <div class="inner-head-help">
+                    <h1>MECLOUD PLAYER</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="nav-help clearfix">
+                        <div class="nav-help clearfix">
+                            <ul class="list-help">
+                                <li class="nav-head">CHỌN MỘT CHỦ ĐỀ:</li>
+                                <li><a href="embedding.html">Nhúng Video </a></li>
+                                <li><a href="customization.html">Tùy chỉnh Video </a></li>
+                                <li class="active"><a href="video-ads.html">Quảng cáo trên Video </a></li>
+                                <li><a href="javascript-api.html">Javascript API</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end nav-help -->
+                </div>
+                <div class="col-md-9">
+                    <div class="content-help">
+                        <h2>Cài đặt quảng cáo trong MeCloud Player</h2>
+                        <hr />
+                        <h3>Cài đặt quảng cáo ở vị trí đầu video</h3>
+                        <p> Cấu hình <strong>advertising</strong> để cài đặt quảng cáo dành cho video.</p>
+                        <div>
+                            <h4>advertising.pre</h4>
+                            <p style="margin-left:30px">Cài đặt quảng cáo ở đầu video.</p>
+                        </div>
+                        <div style="margin-left:30px">
+                            <h4>advertising.pre.tag[]</h4>
+                            <div style="margin-left:30px">
+                                <p>Các tùy chọn dành cho quảng cáo.</p>
+                                <h4>advertising.pre.tag[].client</h4>
+                                <p style="margin-left:30px">Cài đặt hê thống quảng cáo mà các bạn sử dụng. Có thể là "<strong>vast</strong>" (IAB VAST/VPAID/VMAP) hoặc "<strong>ima</strong>" (Google Interactive Media Ads).</p>
+                                <h4>advertising.pre.tag[].tag</h4>
+                                <p style="margin-left:30px">Đường dẫn cài đặt VAST hoặc IMA.</p>
+                                <h4>advertising.pre.tag[].skipoffset</h4>
+                                <p style="margin-left:30px">Lựa chọn này cho phép bỏ qua quảng cáo dạng video sau một khoảng thời gian (tính bằng giây). Đôi khi có những quảng cáo video có thể bỏ qua nên không cần dùng lựa chọn này.</p>
+                            </div>
+                        </div>
+                        <div style="margin-left:30px">
+                            <h4>advertising.pre.active</h4>
+                            <p style="margin-left:30px">Số quảng cáo được chạy(mặc định là 1). Ví dụ: trong <strong>pre.tag[]</strong> có 10 quảng cáo. <strong>pre.active</strong> là 2 thì sẽ chạy 2 quảng cáo lần lượt theo thứ tự. Nếu quảng cáo xảy ra lỗi thì quảng cáo kế tiếp sẽ được chạy.</p>
+                        </div>
+                        <h5>Ví dụ cài đặt <strong>advertising</strong> vị trí đầu video:</h5>
+                        <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+    &lt;script>
+        meplayer('player').setup({
+            advertising : 
+            {
+                pre:{
+                    tag:[
+                        {
+                            client:"vast",
+                            tag:"http://mecloud.vn/ads/vast.xml",
+                            skipoffset:5 // Có thể bỏ qua quảng cáo sau 5 giây
+                        },
+                        {
+                            client:"ima",
+                            tag:"http://mecloud.vn/ads/ima.xml",
+                        }
+                    ],
+                    active:2 //nếu không định nghĩa thì mặc định là 1
+                }
+            }
+        });
+    &lt;/script></code></pre>
+                        <p>Giải thích: </p>
+                        <p style="margin-left:30px">Khi chạy video, do <strong>pre.active</strong> là 2 nên quảng cáo "<strong>vast</strong>" sẽ chạy đầu tiên(chạy thành công hoặc lỗi) rồi đến quảng cáo "<strong>ima</strong>" sẽ chạy tiếp theo.</p>
+                        <p>Video tương ứng</p>
+                        <div id="playerWithPreAds"></div>
+                        <hr>
+                        <h3>Cài đặt quảng cáo ở vị trí giữa video</h3>
+                        <div>
+                            <h4>advertising.mid[]</h4>
+                        </div>
+                        <div style="margin-left:30px">
+                            <h4>advertising.mid[].offset</h4>
+                            <p style="margin-left:30px">Hiển thị quảng cáo tại thời điểm(tính bằng giây) khi video đang phát.</p>
+                            <h4>advertising.mid[].tag[]</h4>
+                            <div style="margin-left:30px">
+                                <p>Các tùy chọn dành cho quảng cáo.</p>
+                                <h4>advertising.mid[].tag[].client</h4>
+                                <p style="margin-left:30px">Cài đặt hê thống quảng cáo mà các bạn sử dụng. Có thể là "<strong>vast</strong>" (IAB VAST/VPAID/VMAP) hoặc "<strong>ima</strong>" (Google Interactive Media Ads).</p>
+                                <h4>advertising.mid[].tag[].tag</h4>
+                                <p style="margin-left:30px">Đường dẫn cài đặt VAST hoặc IMA.</p>
+                                <h4>advertising.mid[].tag[].skipoffset</h4>
+                                <p style="margin-left:30px">Lựa chọn này cho phép bỏ qua quảng cáo dạng video sau một khoảng thời gian (tính bằng giây). Đôi khi có những quảng cáo video có thể bỏ qua nên không cần dùng lựa chọn này.</p>
+                            </div>
+                        </div>
+                        <div style="margin-left:30px">
+                            <h4>advertising.mid[].active</h4>
+                            <p style="margin-left:30px">Số quảng cáo được chạy(mặc định là 1). Ví dụ: trong <strong>mid[].tag[]</strong> có 10 quảng cáo. <strong>mid[].active</strong> là 2 thì sẽ chạy 2 quảng cáo lần lượt theo thứ tự. Nếu quảng cáo xảy ra lỗi thì quảng cáo kế tiếp sẽ được chạy.</p>
+                        </div>
+                        <h5>Ví dụ cài đặt <strong>advertising</strong> vị trí giữa video:</h5>
+                        <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+    &lt;script>
+        meplayer('player').setup({
+            advertising : 
+            {
+                mid:[
+                        {
+                            offset:10, // hiển thị quảng cáo khi đến giây thứ 10 của video.
+                            tag:[
+                                    {
+                                        client:"vast",
+                                        tag:"http://mecloud.vn/ads/vast.xml",
+                                        skipoffset:5 // Có thể bỏ qua quảng cáo sau 5 giây
+                                    },
+                                    {
+                                        client:"ima",
+                                        tag:"http://mecloud.vn/ads/ima.xml",
+                                    }
+                            ],
+                            active:2 //hiển thị quảng cáo 2 lần, nếu không định nghĩa thì mặc định là 1
+                        },
+                        {
+                            offset:30, // hiển thị quảng cáo khi đến giây thứ 30 của video.
+                            tag:[
+                                    {
+                                        client:"vast",
+                                        tag:"http://mecloud.vn/ads/vast.xml",
+                                        skipoffset:5 // Có thể bỏ qua quảng cáo sau 5 giây
+                                    },
+                                    {
+                                        client:"ima",
+                                        tag:"http://mecloud.vn/ads/ima.xml",
+                                    }
+                            ],
+                        }
+                ]
+            }
+        });
+    &lt;/script></code></pre>
+                        <p>Giải thích:</p>
+                        <p style="margin-left:30px">Khi video phát đến giây thứ 10 (<strong>offset</strong>:10), do <strong>active</strong> là 2 nên quảng cáo "<strong>vast</strong>" sẽ chạy trước(chạy thành công hoặc lỗi) rồi đến quảng cáo "<strong>ima</strong>" rồi phát tiếp video.</p>
+                        <p style="margin-left:30px">Khi video phát đến giây thứ 30 (<strong>offset</strong>:30), do không khai báo <strong>active</strong> nên mặc định là 1, vì vậy chỉ chạy quảng cáo "<strong>vast</strong>", nếu thành công sẽ phát tiếp video, nếu không thành công thì sẽ chạy tiếp quảng cáo "<strong>ima</strong>"(chạy thành công hoặc lỗi) rồi phát tiếp video.</p>
+                        <p>Video tương ứng</p>
+                        <div id="playerWithMidAds"></div>
+                        <hr>
+                        <h3>Cài đặt quảng cáo ở vị trí cuối video</h3>
+                        <div style="margin-left:30px">
+                            <h4>advertising.post</h4>
+                            <div style="margin-left:30px">
+                                <p>Các tùy chọn dành cho quảng cáo.</p>
+                                <h4>advertising.post.tag[].client</h4>
+                                <p style="margin-left:30px">Cài đặt hê thống quảng cáo mà các bạn sử dụng. Có thể là "<strong>vast</strong>" (IAB VAST/VPAID/VMAP) hoặc "<strong>ima</strong>" (Google Interactive Media Ads).</p>
+                                <h4>advertising.post.tag[].tag</h4>
+                                <p style="margin-left:30px">Đường dẫn cài đặt VAST hoặc IMA.</p>
+                                <h4>advertising.post.tag[].skipoffset</h4>
+                                <p style="margin-left:30px">Lựa chọn này cho phép bỏ qua quảng cáo dạng video sau một khoảng thời gian (tính bằng giây). Đôi khi có những quảng cáo video có thể bỏ qua nên không cần dùng lựa chọn này.</p>
+                            </div>
+                        </div>
+                        <div style="margin-left:30px">
+                            <h4>advertising.post.active</h4>
+                            <p style="margin-left:30px">Số quảng cáo được chạy(mặc định là 1). Ví dụ: trong <strong>post.tag[]</strong> có 10 quảng cáo. <strong>post.active</strong> là 2 thì sẽ chạy 2 quảng cáo lần lượt theo thứ tự. Nếu quảng cáo xảy ra lỗi thì quảng cáo kế tiếp sẽ được chạy.</p>
+                        </div>
+                        <h5>Ví dụ cài đặt <strong>advertising</strong> vị trí cuối video:</h5>
+                        <pre class="language-markup"><code class=" language-markup">&lt;div id="player">&lt;/div>
+    &lt;script>
+        meplayer('player').setup({
+            advertising : 
+            {
+                post:{
+                    tag:[
+                        {
+                            client:"ima",
+                            tag:"http://mecloud.vn/ads/ima.xml",
+                        },
+                        {
+                            client:"vast",
+                            tag:"http://mecloud.vn/ads/vast.xml",
+                            skipoffset:5 // Có thể bỏ qua quảng cáo sau 5 giây
+                        }
+                    ],
+                    active:2 //nếu không định nghĩa thì mặc định là 1
+                }
+            }
+        });
+    &lt;/script></code></pre>
+                        <p>Giải thích:</p>
+                        <p style="margin-left:30px">Khi video kết thúc, do <strong>active</strong> là 2 nên quảng cáo "<strong>ima</strong>" sẽ chạy trước(chạy thành công hoặc lỗi) rồi chạy tiếp quảng cáo "<strong>vast</strong>".</p>
+                        <p>Video tương ứng</p>
+                        <div id="playerWithPostAds"></div>
+                        <hr>
+                        <p class="bg-info"><i class="icon fmm-info-circled"></i>Hãy đặt những câu hỏi và liên hệ với <a href="mailto:support@mecloud.vn" class="btn-email">support@mecloud.vn</a>, để MeCloud có thể phục vụ các bạn tốt hơn. Cảm ơn các bạn đã sử dụng dịch vụ của chúng tôi! </p>
+                    </div>
+                    <!-- end content-help -->
+                </div>
+            </div>
+            <!--/.row -->
+        </div>
+        <!--/.container -->
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-contact clearfix">
+                                <h3>Liên hệ</h3>
+                                <ul class="contact">
+                                    <li><i class="icon fmm-home"></i>217 Nam Kỳ Khởi Nghĩa, Phường 7, Quận 3, Thành phố Hồ Chí Minh, Việt Nam.</li>
+                                    <li><i class="icon fmm-phone"></i>0904916386</li>
+                                    <li><i class="icon fmm-paperplane-ico"></i><a href="mailto:support@mecloud.vn" class="btn-email">support@mecloud.vn</a></li>
+                                    <li>Copyright MemeCloud. All Rights Reserved 2015</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="footer-contact clearfix">
+                                <h3>Tính năng</h3>
+                                <ul class="footer-menu">
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Xem trên mọi thiết bị</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Hỗ trợ tất cả chuẩn video</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Độ phân giải FullHD</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Player đa nền tảng</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Hệ thống CDN</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Công nghệ CloudStorage</a></li>
+                                </ul>
+                                <ul class="footer-menu">
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">CMS chuyên nghiệp</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Toà soạn điện tử</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Báo cáo & thống kê</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Tự khai thác quảng cáo</a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">Tối đa hoá doanh thu </a></li>
+                                    <li><a class="page-scroll" href="http://mecloud.vn/product/index.html#feature">API mở rộng</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="footer-support clearfix">
+                                <h3>Hỗ trợ</h3>
+                                <ul class="footer-menu">
+                                    <li><a href="http://mecloud.vn/product/index.html#">Lợi ích</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Giới thiệu công ty</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Khiếu nại bản quyền</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Điều khoản sử dụng</a></li>
+                                    <li><a href="http://mecloud.vn/product/index.html#">Chính sách nội dung video</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/row-->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+    </footer>
+    <!-- end footer -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../meplayer.js" type="text/javascript"></script>
+    <script>
+    meplayer('playerWithPreAds').setup({
+        primary: "html5",
+        autoplay: false,
+        title: 'MeCloud Video với quảng cáo ở vị trí đầu video',
+        image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        width: 640,
+        mp4prefix: "start",
+        aspectration: "16:9",
+        file: "http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4",
+        advertising: {
+            pre: {
+                tag: [{
+                    client: "vast",
+                    tag: "http://player.tuyenbui.com/vast/vast.xml",
+                    skipoffset: 5
+                }, {
+                    client: "ima",
+                    tag: "https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D"
+                }],
+                active: 2
+            }
+        }
+    });
+
+    meplayer('playerWithMidAds').setup({
+        primary: "html5",
+        autoplay: false,
+        title: 'MeCloud Video với quảng cáo ở vị trí giữa video',
+        image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        width: 640,
+        mp4prefix: "start",
+        aspectration: "16:9",
+        file: "http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4",
+        advertising: {
+            mid: [{
+                offset: 10,
+                tag: [{
+                    client: "vast",
+                    tag: "http://player.tuyenbui.com/vast/vast.xml",
+                    skipoffset: 5
+                }, {
+                    client: "ima",
+                    tag: "https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D"
+                }],
+                active: 2
+            }, {
+                offset: 30,
+                tag: [{
+                    client: "vast",
+                    tag: "http://player.tuyenbui.com/vast/vast.xml",
+                    skipoffset: 5
+                }],
+            }]
+        }
+    });
+    meplayer('playerWithPostAds').setup({
+        primary: "html5",
+        autoplay: false,
+        title: 'MeCloud Video với quảng cáo ở vị trí cuối video',
+        image: "http://player.dev.mecloud.vn/helps/images/android.png",
+        width: 640,
+        mp4prefix: "start",
+        aspectration: "16:9",
+        file: "http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4",
+        advertising: {
+            post: {
+                tag: [{
+                    client: "ima",
+                    tag: "https://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=%5Breferrer_url%5D&correlator=%5Btimestamp%5D"
+                }, {
+                    client: "vast",
+                    tag: "http://player.tuyenbui.com/vast/vast.xml",
+                    skipoffset: 5
+                }],
+                active: 2
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>

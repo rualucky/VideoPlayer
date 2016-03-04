@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="MeCloudLoader_oZS8Pcy2tI_Esycvud3Bugc1i1ZusN1D5A9a5BpQJOFWRC3G2AuWd527pyJ"></div>
+        <script>
+            (function (w, d, s) {
+    s = document.getElementById('MeCloudLoader_oZS8Pcy2tI_Esycvud3Bugc1i1ZusN1D5A9a5BpQJOFWRC3G2AuWd527pyJ');
+    if (!s){
+        return;
+    }
+    if (!w.$_VConfig)
+        w.$_VConfig = {
+            ANALYTICS : "http://analytics.mecloud.vn/bridge",
+            GOOGIMA_SDK : "//imasdk.googleapis.com/js/sdkloader/ima3.js",
+            JS : "http://localhost/meplayerhtml5/videoplayer.js",
+            HTML5 : "http://localhost/meplayerhtml5/videoplayer.html5-1.00.js",
+            CSS : "http://localhost/meplayerhtml5/videoplayer-1.00.css",
+            SWF : "http://static.mecloud.vn/player/swf/videoplayer-1.16.swf"
+        };
+    s.innerHTML = '<div id ="MeCloudVideoPlayer_id" vid="oZS8Pcy2tI" session="1436839936762699096" style="min-width: 240px;width: 100%;"></div>';
+    function loadScript(url,callback,r){
+        if (w.MeCloudVideoPlayer) {callback(); return;}
+        r = document.querySelectorAll('script[src="'+url+'"]');
+        if (r && r.length) { 
+            setTimeout(function(){ 
+                loadScript(url,callback); 
+            },500); 
+            return;
+        }
+        var script = d.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        script.onreadystatechange = function () {
+            if (this.readyState == 'complete' || this.readyState == 'loaded')
+                callback();
+        }
+        script.onload = callback;
+        d.head.appendChild(script);
+    }
+    var i;
+    loadScript($_VConfig.JS,function(){
+        if (i) return;
+        i = true;
+        var p = d.getElementById('MeCloudVideoPlayer_id');
+        if (p) {
+            MeCloudVideoPlayer.ready(function(){
+                MeCloudVideoPlayer.load(p,
+                {"vid":"oZS8Pcy2tI","title":"độ dễ thương đã đạt đến level max",
+                    "thumbnail":"http://imgs.cloud.memefiles.com/thumb/clip/oZS8Pcy2tI-1430292670936.png",
+                    "video":[
+                        {"quality":"360p", "url":"http://123.30.135.217/video/multi2/video4140.mp4"},
+                        {"quality":"480p","url":"http://cdn.mecloud.vn/clip/2015/4/29/14/30/8f8ee8371ae5495052912c90e50270ea_480.mp4?e\u003d1436854336\u0026s\u003dGQRM-PZr13Uk5bfym_EC2FiN5fk\u003d"}
+                    ],
+                    /*"ad":{
+                        "pre":{
+                            "index":{
+                                "skip":0,
+                                "type":"ima",
+                                "adtag":"http://googleads.g.doubleclick.net/pagead/ads?ad_type\u003dvideo_image_flash\u0026client\u003dca-video-pub-3599960059103364\u0026videoad_start_delay\u003d0\u0026description_url\u003dhttp%3A%2F%2Fwww.google.com\u0026hl\u003dvi\u0026max_ad_duration\u003d40000\u0026adtest\u003don",
+                                "adtagId":9
+                            },
+                            "replace":[]
+                        },
+                        "mid":{
+                            "index":{
+                                "offset":30,
+                                "type":"ima",
+                                "adtag":"http://googleads.g.doubleclick.net/pagead/ads?ad_type\u003dimage_flash\u0026client\u003dca-video-pub-3599960059103364\u0026videoad_start_delay\u003d0\u0026description_url\u003dhttp%3A%2F%2Fwww.google.com\u0026hl\u003dvi\u0026max_ad_duration\u003d40000\u0026overlay\u003d1\u0026adtest\u003don",
+                                "adtagId":10
+                            },
+                            "replace":[]
+                        },
+                        "post":{
+                            "index":{
+                                "skip":0,
+                                "type":"ima",
+                                "adtag":"http://googleads.g.doubleclick.net/pagead/ads?ad_type\u003dvideo_image_flash\u0026client\u003dca-video-pub-3599960059103364\u0026videoad_start_delay\u003d0\u0026description_url\u003dhttp%3A%2F%2Fwww.google.com\u0026hl\u003dvi\u0026max_ad_duration\u003d40000\u0026adtest\u003don",
+                                "adtagId":9
+                            },
+                            "replace":[]
+                        }
+                    },*/
+                    "session":"1436839936762699096",
+                    "defaultQuality":0,
+                    "forceHTML5":true,
+                    "duration":66000,
+                    "analyticsUrl":"http://analytics.mecloud.vn"
+                });
+            });
+        }
+    });
+})(window, document);
+            
+        </script>
+        <div>TODO write content</div>
+    </body>
+</html>
