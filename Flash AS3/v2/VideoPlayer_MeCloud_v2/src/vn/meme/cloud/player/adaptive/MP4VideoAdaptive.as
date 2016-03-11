@@ -202,8 +202,8 @@ package vn.meme.cloud.player.adaptive
 		}
 		
 		override public function getQualityList():*{
-			CommonUtils.log('MP4 quality');
-			return vp.playInfo.video;
+			//CommonUtils.log('MP4 quality');
+			//return vp.playInfo.video;
 		}
 		
 		private function bufferTiming():void{

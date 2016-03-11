@@ -26,6 +26,9 @@ package vn.meme.cloud.player.event
 		public static const PAUSEAD : String = "vn.meme.cloud.player.event.PAUSEAD";
 		public static const SUBTITLE : String = "vn.meme.cloud.player.event.SUBTITLE";
 		public static const PLAY_RELATED_VIDEO : String = "vn.meme.cloud.player.event.PLAY_RELATED_VIDEO";
+		public static const WATER_MARK : String = "vn.meme.cloud.player.event.WATER_MARK";
+		public static const RELATED : String = "vn.meme.cloud.player.event.RELATED";
+		public static const CLOSE : String = "vn.meme.cloud.player.event.CLOSE";
 		
 		public static const SHOW_DEFAULT_FRAME : String = "SHOW_DEFAULT_FRAME";
 		public static const SHOW_LANGUAGE_FRAME : String = "SHOW_LANGUAGE_FRAME";

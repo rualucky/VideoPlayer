@@ -59,7 +59,7 @@ package vn.meme.cloud.player.btn
 		private var rawTitle : String;
 		private var textFormat : TextFormat;
 		private var btnTopOrBottom : BigPlayTopOrBottom;
-		private var btnCenter : BigPlayCenter;
+		public var btnCenter : BigPlayCenter;
 		private var defaultDisplay : Boolean = true;
 		
 		public function BigPlay()
@@ -74,7 +74,7 @@ package vn.meme.cloud.player.btn
 			btnCenter = new BigPlayCenter();
 			addChild(btnCenter);
 			btnCenter.visible = false;
-			addEventListener(MouseEvent.CLICK, function():void{
+			addEventListener(MouseEvent.CLICK, function(ev:MouseEvent):void{
 				CommonUtils.log('click big play');
 			});
 		}
@@ -115,10 +115,7 @@ package vn.meme.cloud.player.btn
 			if (position == POSITION_CENTER) {
 				btnCenter.normalMode();
 			} else {
-				if (defaultDisplay)
-					btnTopOrBottom.normalMode();
-				else 
-					btnCenter.normalMode();
+				btnTopOrBottom.normalMode();
 			}
 		}
 		
@@ -126,29 +123,28 @@ package vn.meme.cloud.player.btn
 			if (position == POSITION_CENTER) {
 				btnCenter.hoverMode();
 			} else {
-				if (defaultDisplay)
-					btnTopOrBottom.hoverMode();
-				else 
-					btnCenter.hoverMode();
+				btnTopOrBottom.hoverMode();
 			}
 		}
 		
 		override protected function onMouseOver(ev:MouseEvent = null):void{
 			this.alpha = 1;
+			this.hoverMode();
 		}
 		
 		override protected function onMouseOut(ev:MouseEvent = null):void{
-			this.alpha = 1;
+			if (defaultDisplay)
+				this.alpha = 1;
+			else 
+				this.alpha = .7;
+			this.normalMode();
 		}
 		
 		// draw bigplay center without title
-		public function removeDefaultDisplay():void {
+		public function showCenterPlayBtn():void {
 			defaultDisplay = false;
-			btnCenter.setPlayCenter();
-			var vp : VideoPlayer = VideoPlayer.getInstance();
-			if (vp) {
-				vp.wait.clearDrawCenter();
-			}
+			btnCenter.show();
+			this.alpha = .7;
 			if (position != POSITION_CENTER) {
 				btnTopOrBottom.visible = false;
 				btnCenter.visible = true;

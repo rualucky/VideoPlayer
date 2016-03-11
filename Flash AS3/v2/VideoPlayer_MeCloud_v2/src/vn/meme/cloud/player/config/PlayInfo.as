@@ -47,9 +47,9 @@ package vn.meme.cloud.player.config
 		public var videoPoster : *;
 		public function PlayInfo( data : *)
 		{
+			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (data.videoSkin) {
 				CommonUtils.log('SKIN');
-				var vp : VideoPlayer = VideoPlayer.getInstance();
 				if (vp) {
 					vp.skin.getData(data.videoSkin);
 				}
@@ -69,8 +69,8 @@ package vn.meme.cloud.player.config
 					video.push(vq);
 				}
 				if (data.video.length == 1) {
-					var vp : VideoPlayer = VideoPlayer.getInstance();
-					vp.controls.quality.visible = false;
+					if (vp)
+						vp.controls.quality.visible = false;
 				}
 				
 			} 
@@ -95,7 +95,6 @@ package vn.meme.cloud.player.config
 						CommonUtils.log(error.errorID + ' ' + error.message);
 						CommonUtils.log(error.getStackTrace());
 					}
-					var vp : VideoPlayer = VideoPlayer.getInstance();
 					vp.controls.subBtn.visible = true;
 					len = tracks.length;
 					vp.controls.subContainer.subDefaultFrame.languageItem.label.text = "Languages (" + len + ")";
@@ -202,7 +201,6 @@ package vn.meme.cloud.player.config
 			}
 			
 			if (data.related && data.related.length > 0){
-				var vp : VideoPlayer = VideoPlayer.getInstance();
 				if (vp){
 					vp.related.container.createItem(data.related);
 					vp.related.isRelated = true;					
@@ -211,10 +209,15 @@ package vn.meme.cloud.player.config
 			}
 			
 			///////////////////////////// VIDEO V2
-			if (data.videoPoster)
+			if (data.videoPoster){
 				this.videoPoster = data.videoPoster;
+				if (data.videoPoster.showControlBar) {
+					if (vp) {
+						vp.controls.showControlbar(true);
+					}
+				}
+			}
 			if (data.videoBrand){
-				var vp : VideoPlayer = VideoPlayer.getInstance();
 				if (vp) {
 					if (data.videoBrand.link)
 						vp.controls.productSign.setLink(data.videoBrand.link);
@@ -224,6 +227,12 @@ package vn.meme.cloud.player.config
 						vp.controls.productSign.initMain(data.videoBrand.image);
 					if (data.videoBrand.imageHover)
 						vp.controls.productSign.initHover(data.videoBrand.imageHover);
+				}
+			}
+			
+			if (data.videoWatermark) {
+				if (vp) {
+					vp.controls.waterMark.init(data.videoWatermark);
 				}
 			}
 		}

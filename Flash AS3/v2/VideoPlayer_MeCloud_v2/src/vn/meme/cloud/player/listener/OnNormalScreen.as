@@ -39,6 +39,7 @@ package vn.meme.cloud.player.listener
 		}
 		
 		public function updateView(vp : VideoPlayer):void{
+			CommonUtils.log(vp.stage.displayState);
 			Fullscreen.getInstance().visible = true;
 			NormalScreen.getInstance().visible = false;
 			vp.controls.resetTiming(false);
@@ -51,10 +52,7 @@ package vn.meme.cloud.player.listener
 			ct.fullscreenBtn.visible = true;
 			ct.normalScreenBtn.visible = false;
 			ct.normalScreenMode();
-//			if(vp && vp.videoStage.playerLoaded){
-			//	SkipVAST.getInstance().changePosition(vp.videoStage.width, vp.videoStage.height);
-			//	AdsMoreInformation.getInstance().changePosition(vp);
-//			}
+			vp.wait.btn.btnCenter.updateSVG(1);
 			if (vp.related.isRelated){
 				vp.related.container.resizeNormalScreen(vp.stage.stageWidth, vp.stage.stageHeight);
 			}

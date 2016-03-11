@@ -19,6 +19,7 @@ package vn.meme.cloud.player.listener
 			var ct : Controls = vp.controls;
 			vs.mute();
 			ct.volumeSlider.changeSlider(0);
+			ct.timeDisplay.y = 11;
  			TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION,"Mute", vp.playInfo.titleAndVideoIdInfo);
 			return true;
 		}

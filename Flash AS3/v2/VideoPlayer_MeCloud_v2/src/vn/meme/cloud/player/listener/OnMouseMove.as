@@ -31,6 +31,13 @@ package vn.meme.cloud.player.listener
 				}
 				
 				
+			} else {
+				ct.resetTiming();
+			}
+			if (vp.controls.waterMark.loaded) {
+				if (vp.controls.waterMark.autoHide) 
+					vp.controls.waterMark.show();
+					vp.controls.waterMark.y = vp.controls.waterMark.currentPosY;
 			}
 			return true;
 		}

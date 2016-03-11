@@ -1,28 +1,37 @@
 package vn.meme.cloud.player.btn.bigplay.item
 {
 	import com.lorentz.SVG.display.SVGDocument;
+	import com.lorentz.SVG.events.SVGEvent;
 	import com.lorentz.processing.ProcessExecutor;
 	
+	import fl.motion.easing.Linear;
+	import fl.transitions.Tween;
+	
+	import flash.display.GradientType;
 	import flash.display.Graphics;
+	import flash.display.SpreadMethod;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
 	
 	import flashx.textLayout.formats.TextAlign;
 	
 	import vn.meme.cloud.player.common.CommonUtils;
+	import vn.meme.cloud.player.comp.WaitingLayer;
 
 	public class BigPlayCenter extends Sprite
 	{
-		private var svg1 : SVGDocument;
-		private var svg2 : SVGDocument;
-		private var svg3 : SVGDocument;
-		private var svg4 : SVGDocument;
+		private var svg : SVGDocument;
+		private var svgReplay : SVGDocument;
 		private var bigPlayHeight : int;
 		private var stageWidth : Number;
 		private var stageHeight : Number;
-		private var defaultCenter : Boolean = true;
+		private var defaultCenter : Boolean;
 		private var RADIUS : int;
 		private var posX : Number;
 		private var posY : Number;
@@ -35,21 +44,47 @@ package vn.meme.cloud.player.btn.bigplay.item
 		private var hoverTitlePosY : int;
 		private var limitCharacter : int;
 		private var lineNumber : Number;
+		private var matr : Matrix;
+		private var normalScale : Number;
+		private var hoverScale : Number;
+		private var effectSvgX : Tween;
+		private var effectSvgY : Tween;
+		private var effectCircleInX : Tween;
+		private var effectCircleInY : Tween;
+		private var timing : uint;
+		private var timeCount : int = 0;
+		private var self : *;
+		private var graph : Graphics;
+		private var cover : Sprite;
+		private var circleIn : Sprite;
+		private var timingCircleIn : uint;
+		private var timeCountCircleIn : int = 0;
+
+		private var cir : CircleItem;
+		private var cirRound : CircleRoundItem;
+		
 		public function BigPlayCenter()
 		{
+			self = this;
 			RADIUS = 25;
 			posX = 0;
 			posY = 0;
-			svg1 = new SVGDocument();
-			svg2 = new SVGDocument();
-			svg3 = new SVGDocument();
-			svg4 = new SVGDocument();
-			addChild(svg1);
-			addChild(svg2);
-			addChild(svg3);
-			addChild(svg4);
+			cir = new CircleItem();
+			addChild(cir);
+			cirRound = new CircleRoundItem();
+			addChild(cirRound);
+			svg = new SVGDocument();
+			addChild(svg);
+			svgReplay = new SVGDocument();
+			addChild(svgReplay);
+			svgReplay.visible = false;
 			rawTitle = "";
 			longTitle = "";
+			normalScale = 1;
+			hoverScale = 2;
+			defaultCenter = true;
+			graph = this.graphics;
+			matr = new Matrix();
 			isLongTitle = false;
 			title = new TextField();
 			title.mouseEnabled = false;
@@ -60,125 +95,115 @@ package vn.meme.cloud.player.btn.bigplay.item
 			title.sharpness = 400;
 			title.thickness = 100;
 			addChild(title);
+			cover = new Sprite();
+			addChild(cover);
+			effectSvgX = new Tween(svg, "scaleX", Linear.easeIn, 1, 2, .12, true);
+			effectSvgX.stop();
+			effectSvgY = new Tween(svg, "scaleY", Linear.easeIn, 1, 2, .12, true);
+			effectSvgY.stop();
 		}
 		
 		public function init(bigPlayHeight:int, stageWidth:Number, stageHeight:Number, rawTitle:String, offTitle:Boolean):void {
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg1.load('asset/bigplay1.svg');
-			svg2.load('asset/bigplay2.svg');
-			svg3.load('asset/bigplay3.svg');
-			svg4.load('asset/bigplay4.svg');
 			this.bigPlayHeight = bigPlayHeight;
 			this.stageWidth = stageWidth;
 			this.stageHeight = stageHeight;
 			this.rawTitle = rawTitle;
+			cir.init(2);
 			if (this.bigPlayHeight > 50) {
 				RADIUS = 36;
-				displaySvg(2);
 				setTitleSize(28);
+				normalScale = 1.7;
+				hoverScale = 4.5;
+				cirRound.init(46);
 			} else {
-				displaySvg(1);
+				cirRound.init(36);
 			}
+			
+			ProcessExecutor.instance.initialize(this.stage);
+			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
+			svg.load('asset/bigplay.svg');
+			svgReplay.load("asset/btn-replay.svg");
+			svg.addEventListener(SVGEvent.RENDERED, function():void{
+				updateSVG(normalScale);
+			});
+			svgReplay.addEventListener(SVGEvent.RENDERED, function():void{
+				updateSVGReplay(2, 7, 1);
+			});
+			
 			posX = stageWidth / 2 - 2;
 			posY = stageHeight / 2;
-			arrangeSvg();
-			drawCenter();
+			normalCenter();
+			drawCover();
 			title.width = stageWidth;
 			if (!offTitle)
 				initTitle();
+			arrangeCircle(stageWidth, stageHeight);
+			arrangeCircleRound(stageWidth, stageHeight);
 		}
 		
-		private function arrangeSvg():void { //svg size can read in asset/*.svg
-			svg1.x = (stageWidth - 17) / 2;
-			svg1.y = (stageHeight - 19) / 2;
-			svg2.x = (stageWidth - 27) / 2;
-			svg2.y = (stageHeight - 28) / 2;
-			svg3.x = (stageWidth - 36) / 2;
-			svg3.y = (stageHeight - 42.5) / 2;
-			svg4.x = (stageWidth - 80) / 2;
-			svg4.y = (stageHeight - 91.5) / 2;
+		private function arrangeCircle(w:Number, h:Number):void {
+			cir.x = w / 2;
+			cir.y = h / 2;
+		}
+		private function arrangeCircleRound(w:Number, h:Number):void {
+			cirRound.x = w / 2 - cirRound.strokeWidth / 3;
+			cirRound.y = h / 2;
 		}
 		
-		private function displaySvg(index:int):void {
-			switch(index) {
-				case 1 :
-					svg1.visible = true;
-					svg2.visible = false;
-					svg3.visible = false;
-					svg4.visible = false;
-					break;
-				case 2 : 
-					svg1.visible = false;
-					svg2.visible = true;
-					svg3.visible = false;
-					svg4.visible = false;
-					break;
-				case 3 : 
-					svg1.visible = false;
-					svg2.visible = false;
-					svg3.visible = true;
-					svg4.visible = false;
-					break;
-				case 4 :
-					svg1.visible = false;
-					svg2.visible = false;
-					svg3.visible = false;
-					svg4.visible = true;
-					break;
-				default :
-					svg1.visible = true;
-					svg2.visible = false;
-					svg3.visible = false;
-					svg4.visible = false;
-					CommonUtils.log("Some things wrong: BigPlayTopOrBottom");
-			}
-		}
-		
-		private function drawCenter(isHovered:Boolean = false):void {
-			var g : Graphics = this.graphics;
-			g.clear();
-			if (isHovered) {
-				if (defaultCenter) {
-					g.beginFill(0x000000, .6);
-					g.drawCircle(posX, posY, stageWidth);
-				} else {
-					
-				}
+		private function normalCenter():void {
+			graph.clear();
+			if (defaultCenter) {
+				drawDefaultBackground(graph);
 			} else {
-				g.beginFill(0xffffff, .4);
-				g.drawCircle(posX, posY, RADIUS + 5);
-				g.beginFill(0x000000, .8); 
-				g.drawCircle(posX, posY, RADIUS);
+				clearGraphic();
 			}
-			g.endFill();
+			graph.endFill();
+		}
+		
+		private function hoverCenter():void {
+			if (!defaultCenter) {
+				graph.clear();
+				graph.endFill();	
+			}
+			this.alpha = 1;
+		}
+		
+		private function drawFullBackgrond(g:Graphics, color:uint, alpha:Number = 0):void {
+			g.beginFill(color, alpha);
+			g.drawRect(0, 0, stageWidth, stageHeight);
+		}
+		
+		private function drawDefaultBackground(g:Graphics):void {
+			matr.createGradientBox(stageHeight, stageHeight, Math.PI / 2, 0, 60);
+			g.beginGradientFill(GradientType.LINEAR, [0x000000, 0x000000],[.7,.2], [0x00, 0xff], matr, SpreadMethod.PAD);
+			g.drawRect(0, 0, stageWidth, stageHeight);
+		}
+		
+		private function calculatorLine(w:Number, h:Number):Number {
+			return Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2));
 		}
 		
 		public function normalMode():void {
-			drawCenter();	
-			if (bigPlayHeight > 50) {
-				displaySvg(2);
-			} else {
-				displaySvg(1);
-			}
 			normalTitle();
-			if (!defaultCenter)
-				this.alpha = .5;
+			normalCenter();	
+			if (defaultCenter) {
+				normalSVG();
+				cir.setEffect(calculatorLine(stage.stageWidth, stage.stageHeight), cir.radius * 2);
+				cirRound.setEffect(400, cirRound.radius * 2);
+			} else {
+				clearGraphic();
+			}
 		}
 		
 		public function hoverMode():void {
-			if (defaultCenter) {
-				drawCenter(true);
-				if (bigPlayHeight > 50) {
-					displaySvg(4);
-				} else {
-					displaySvg(3);
-				}
-			} else {
-				drawCenter();
-				this.alpha = 1;
-			}
 			hoverTitle();
+			hoverCenter();
+			if (defaultCenter) {
+				hoverSVG();
+				cir.setEffect(cir.radius * 2, calculatorLine(stage.stageWidth, stage.stageHeight));
+				cirRound.setEffect(cirRound.radius * 2, 400, true);
+			}
+			
 		}
 		
 		private function initTitle():void {
@@ -194,7 +219,7 @@ package vn.meme.cloud.player.btn.bigplay.item
 						break;
 					}
 				}
-				defaultTitlePosY = stageHeight - 55;
+				defaultTitlePosY = 20;
 				title.y = defaultTitlePosY;
 			} else {
 				//size: 14
@@ -206,13 +231,12 @@ package vn.meme.cloud.player.btn.bigplay.item
 						break;
 					}
 				}
-				defaultTitlePosY = stageHeight - 35;
+				defaultTitlePosY = 15;
 				title.y = defaultTitlePosY;
 			}
-			/*
-			> 1 : 2 lines
-			>= 2.1 : 3 lines
-			*/
+			// > 1 : 2 lines
+			// >= 2.1 : 3 lines
+			
 			lineNumber = rawTitle.length / limitCharacter;
 			if (lineNumber == 1) {
 				lineNumber = 1;
@@ -236,21 +260,9 @@ package vn.meme.cloud.player.btn.bigplay.item
 		
 		private function hoverTitle():void {
 			if (bigPlayHeight > 50) {
-				if (lineNumber == 1)
-					title.y = defaultTitlePosY - 20;
-				if (lineNumber == 2)
-					title.y = defaultTitlePosY - 50;
 				if (lineNumber == 3) {
-					title.y = defaultTitlePosY - 70;
 					title.height = 160;
 				}
-			} else {
-				if (lineNumber == 1) 
-					title.y = defaultTitlePosY - 10;
-				if (lineNumber == 2)
-					title.y = defaultTitlePosY - 30;
-				if (lineNumber == 3)
-					title.y = defaultTitlePosY - 40;
 			}
 			if (isLongTitle) {
 				title.text = rawTitle;
@@ -268,15 +280,110 @@ package vn.meme.cloud.player.btn.bigplay.item
 			this.alpha = .5;
 			title.visible = false;
 			defaultCenter = false;
-			drawCenter();
+			normalCenter();
 		}
+		
+		public function show():void {
+			title.visible = false;
+			cover.visible = false;
+			defaultCenter = false;
+			clearGraphic();
+			this.visible = true;	
+		}
+		
 		//draw default bigplay
 		public function setDefaultCenter():void {
 			this.alpha = 1;
 			defaultCenter = true;
 			title.visible = true;
-			drawCenter();
+			normalCenter();
 		}
 		
+		private function arrangeSVG(svgWidth:Number, svgHeight:Number):void {
+			svg.x = (stageWidth - svgWidth) / 2;
+			svg.y = (stageHeight - svgHeight) / 2;
+		}
+		
+		private function resizeSVG(scaleNumber:Number):void {
+			svg.scaleX = scaleNumber;
+			svg.scaleY = scaleNumber;
+		}
+		
+		public function updateSVG(scaleNumber:Number):void {
+			resizeSVG(scaleNumber);
+			arrangeSVG(svg.width ,svg.height);
+		}
+		
+		private function normalSVG():void {
+			updateSVG(hoverScale);
+			effectSVG(hoverScale, normalScale);
+		}
+		
+		private function hoverSVG():void {
+			updateSVG(normalScale);
+			effectSVG(normalScale, hoverScale);
+		}
+		
+		public function updateSVGReplay(scaleNumber:Number, residualWidth:Number = 0, residualHeight:Number = 0):void {
+			svgReplay.scaleX = scaleNumber;
+			svgReplay.scaleY = scaleNumber;
+			svgReplay.x = (stageWidth - svgReplay.width) / 2 - residualWidth;
+			svgReplay.y = (stageHeight - svgReplay.height) / 2 - residualHeight;
+		}
+		
+		private function effectSVG(begin:Number, end:Number):void {
+			effectSvgX.begin = begin;
+			effectSvgX.finish = end;
+			effectSvgY.begin = begin;
+			effectSvgY.finish = end;
+			effectSvgX.start();
+			effectSvgY.start();
+			if (timing) clearTiming();
+			timing = setInterval(function():void {
+				arrangeSVG(svg.width, svg.height);
+				timeCount += 10;
+				if (timeCount >= effectSvgX.duration * 1000) {
+					clearInterval(self.timing);
+					self.timing = 0;
+					self.timeCount = 0;
+				}
+			}, 10);
+		}
+		
+		private function clearTiming():void {
+			clearInterval(timing);
+			timing = 0;
+			timeCount = 0;
+		}
+		
+		private function drawCover(color:uint = 0xffffff, alpha:Number = 0):void {
+			var g : Graphics = cover.graphics;
+			g.clear();
+			g.beginFill(color, alpha);
+			g.drawRect(0, 0, stageWidth, stageHeight);
+			g.endFill();
+		}
+		
+		public function showReplay():void {
+			this.svg.visible = false;
+			this.svgReplay.visible = true;
+		}
+		
+		public function showPlay():void {
+			this.svg.visible = true;
+			this.svgReplay.visible = false;
+		}
+		
+		private function clearGraphic():void {
+			graph.clear();
+		}
+		
+		public function fullscreenMode():void {
+			
+		}
+		
+		public function normalscreenMode(): void {
+			
+		}
 	}
 }

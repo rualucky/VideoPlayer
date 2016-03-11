@@ -28,23 +28,54 @@ package vn.meme.cloud.player.comp.sub
 			this.visible = false;
 		}
 		
-		public function show(v:String,x:int,y:int):void{
-			
+		public function showRelated(v:String,x:int,y:int):void {
 			if (x < 10)
 				this.x = 10;
 			else if (this.player.stage.stageWidth - x < 10)
 				this.x = this.player.stage.stageWidth - 10;
 			else
 				this.x = x;
-			
 			this.y = y;
 			tf.text = v;
 			tf.width = tf.textWidth + 6;			
-			redraw();
+			tf.x = -tf.textWidth / 2 - 3;
+			if (tf.x + this.x < 6)
+				tf.x = 6 - this.x;
+			else if (this.x + tf.x + tf.textWidth + 10 > this.player.stage.stageWidth){
+				tf.x = this.player.stage.stageWidth - tf.textWidth - 10 - this.x;
+			}
+			with (this.graphics){
+				clear();
+				beginFill(0x555555);
+				drawRoundRect(tf.x - 5,tf.y -1, tf.textWidth + 14, tf.textHeight + 7,6);
+				endFill();
+				beginFill(0x555555);
+				
+				moveTo(25, -24);
+				lineTo(30, -29);
+				lineTo(35, -24);
+				lineTo(25, -24);
+				
+				endFill();
+			}
 			this.visible = true;
 		}
 		
-		private function redraw():void{
+		public function show(v:String,x:int,y:int, isTimeLine:Boolean = false):void{
+			if (x < 10)
+				this.x = 10;
+			else if (this.player.stage.stageWidth - x < 10)
+				this.x = this.player.stage.stageWidth - 10;
+			else
+				this.x = x;
+			this.y = y;
+			tf.text = v;
+			tf.width = tf.textWidth + 6;			
+			redraw(isTimeLine);
+			this.visible = true;
+		}
+		
+		private function redraw(isTimeLine:Boolean):void{
 			tf.x = -tf.textWidth / 2 - 3;
 			if (tf.x + this.x < 6)
 				tf.x = 6 - this.x;
@@ -61,6 +92,10 @@ package vn.meme.cloud.player.comp.sub
 				lineTo(3, tf.y + tf.textHeight + 6);
 				lineTo(0, 0);
 				lineTo(-3, tf.y + tf.textHeight + 6);
+				if (isTimeLine) {
+					beginFill(0x000000, .8);
+					drawRect(- .5, 8, 1, 12);	
+				}
 				endFill();
 			}
 		}

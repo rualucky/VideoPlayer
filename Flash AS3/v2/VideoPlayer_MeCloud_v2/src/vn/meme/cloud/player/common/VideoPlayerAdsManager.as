@@ -318,7 +318,7 @@ package vn.meme.cloud.player.common
 					CommonUtils.log('AD HEI : ' + ad.height);
 					if (currentAd.position == MIDROLL){
 						if (ad.linear){
-							vp.wait.show("Loading ad...");
+							vp.wait.show("Loading Ads...", true);
 							CommonUtils.log('Linear');
 							player.ads.y = 0;
 							adsManager.resize(w, player.stage.stageHeight, (isMid) ? ViewModes.NORMAL : ViewModes.FULLSCREEN);

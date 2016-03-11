@@ -1,7 +1,13 @@
 package vn.meme.cloud.player.comp.video.related
 {
+	import com.lorentz.SVG.display.SVG;
+	import com.lorentz.SVG.display.SVGDocument;
+	import com.lorentz.SVG.events.SVGEvent;
+	import com.lorentz.processing.ProcessExecutor;
+	
 	import flash.display.Graphics;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	
 	import flashx.textLayout.elements.BreakElement;
 	
@@ -12,7 +18,7 @@ package vn.meme.cloud.player.comp.video.related
 	
 	public class VideoRelatedContainer extends Sprite
 	{
-
+		
 		public var containerWidth : Number;
 		public var containerHeight : Number;
 		public var itemWidth : Number;
@@ -39,9 +45,13 @@ package vn.meme.cloud.player.comp.video.related
 			return instance;
 		}
 		
+		private var background : Sprite;
+		
 		public function VideoRelatedContainer(player:VideoPlayer)
 		{
 			instance = this;
+			background = new Sprite();
+			addChild(background);
 			itemArray = new Vector.<VideoRelatedItem>();
 			setContainerSize(player.stage.stageWidth, player.stage.stageHeight);
 			item1 = new VideoRelatedItem();
@@ -73,6 +83,13 @@ package vn.meme.cloud.player.comp.video.related
 			itemArray.push(item9);
 		}
 		
+		private function drawBackground(color:uint, alpha:Number, w:Number, h:Number):void {
+			var g : Graphics = background.graphics;
+			g.clear();
+			g.beginFill(color, alpha);
+			g.drawRect(0, 0, w, h);
+			g.endFill();
+		}
 		
 		public function createItem(data: *):void{
 			this.itemTotal = data.length;
@@ -81,6 +98,10 @@ package vn.meme.cloud.player.comp.video.related
 			for (var i : int = 0; i < len; i++) {
 				itemArray[i].create(data[i], data[i].title, data[i].duration, data[i].img, this.itemTotal);
 				itemArray[i].drawItemBackground(this.itemWidth, this.itemHeight);
+			}
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				drawBackground(0x00cc99, 1, vp.stage.stageWidth, vp.stage.stageHeight);	
 			}
 		}
 		

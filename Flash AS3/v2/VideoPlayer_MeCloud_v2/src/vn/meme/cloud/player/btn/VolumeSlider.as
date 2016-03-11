@@ -23,12 +23,26 @@ package vn.meme.cloud.player.btn
 		public static const MAX_WIDTH : int = 90;
 		public var VOLUME_LOW : Number;
 		public var VOLUME_MEDIUM : Number;
-		
+		private var skinColor : uint;
 		public function VolumeSlider()
 		{
 			super(VideoPlayerEvent.VOLUME_SLIDER);
 			VOLUME_LOW = MAX_WIDTH / 3;
 			VOLUME_MEDIUM = MAX_WIDTH / 3 * 2;
+			this.alpha = 1;				
+			skinColor = 0x3ea9f5;
+			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+		}
+		
+		public function setColor(color:uint):void {
+			this.skinColor = color;	
+		}
+		
+		public function init(): void {
 			if ((volumeX.data.my_x == null) || (volumeX.data.my_x == undefined)){
 				volumeX.flush();				
 				gr = this.graphics;			
@@ -36,7 +50,7 @@ package vn.meme.cloud.player.btn
 				gr.beginFill(0xffffff, 0);
 				gr.drawRect(0, -15, 60, 45);
 				gr.endFill();
-				gr.beginFill(0x3ea9f5, 1); //0x259073
+				gr.beginFill(this.skinColor, 1); //0x259073
 				gr.drawRect(0, 0, 25, 5);
 				gr.endFill();			
 				gr.beginFill(0xffffff);
@@ -48,14 +62,10 @@ package vn.meme.cloud.player.btn
 				volumeX.data.lastTime = MAX_WIDTH / 2;
 				volumeLastTime = MAX_WIDTH / 2;
 			} else {
-				this.changeSlider(volumeX.data.my_x);				
+				this.changeSlider(volumeX.data.lastTime);	
+				displayVolume(volumeX.data.lastTime);
 			}		
-			this.alpha = 1;					
-			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
-			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			
 		}
 		
 		protected function onMouseUp(ev:MouseEvent):void{
@@ -63,7 +73,7 @@ package vn.meme.cloud.player.btn
 			this.alpha == 1;			
 			changeSlider(ev.localX);
 			volumeX.data.lastTime = (ev.localX * 100 / MAX_WIDTH);
-			if (volumeX.data.lastTime < 11){
+			if (volumeX.data.lastTime < 5){
 				volumeX.data.lastTime = 100;
 			}
 		}
@@ -80,16 +90,22 @@ package vn.meme.cloud.player.btn
 			if (ev.buttonDown){
 				value = ev.localX / MAX_WIDTH * 100;
 			}
+			displayVolume(value);
+		}
+		
+		private function displayVolume(value:Number):void {
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
-			if (value > 5 && value < VOLUME_LOW) {
-				ct.volume.displayVolume(1);
-			}
-			if (value > VOLUME_LOW && value < VOLUME_MEDIUM) {
-				ct.volume.displayVolume(2);
-			}
-			if (value > VOLUME_MEDIUM) {
-				ct.volume.displayVolume(3);
+			if (ct) {
+				if (value > 5 && value < VOLUME_LOW) {
+					ct.volume.displayVolume(1);
+				}
+				if (value > VOLUME_LOW && value < VOLUME_MEDIUM) {
+					ct.volume.displayVolume(2);
+				}
+				if (value > VOLUME_MEDIUM) {
+					ct.volume.displayVolume(3);
+				}	
 			}
 		}
 		
@@ -102,7 +118,6 @@ package vn.meme.cloud.player.btn
 		}
 		
 		override protected function onMouseOut(ev:MouseEvent = null):void{
-			CommonUtils.log('OUT');
 			this.alpha = 0.6;	
 			this.visible = false;
 			var vp : VideoPlayer = VideoPlayer.getInstance();
@@ -132,7 +147,7 @@ package vn.meme.cloud.player.btn
 			gr.beginFill(0xffffff, 0);
 			gr.drawRect(0, -15, 60, 45);
 			gr.endFill();
-			gr.beginFill(0x3ea9f5, 1);
+			gr.beginFill(this.skinColor, 1);
 			if (x <= 5) {
 				gr.clear();
 			} else if (x >= MAX_WIDTH){
@@ -190,7 +205,10 @@ package vn.meme.cloud.player.btn
 			}
 		}
 		
-		
+		public function changeColor(color:uint):void {
+			this.skinColor = color;
+			this.changeSlider(this.value);
+		}
 		
 	}
 }

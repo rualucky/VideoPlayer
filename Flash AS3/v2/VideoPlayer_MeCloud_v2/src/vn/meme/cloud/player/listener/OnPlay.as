@@ -45,7 +45,7 @@ package vn.meme.cloud.player.listener
 				if (vp.playInfo && vp.playInfo.ad){
 					if (vp.playInfo.ad.pre && vp.playInfo.ad.pre.adtag && (vp.playInfo.ad.pre.adtag.length >0) ){
 						//vp.wait.show('Đang tải quảng cáo ...');
-						vp.wait.show('Loading ad...');
+						vp.wait.show("Loading Ads...", true);
 						VideoPlayerAdsManager.getInstance().loadAds(vp.playInfo.ad.pre);
 						return false;
 					} 
@@ -59,6 +59,7 @@ package vn.meme.cloud.player.listener
 			else {
 				vs.resume();
 			}
+			vp.related.hide();
 			return true;
 		}
 		

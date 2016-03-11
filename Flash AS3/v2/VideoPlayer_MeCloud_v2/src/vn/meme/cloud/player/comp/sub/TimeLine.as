@@ -2,6 +2,7 @@ package vn.meme.cloud.player.comp.sub
 {
 	import fl.video.VideoScaleMode;
 	
+	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
@@ -27,7 +28,7 @@ package vn.meme.cloud.player.comp.sub
 		private var bufferedLayer : Sprite;
 		private var playLayer : Sprite;
 		private var adsLayer : Sprite;
-		
+		private var columnLayer : Sprite;
 		private var play : Number;
 		private var load : Number;
 		
@@ -84,6 +85,7 @@ package vn.meme.cloud.player.comp.sub
 			PlayerTooltip.getInstance().visible = false;
 			this.scaleY = 1;
 			this.y = 2;
+			columnLayer.visible = false;
 		}
 		
 		private function onMouseMove(ev:MouseEvent):void{
@@ -92,7 +94,7 @@ package vn.meme.cloud.player.comp.sub
 				if(vs.checkHLS){	
 				} else {				
 				PlayerTooltip.getInstance().show(TimeDisplay.toTimeDisplay((ev.localX /player.stage.stageWidth ) * player.videoStage.getLength() / 1000),
-					ev.stageX, localToGlobal(new Point(0,-4)).y);
+					ev.stageX, localToGlobal(new Point(0,-4)).y, true);
 				clearTimeout(timing);				
 				}				
 			}
@@ -135,7 +137,7 @@ package vn.meme.cloud.player.comp.sub
 			if (self.load && self.load != 0){
 				with (bufferedLayer.graphics){
 					clear();
-					beginFill(0x777777, .7); //0x777777
+					beginFill(0x777777, .4); //0x777777
 					drawRect(0,-2,player.stage.stageWidth * self.load,3);
 					endFill();
 				}

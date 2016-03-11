@@ -37,11 +37,8 @@ package vn.meme.cloud.player.btn
 		}
 		
 		protected override function onMouseOver(ev:MouseEvent=null):void{
-			
 			setTimeout(showVolumeSlider, 0);
 			super.onMouseOver(ev);			
-			//var point : Point = localToGlobal(new Point(8, -4));
-			//PlayerTooltip.getInstance().show("Off", point.x, point.y);
 		}
 		
 		protected override function onMouseOut(ev:MouseEvent=null):void{
@@ -56,8 +53,8 @@ package vn.meme.cloud.player.btn
 		protected function showVolumeSlider():void{
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
-			ct.timeDisplay.y = 8;
-			ct.timeDisplay.x = 128;
+			ct.timeDisplay.y = 11;
+			ct.timeDisplay.x = 180;
 			ct.volumeSlider.visible = true;
 			ct.volumeSlider.alpha = 1;
 		}
@@ -66,8 +63,8 @@ package vn.meme.cloud.player.btn
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
 			if (ct.volumeSlider.alpha != 1){
-				ct.timeDisplay.y = 8;
-				ct.timeDisplay.x = 65;
+				ct.timeDisplay.y = 11;
+				ct.timeDisplay.x = 75;
 				ct.volumeSlider.visible = false;
 			}
 		}

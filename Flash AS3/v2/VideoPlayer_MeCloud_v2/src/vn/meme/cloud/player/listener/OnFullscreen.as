@@ -61,8 +61,6 @@ package vn.meme.cloud.player.listener
 				vp.related.container.resizeFullScreen(vp.stage.stageWidth, vp.stage.stageHeight);
 				ct.resetTiming(false);
 			}
-		//	SkipVAST.getInstance().changePosition(vp);
-		//AdsMoreInformation.getInstance().changePosition(vp);
 			TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION,"Full Screen", vp.playInfo.titleAndVideoIdInfo);
 		}
 		

@@ -53,6 +53,7 @@ package
 	import vn.meme.cloud.player.listener.OnPlaying;
 	import vn.meme.cloud.player.listener.OnQuality;
 	import vn.meme.cloud.player.listener.OnQualitySelect;
+	import vn.meme.cloud.player.listener.OnRelated;
 	import vn.meme.cloud.player.listener.OnReplay;
 	import vn.meme.cloud.player.listener.OnResize;
 	import vn.meme.cloud.player.listener.OnSeek;
@@ -60,6 +61,7 @@ package
 	import vn.meme.cloud.player.listener.OnVideoEnd;
 	import vn.meme.cloud.player.listener.OnVolume;
 	import vn.meme.cloud.player.listener.OnVolumeSlider;
+	import vn.meme.cloud.player.listener.OnWaterMark;
 	import vn.meme.cloud.player.listener.ads.OnAdsComplete;
 	import vn.meme.cloud.player.listener.ads.OnAdsError;
 	import vn.meme.cloud.player.listener.ads.OnContentPauseRequest;
@@ -169,6 +171,8 @@ package
 			this.setupEventListener(new OnBigPlay());
 			this.setupEventListener(new OnQualitySelect());
 			this.setupEventListener(new OnDisplaySubtile());
+			this.setupEventListener(new OnWaterMark());
+			this.setupEventListener(new OnRelated());
 			CommonUtils.log("setup player listener");
 			
 			// ad listener
@@ -212,8 +216,8 @@ package
 			this.setupComponent(videoStage = new VideoStage(this));CommonUtils.log('com 2');
 			this.setupComponent(thumb = new VideoThumbnail(this));CommonUtils.log('com 3');
 			this.setupComponent(related = new VideoRelated(this));CommonUtils.log('com 8');
-			this.setupComponent(controls = new Controls(this));CommonUtils.log('com 4');
 			this.setupComponent(wait = new WaitingLayer(this));CommonUtils.log('com 5');
+			this.setupComponent(controls = new Controls(this));CommonUtils.log('com 4');
 			this.setupComponent(ads = new AdsLayer(this));CommonUtils.log('com 6');
 			this.setupComponent(PlayerTooltip.getInstance());CommonUtils.log('com 7');
 			this.addChild(this.buffering=new Buffering(this));

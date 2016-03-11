@@ -17,6 +17,7 @@ package vn.meme.cloud.player.btn
 	import flash.utils.setTimeout;
 	
 	import vn.meme.cloud.player.btn.subtitles.SubtitleContainer;
+	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.comp.Controls;
 	import vn.meme.cloud.player.comp.VideoPlayerSkin;
 	import vn.meme.cloud.player.comp.VideoStage;
@@ -68,7 +69,7 @@ package vn.meme.cloud.player.btn
 				PlayerTooltip.getInstance().visible = false;
 				if (vs.currentTime() == 0 || vs.isEnd() || !vs.playing){
 					vp.wait.mouseEnabled = false;
-				}				
+				}			
 				ct.qualityList.show(vs.getQualityList(), vs.videoType);
 			} 
 		}

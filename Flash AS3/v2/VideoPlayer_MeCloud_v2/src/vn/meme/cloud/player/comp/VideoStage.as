@@ -1,5 +1,7 @@
 package vn.meme.cloud.player.comp
 {
+	import com.hinish.spec.iab.vpaid.VPAIDSpecialValues;
+	
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -9,6 +11,7 @@ package vn.meme.cloud.player.comp
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.net.SharedObject;
+	import flash.sampler.NewObjectSample;
 	import flash.utils.Timer;
 	import flash.utils.clearInterval;
 	import flash.utils.clearTimeout;
@@ -33,6 +36,7 @@ package vn.meme.cloud.player.comp
 	import vn.meme.cloud.player.adaptive.VideoAdaptive;
 	import vn.meme.cloud.player.adaptive.VideoAdaptiveEvent;
 	import vn.meme.cloud.player.btn.BigPlay;
+	import vn.meme.cloud.player.btn.Related;
 	import vn.meme.cloud.player.btn.VolumeSlider;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.MidrollManager;
@@ -92,6 +96,8 @@ package vn.meme.cloud.player.comp
 		private var setupEvent : Boolean = false;
 		public var videoType : String = "MP4";
 		
+		private var relatedBtn : Related;
+		
 		/**
 		* contrucstor
 		*/
@@ -124,7 +130,21 @@ package vn.meme.cloud.player.comp
 				vp.easyVideoTitle.visible = true;
 			});
 			addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			
+			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+		}
+		
+		private function onMouseOver(ev:Event):void {
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				this.relatedBtn.visible = true;
+			}
+		}
+		
+		private function onMouseOut(ev:Event):void {
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) 
+				this.relatedBtn.visible = false;
 		}
 		
 		private function onMouseMove(ev:Event):void {
@@ -170,8 +190,7 @@ package vn.meme.cloud.player.comp
 			video.width = this.stageWidth;
 			video.height = this.stageWidth * hRatio/wRatio;
 			video.x = 0;
-			//video.y = 0;
-			video.y = 2;
+			video.y = 0;
 		}
 		
 		private function handleVideoType():void{
@@ -202,6 +221,7 @@ package vn.meme.cloud.player.comp
 			// stop old
 			if (video && this.contains(video)){
 				removeChild(video);
+				removeChild(relatedBtn);
 			}
 			if (netstream){
 				netstream.close();
@@ -222,6 +242,10 @@ package vn.meme.cloud.player.comp
 			video.smoothing = true;
 			addChild(video);
 			this.createEvent();
+		
+			relatedBtn = new Related();
+			addChild(relatedBtn);
+			
 			this.volume = VideoPlayer.getInstance().controls.volumeSlider.value;
 			
 			if (this.volume == 0){
@@ -232,6 +256,11 @@ package vn.meme.cloud.player.comp
 				CommonUtils.log('vol : ' + 50);
 			}
 			
+		}
+		
+		public function arrangeRelatedBtn(btnWidth:Number):void {
+			relatedBtn.x = player.stage.stageWidth - btnWidth - 20;
+			relatedBtn.y = 10;
 		}
 		
 		private function createEvent():void{
@@ -294,10 +323,6 @@ package vn.meme.cloud.player.comp
 					CommonUtils.log(self.adaptive.netStream.bytesLoaded + ' ' + self.adaptive.netStream.bytesTotal);
 				}, 10000);
 				*/
-				var vp : VideoPlayer = VideoPlayer.getInstance();
-				if (vp) {
-					vp.wait.btn.removeDefaultDisplay();
-				}
 			}
 			playTime = 0;
 			end = false;
@@ -311,7 +336,11 @@ package vn.meme.cloud.player.comp
 		public function seek(offset:Number = 0):void{
 			this.adaptive.seek(offset);
 			if (!isPlaying){
-				this.adaptive.pause();
+				if (fstPlay) {
+					this.play();
+				} else {
+					this.adaptive.pause();
+				}
 				TimeDisplay.getInstance().setPlayTime(offset * 1000);
 				TimeLine.getInstance().setPlay(offset * 1000 / self.adaptive.videoLength);
 			}
@@ -390,6 +419,8 @@ package vn.meme.cloud.player.comp
 			isPlaying = false;
 			player.pingUtils.ping("ev");
 			this.adaptive.netStream.pause();
+			player.controls.showReplay();
+			player.wait.btn.btnCenter.showReplay();
 			this.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.VIDEO_END));
 		}
 		
@@ -505,7 +536,7 @@ package vn.meme.cloud.player.comp
 		}
 		
 		public function getQualityList(): * {
-			return this.adaptive.getQualityList();
+			return player.playInfo.video; //for MP4, HLS not handle yet
 		}
 		
 		public function closeStream():void{

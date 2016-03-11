@@ -15,6 +15,8 @@ package vn.meme.cloud.player.comp
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
+	import spark.core.ISharedDisplayObject;
+	
 	import vn.meme.cloud.player.btn.Fullscreen;
 	import vn.meme.cloud.player.btn.Mute;
 	import vn.meme.cloud.player.btn.NormalScreen;
@@ -23,9 +25,11 @@ package vn.meme.cloud.player.comp
 	import vn.meme.cloud.player.btn.ProductSign;
 	import vn.meme.cloud.player.btn.Quality;
 	import vn.meme.cloud.player.btn.QualityListItem;
+	import vn.meme.cloud.player.btn.Related;
 	import vn.meme.cloud.player.btn.Replay;
 	import vn.meme.cloud.player.btn.Volume;
 	import vn.meme.cloud.player.btn.VolumeSlider;
+	import vn.meme.cloud.player.btn.Watermark;
 	import vn.meme.cloud.player.btn.subtitles.Subtitle;
 	import vn.meme.cloud.player.btn.subtitles.SubtitleContainer;
 	import vn.meme.cloud.player.btn.subtitles.SubtitleOn;
@@ -60,6 +64,8 @@ package vn.meme.cloud.player.comp
 		public var subContainer : SubtitleContainer;
 		private var timingPhase : int;
 		private var timing : int;
+		private var isShowControlbar : Boolean;
+		public var waterMark : Watermark;
 		
 		private static var instance:Controls ;
 		public static function getInstance():Controls{
@@ -70,6 +76,8 @@ package vn.meme.cloud.player.comp
 		public function Controls(player:VideoPlayer)
 		{
 			instance = this;
+			isShowControlbar = false;
+			addChild(waterMark = new Watermark());
 			addChild(playBtn = new Play());
 			addChild(replayBtn = new Replay());
 			replayBtn.visible = false;
@@ -78,7 +86,7 @@ package vn.meme.cloud.player.comp
 			addChild(volume = new Volume());
 			addChild(mute = new Mute());
 			addChild(volumeSlider = new VolumeSlider());
-			if(volumeSlider.value < 10){
+			if(volumeSlider.value < 5){
 				mute.visible = true;
 				volume.visible = false;
 			}else{
@@ -118,7 +126,12 @@ package vn.meme.cloud.player.comp
 			drawBackground(0, 2, player.stage.stageWidth, HEIGHT - 2);
 		}
 		
+		public function showControlbar(value : Boolean):void {
+			this.isShowControlbar = value;	
+		}
+		
 		override public function initSize(ev:Event=null):void{
+			CommonUtils.log("CONTROLS CREATED");
 			this.playBtn.init();
 			this.pauseBtn.init();
 			this.replayBtn.init();
@@ -127,6 +140,7 @@ package vn.meme.cloud.player.comp
 			this.quality.init();
 			this.volume.init();
 			this.mute.init();
+			this.volumeSlider.init();
 			
 			this.y = player.stage.stageHeight - HEIGHT;	
 			this.x = 0;
@@ -173,10 +187,12 @@ package vn.meme.cloud.player.comp
 			this.timeDisplay.x = 75; //66
 			this.timeline.initSize(ev); 
 			this.visible = false;
-			
+			if (isShowControlbar)
+				this.visible = true;
 		}
 		
 		public function updateView(x:Number):void{
+			CommonUtils.log('UPDATE CONTROL');
 			this.productSign.x = player.stage.stageWidth - x - this.productSign.width;
 			this.fullscreenBtn.x = this.productSign.x - 10 - this.fullscreenBtn.width;
 			this.normalScreenBtn.x = this.productSign.x - 10 - this.normalScreenBtn.width;
@@ -194,11 +210,15 @@ package vn.meme.cloud.player.comp
 		public function fullscreenMode():void{
 //			this.alpha = 0.8;
 			this.resetTiming();
+			this.productSign.updatePosition();
+			this.qualityList.y = 0;
 		}
 		
 		public function normalScreenMode():void{
 			this.alpha = 1;	
 			this.resetTiming(false);
+			this.productSign.updatePosition();
+			this.qualityList.y = 0;
 		}
 		
 		public function resetTiming(goTiming:Boolean = true):void{
@@ -209,12 +229,11 @@ package vn.meme.cloud.player.comp
 			this.y = player.stage.stageHeight - HEIGHT;
 			if (goTiming){
 				this.timingPhase = 1;
-				this.timing = setTimeout(startHide,1000);
+				this.timing = setTimeout(startHide,2000);
 			} else this.timingPhase = 0;
 		}
 		
 		private function startHide():void{
-			
 			var self : Controls = this;
 			this.timingPhase = 2;
 			this.timing = setInterval(function():void{
@@ -223,6 +242,9 @@ package vn.meme.cloud.player.comp
 					return;
 				}
 				self.y += 2;
+				if (self.waterMark.position == Watermark.TOP_LEFT || self.waterMark.position == Watermark.TOP_RIGHT) {
+					self.waterMark.y -= 2;
+				}
 				if (self.y >= player.stage.stageHeight - 2){
 					clearInterval(timing);
 				}
@@ -251,6 +273,24 @@ package vn.meme.cloud.player.comp
 			g.beginFill(0x000000, .7);
 			g.drawRect(0, 2, player.stage.stageWidth, HEIGHT - 2);
 			g.endFill();
+		}
+		
+		public function showReplay():void {
+			this.playBtn.visible = false;
+			this.pauseBtn.visible = false;
+			this.replayBtn.visible = true;
+		}
+		
+		public function showPause():void {
+			this.playBtn.visible = false;
+			this.pauseBtn.visible = true;
+			this.replayBtn.visible = false;	
+		}
+		
+		public function showPlay():void {
+			this.playBtn.visible = true;
+			this.pauseBtn.visible = false;
+			this.replayBtn.visible = false;
 		}
 	}
 }

@@ -1,5 +1,9 @@
 package vn.meme.cloud.player.comp
 {
+	import com.lorentz.SVG.display.SVGDocument;
+	import com.lorentz.SVG.events.SVGEvent;
+	import com.lorentz.processing.ProcessExecutor;
+	
 	import flash.display.Bitmap;
 	import flash.display.GradientType;
 	import flash.display.Graphics;
@@ -21,6 +25,7 @@ package vn.meme.cloud.player.comp
 	
 	import vn.meme.cloud.player.btn.BigPlay;
 	import vn.meme.cloud.player.btn.PauseAd;
+	import vn.meme.cloud.player.btn.bigplay.item.LoadingAdsItem;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.config.ads.BasicAdInfo;
 	import vn.meme.cloud.player.config.ads.PositionedAdInfo;
@@ -28,7 +33,6 @@ package vn.meme.cloud.player.comp
 	
 	public class WaitingLayer extends VideoPlayerComponent
 	{
-		private var tf : TextField;
 		public var btn : BigPlay;
 		public var btnPauseAd : PauseAd;
 		private var blockControls : Sprite;
@@ -44,28 +48,20 @@ package vn.meme.cloud.player.comp
 		private var self : *;
 		
 		private var data : *;
+		private var loadingAds : LoadingAdsItem;
 		
 		public function WaitingLayer(player:VideoPlayer)
 		{
-			self = this;	
-			addChild(tf = new TextField());
-			var tformat : TextFormat = new TextFormat("Arial",16,0xffffff);
-			tformat.align = TextFormatAlign.CENTER;
-			tf.defaultTextFormat = tformat;
-			tf.mouseEnabled = false;
-			tf.filters = [new DropShadowFilter(0,0)];
-			tf.visible = false;
+			self = this;
+			addChild(loadingAds = new LoadingAdsItem());
+			loadingAds.visible = false;
 			addChild(btn = new BigPlay());
 			addChild(layer = new Sprite());
 			addChild(btnPauseAd = new PauseAd());
 			btnPauseAd.visible = false;
-			//btn.mouseEnabled = false;
 			btn.visible = true;
 			this.buttonMode = true;
 			isShowPlay = true;
-			
-			//btn.height = 100;
-			
 			
 			addChild(blockControls = new Sprite());			
 			blockControls.visible = false;
@@ -97,8 +93,6 @@ package vn.meme.cloud.player.comp
 				
 			});
 						
-			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 		}
 		
 		private function onMouseOver(ev:MouseEvent):void{
@@ -110,17 +104,12 @@ package vn.meme.cloud.player.comp
 		
 		override public function initSize(ev:Event = null):void{
 			btn.init(player.stage.stageWidth >= 480);
-			if (btn.position == BigPlay.POSITION_CENTER){
-				drawCenter();
-			} else {
-				draw(player.stage.stageWidth, player.stage.stageHeight);
-			}
-			
+			loadingAds.init(player.stage.stageWidth, player.stage.stageHeight);
 		}
 		
-		public function show(text:String):void{
-			tf.text = text;
-			tf.visible = true;
+		public function show(text:String, isLoadingAds:Boolean = false):void{
+			loadingAds.setText(text, isLoadingAds);
+			loadingAds.visible = true;
 			btn.visible = false;
 			blockControls.visible = true;
 			this.buttonMode = false;
@@ -129,7 +118,7 @@ package vn.meme.cloud.player.comp
 		}
 		
 		public function showPlay():void{
-			tf.visible = false;
+			loadingAds.visible = false;
 			btn.visible = false;
 			btnPauseAd.visible = true;
 			this.buttonMode = true;
@@ -139,8 +128,10 @@ package vn.meme.cloud.player.comp
 		}
 		
 		public function showBigPlay():void{
-			tf.visible = false;
+			CommonUtils.log("SHOW BIG PLAY");
+			loadingAds.visible = false;
 			btn.visible = true;
+			btn.showCenterPlayBtn();
 			btnPauseAd.visible = false;
 			this.buttonMode = true;
 			blockControls.visible = false;
@@ -170,37 +161,6 @@ package vn.meme.cloud.player.comp
 				setChildIndex(layer, btnIndex);
 			}
 		}
-		
-		public function drawCenter():void {
-			var g : Graphics = this.graphics;
-			g.clear();
-			var matr:Matrix = new Matrix();
-			matr.createGradientBox(player.stage.stageHeight, player.stage.stageHeight, Math.PI / 2, 0, 50);
-			g.beginGradientFill(GradientType.LINEAR, [0x000000, 0x000000],[.2,.9], [0x00, 0xff], matr, SpreadMethod.PAD);
-			g.drawRect(0,0,player.stage.stageWidth,player.stage.stageHeight);
-			g.endFill();
-		}
-		
-		public function draw(w:Number,h:Number):void {
-			var g : Graphics = this.graphics;
-			g.clear();
-			g.beginFill(0xffffff, 0);
-			g.drawRect(0,0,w,h);
-			g.endFill();
-		}
-		
-		public function drawTopOrBottom(posX:int = 0, posY:int = 0, w:int = 50, h:int = 50, alpha:Number = .4):void {
-			var g : Graphics = this.graphics;
-			g.clear();
-			g.beginFill(0x000000, alpha);
-			g.drawRect(posX, posY, w, h);
-			g.endFill();
-		}
-		
-		public function clearDrawCenter():void {
-			var g : Graphics = this.graphics;
-			g.clear();
-		}
-		
+
 	}
 }
