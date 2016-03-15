@@ -32,6 +32,7 @@ package vn.meme.cloud.player.btn
 		public var imageList : Vector.<PauseAdImage>;
 		private var itemIndex : int;
 		public var isComplete : Boolean;
+		private var clickLink : String;
 		private static var instance:PauseAd = new PauseAd();
 		public static function getInstance():PauseAd{
 			return instance;
@@ -46,6 +47,7 @@ package vn.meme.cloud.player.btn
 			displayed = 0;
 			displayRule = "";
 			selectRule = "";
+			clickLink = "";
 			backGround = new Sprite();
 			addChild(backGround);
 			title = new Sprite();
@@ -97,13 +99,11 @@ package vn.meme.cloud.player.btn
 				}
 			}
 			addChild(title);
-//			isPauseAd = true;
-//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_complete);
-//			loader.load(new URLRequest(pauseAd.fileLink));
-//			pauseAdUrl = pauseAd.url;
-//			this.addEventListener(MouseEvent.CLICK, function():void{
-//				navigateToURL(new URLRequest(pauseAd.url));
-//			});
+			this.addEventListener(MouseEvent.CLICK, function(ev:MouseEvent):void{
+				CommonUtils.log("192 KA");
+				navigateToURL(new URLRequest(clickLink));
+				ev.stopImmediatePropagation();
+			});
 		}
 		
 		public function onFullScreen():void {
@@ -145,6 +145,7 @@ package vn.meme.cloud.player.btn
 						itemIndex = 0;
 				}
 				imageList[itemIndex].visible = true;
+				clickLink = imageList[itemIndex].getClickLink();
 				displayed += 1;
 				if (displayed >= maxDisplay) 
 					isComplete = true;

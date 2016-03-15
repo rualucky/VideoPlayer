@@ -137,5 +137,9 @@ package vn.meme.cloud.player.btn.pausead
 			arrange(normalWidth, normalHeight);
 		}
 		
+		public function getClickLink():String {
+			return clickLink;
+		}
+		
 	}
 }
