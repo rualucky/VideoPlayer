@@ -12,121 +12,144 @@ package vn.meme.cloud.player.btn
 	
 	import flashx.textLayout.formats.TextAlign;
 	
+	import vn.meme.cloud.player.btn.pausead.PauseAdImage;
 	import vn.meme.cloud.player.common.CommonUtils;
+	import vn.meme.cloud.player.common.VideoPlayerAdsManager;
 	import vn.meme.cloud.player.config.ads.BasicAdInfo;
+	import vn.meme.cloud.player.config.ads.PositionedAdInfo;
 	import vn.meme.cloud.player.event.VideoPlayerEvent;
 	
 	public class PauseAd extends Sprite
 	{
-		
-	 	public var tf : TextField;
+		private var backGround : Sprite;
+		private var titleText : TextField;
+		public var title : Sprite;
 		private var textFormat : TextFormat;
-		private var g : Graphics;
-		private var loader : Loader = new Loader(); 
-		private var target_mc : Loader;
-		private var rawWidth : Number;
-		private var rawHeight : Number;
-		private var rawRate : Number;
-		private var pauseAdUrl : String;
-		
-		public var isPauseAd : Boolean = false;
-		
+		private var maxDisplay : int;
+		private var displayRule : String;
+		private var selectRule : String;
+		public var displayed : int;
+		public var imageList : Vector.<PauseAdImage>;
+		private var itemIndex : int;
+		public var isComplete : Boolean;
 		private static var instance:PauseAd = new PauseAd();
 		public static function getInstance():PauseAd{
 			return instance;
 		}
 		
-		private var vp : VideoPlayer = VideoPlayer.getInstance();
-		
-		public var frame : Sprite = new Sprite();
-		
 		public function PauseAd()
 		{
-			tf = new TextField();	
+			itemIndex = -1;
+			isComplete = false;
+			imageList = new Vector.<PauseAdImage>();
+			maxDisplay = 1;
+			displayed = 0;
+			displayRule = "";
+			selectRule = "";
+			backGround = new Sprite();
+			addChild(backGround);
+			title = new Sprite();
+			titleText = new TextField();	
 			textFormat = new TextFormat("Arial",11,0xffffff);
 			textFormat.align = TextAlign.CENTER;
-			tf.defaultTextFormat = textFormat;
-			tf.wordWrap = true;		
-			tf.mouseEnabled = false;
-			tf.width = 128;
-			tf.height = 22;
-			//tf.text = "Bạn đang xem quảng cáo";
-			tf.text = "You are watching ad";
-			addChild(tf);
-			addChild(frame);
-			var g : Graphics = this.graphics;
+			titleText.defaultTextFormat = textFormat;
+			titleText.wordWrap = true;		
+			titleText.mouseEnabled = false;
+			titleText.width = 128;
+			titleText.height = 22;
+			titleText.text = "Bạn đang xem quảng cáo";
+			titleText.y = -1;
+			drawTitleBackground(titleText.width, titleText.height - 5);
+			//tf.text = "You are watching ad";
+			//addChild(title);
+			title.addChild(titleText);
+		}
+		
+		public function init(w:Number, h:Number):void {
+			drawBackground(backGround, 0xAAAAAA, 1, w, h);
+			title.x = w - title.width - 5;
+			title.y = h - title.height;
+		}
+		
+		private function drawTitleBackground(w:Number, h:Number):void {
+			var g : Graphics = title.graphics;
 			g.clear();
-			g.beginFill(0xAAAAAA);
-			g.drawRect(0, 0, vp.stage.stageWidth, vp.stage.stageHeight - 30);
+			g.beginFill(0x000000, .5);
+			g.drawRoundRect(0, 0, w, h, 10, 10);
 			g.endFill();
 		}
 		
-		public function drawPauseAdFrame(width : Number, height : Number) : void{
-			var g : Graphics = this.graphics;
-			g.clear();
-			g.beginFill(0xAAAAAA);
-			g.drawRect(0, 0, width, height);
-			g.endFill();
-		}
-		
-		public function setPauseAd(pauseAd:BasicAdInfo):void{
-			isPauseAd = true;
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_complete);
-			loader.load(new URLRequest(pauseAd.fileLink));
-			pauseAdUrl = pauseAd.url;
-			this.addEventListener(MouseEvent.CLICK, function():void{
-				navigateToURL(new URLRequest(pauseAd.url));
-			});
-		}
-		
-		
-		private function loader_complete(evt:Event):void {
-			target_mc = evt.currentTarget.loader as Loader;
-			
-			rawWidth = target_mc.width;
-			rawHeight = target_mc.height;
-			rawRate = rawWidth / rawHeight;
-			
-			target_mc.height = vp.stage.stageHeight - 30;
-			target_mc.width = target_mc.height * rawRate;
-			
-			if (target_mc.width > rawWidth || target_mc.height > rawHeight){
-				target_mc.width = rawWidth;
-				target_mc.height = rawHeight;
-			}
-			
-			loader.x = (vp.stage.stageWidth - target_mc.width) / 2;
-			loader.y = (vp.stage.stageHeight - 30 - target_mc.height) / 2;
-			
-			addChild(loader);
-			
-			setChildIndex(loader, 0);
-			setChildIndex(this.tf, 999);
-		}
-		
-		public function changePauseAdSize(player:VideoPlayer):void{
-			if (player != null){
-				if (target_mc){
-					target_mc.height = player.stage.stageHeight - 30;
-					target_mc.width = target_mc.height * rawRate;
-					if (target_mc.width > rawWidth || target_mc.height > rawHeight){
-						target_mc.width = rawWidth;
-						target_mc.height = rawHeight;
-					}
-					if (loader){
-						loader.x = (player.stage.stageWidth - target_mc.width) / 2;
-						loader.y = (player.stage.stageHeight - 30 - target_mc.height) / 2;
-					}
+		public function setPauseAd(pauseAd:PositionedAdInfo):void{
+			if (pauseAd.maxDisplay)
+				maxDisplay = pauseAd.maxDisplay;
+			if (pauseAd.displayRule)
+				displayRule = pauseAd.displayRule;
+			if (pauseAd.selectRule)
+				selectRule = pauseAd.selectRule;
+			if (pauseAd.adtag) {
+				var len : int = pauseAd.adtag.length,
+					i : int;
+				for (i = 0; i < len; i++) {
+					var item : PauseAdImage = new PauseAdImage(pauseAd.adtag[i], i);
+					imageList.push(item);
+					item.visible = false;
+					addChild(item);
 				}
-				player.wait.btnPauseAd.tf.x = player.stage.stageWidth - 134;
-				player.wait.btnPauseAd.tf.y = player.stage.stageHeight - 50;
-				var g : Graphics = vp.wait.btnPauseAd.frame.graphics;
-				g.clear();
-				g.beginFill(0x000000,0.4);
-				//g.drawRoundRect(player.wait.btnPauseAd.tf.x-1,player.wait.btnPauseAd.tf.y+2,130,15,9);
-				g.drawRoundRect(player.wait.btnPauseAd.tf.x+6,player.wait.btnPauseAd.tf.y+2,116,15,9);
-				g.endFill();
+			}
+			addChild(title);
+//			isPauseAd = true;
+//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_complete);
+//			loader.load(new URLRequest(pauseAd.fileLink));
+//			pauseAdUrl = pauseAd.url;
+//			this.addEventListener(MouseEvent.CLICK, function():void{
+//				navigateToURL(new URLRequest(pauseAd.url));
+//			});
+		}
+		
+		public function onFullScreen():void {
+			var len : int = imageList.length,
+				i : int;
+			for (i = 0; i < len; i++) {
+				imageList[i].onFullScreen();
 			}
 		}
+		
+		public function onNormalScreen():void {
+			var len : int = imageList.length,
+				i : int;
+			for (i = 0; i < len; i++) {
+				imageList[i].onNormalScreen();
+			}
+		}
+		
+		private function drawBackground(obj:*, color:uint, alpha:Number, w:Number, h:Number):void { 
+			var g : Graphics = obj.graphics;
+			g.clear();
+			g.beginFill(color, alpha);
+			g.drawRect(0, 0, w, h);
+			g.endFill();
+		}
+		
+		public function displayItem():void {
+			var len : int = imageList.length,
+				i : int;
+			for (i = 0; i < len; i++) {
+				imageList[i].visible = false;
+			}
+			if (displayed < maxDisplay) {
+				if (selectRule == "RANDOM") {
+					itemIndex = Math.floor(Math.random() * len);
+				} else {
+					itemIndex += 1;
+					if (itemIndex >= len)
+						itemIndex = 0;
+				}
+				imageList[itemIndex].visible = true;
+				displayed += 1;
+				if (displayed >= maxDisplay) 
+					isComplete = true;
+			} 
+		}
+		
 	}
 }

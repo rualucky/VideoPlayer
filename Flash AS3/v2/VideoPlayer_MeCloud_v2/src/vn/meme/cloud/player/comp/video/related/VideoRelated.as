@@ -33,15 +33,12 @@ package vn.meme.cloud.player.comp.video.related
 		
 		override public function initSize(ev:Event = null):void{
 			drawBackground(player.stage.stageWidth, player.stage.stageHeight, 0xffffff, 0);
-			if (stage) {
-				arrangeCloseBtn();
-			}
 		}
 		
 		public function arrangeCloseBtn():void {
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (vp) {
-				closeBtn.x = vp.stage.stageWidth - closeBtn.width - 30;
+				closeBtn.x = vp.stage.stageWidth - closeBtn.width - 10;
 				closeBtn.y = 10;
 			}
 		}

@@ -53,7 +53,7 @@ package vn.meme.cloud.player.common
 
 	public class VideoPlayerAdsManager
 	{
-		public static const MAX_RETRY : Number = 3;
+		public static const MAX_RETRY : Number = 1;
 		public static const SELECT_RULE : Object = {
 			RANDOM : "RANDOM",
 			LINEAR : "LINEAR",
@@ -376,6 +376,7 @@ package vn.meme.cloud.player.common
 							player.ads.addChild(adsTimeTitle);
 							player.ads.addChild(adsMoreInformation);
 						}
+						adsMoreInformation.y = player.stage.stageHeight - 35;
 					}
 					if (!ad.linear){
 						if (adsTimeTitle)
@@ -398,22 +399,6 @@ package vn.meme.cloud.player.common
 							}
 						}
 					}
-					/*
-					CommonUtils.log('*****************************');
-					CommonUtils.log('content type: ' +ad.contentType);
-					CommonUtils.log('current time: ' +ad.currentTime);
-					CommonUtils.log('description: ' +ad.description);
-					CommonUtils.log('duration: ' + ad.duration);
-					CommonUtils.log('height: ' +ad.height);
-					CommonUtils.log('linear: ' +ad.linear);
-					CommonUtils.log('media url ' +ad.mediaUrl);
-					CommonUtils.log('min suggested duration ' +ad.minSuggestedDuration);
-					CommonUtils.log('remaining time: ' +ad.remainingTime);
-					CommonUtils.log('skip able: ' +ad.skippable);
-					CommonUtils.log('survey url: ' +ad.surveyUrl);
-					CommonUtils.log('title: ' +ad.title);
-					CommonUtils.log('******************************');
-					*/
 					break;
 				case AdEvent.CLICKED:
 					CommonUtils.log("[MeCloudPlayer] - AD_CLICKED");

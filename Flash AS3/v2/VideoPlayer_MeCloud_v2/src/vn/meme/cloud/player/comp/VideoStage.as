@@ -96,7 +96,7 @@ package vn.meme.cloud.player.comp
 		private var setupEvent : Boolean = false;
 		public var videoType : String = "MP4";
 		
-		private var relatedBtn : Related;
+		public var relatedBtn : Related;
 		
 		/**
 		* contrucstor
@@ -259,8 +259,11 @@ package vn.meme.cloud.player.comp
 		}
 		
 		public function arrangeRelatedBtn(btnWidth:Number):void {
-			relatedBtn.x = player.stage.stageWidth - btnWidth - 20;
-			relatedBtn.y = 10;
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				relatedBtn.x = vp.stage.stageWidth - btnWidth - 10;
+				relatedBtn.y = 10;	
+			}
 		}
 		
 		private function createEvent():void{

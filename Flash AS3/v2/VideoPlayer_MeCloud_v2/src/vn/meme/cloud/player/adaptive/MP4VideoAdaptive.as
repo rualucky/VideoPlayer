@@ -179,7 +179,7 @@ package vn.meme.cloud.player.adaptive
 					vp.controls.pauseBtn.visible = false;
 					vp.controls.playBtn.visible = true;
 					vp.wait.showBigPlay();
-					vp.wait.btnPauseAd.isPauseAd = false;
+					//vp.wait.btnPauseAd.isPauseAd = false;
 					clearInterval(isBufferTimeLine);
 					isBufferTimeLine = 0;
 					vp.videoStage.clearTiming();

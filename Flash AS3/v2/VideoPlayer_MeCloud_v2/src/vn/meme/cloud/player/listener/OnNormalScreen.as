@@ -43,10 +43,9 @@ package vn.meme.cloud.player.listener
 			Fullscreen.getInstance().visible = true;
 			NormalScreen.getInstance().visible = false;
 			vp.controls.resetTiming(false);
-			
-			if (!vp.videoStage.playing && vp.videoStage.firstPlay !=0){
-				vp.wait.btnPauseAd.drawPauseAdFrame(vp.stage.stageWidth, vp.stage.stageHeight - 30);
-				vp.wait.btnPauseAd.changePauseAdSize(vp);
+			vp.wait.btnPauseAd.title.y = vp.stage.stageHeight - vp.wait.btnPauseAd.title.height - 40;
+			if (vp.wait.btnPauseAd.imageList.length > 0) {
+				vp.wait.btnPauseAd.onNormalScreen();
 			}
 			var ct : Controls = vp.controls;
 			ct.fullscreenBtn.visible = true;
@@ -56,6 +55,9 @@ package vn.meme.cloud.player.listener
 			if (vp.related.isRelated){
 				vp.related.container.resizeNormalScreen(vp.stage.stageWidth, vp.stage.stageHeight);
 			}
+			vp.videoStage.arrangeRelatedBtn(vp.videoStage.relatedBtn.width);
+			vp.related.arrangeCloseBtn();
+			vp.controls.waterMark.setPositionLogo();
 			TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION,"Normal Screen", vp.playInfo.titleAndVideoIdInfo);
 		}
 		

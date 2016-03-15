@@ -248,6 +248,7 @@ package vn.meme.cloud.player.comp
 				if (self.y >= player.stage.stageHeight - 2){
 					clearInterval(timing);
 				}
+				player.wait.btnPauseAd.title.y += 2;
 			},4);
 			
 		}

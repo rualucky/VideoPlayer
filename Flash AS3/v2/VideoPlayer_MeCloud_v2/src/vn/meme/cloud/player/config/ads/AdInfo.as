@@ -25,8 +25,13 @@ package vn.meme.cloud.player.config.ads
 			}
 			if (data.post)
 				post = new PositionedAdInfo(data.post,PositionedAdInfo.POST);
-			if (data.pausead){
+			if (data.pausead && data.pausead.adtag && data.pausead.adtag.length > 0){
 				pausead = new PositionedAdInfo(data.pausead, PositionedAdInfo.PAUSE_AD);
+				var vp : VideoPlayer = VideoPlayer.getInstance();
+				if (vp) {
+					vp.wait.isPauseAdData = true;
+					vp.wait.btnPauseAd.setPauseAd(pausead);
+				}
 			}		
 		}
 		

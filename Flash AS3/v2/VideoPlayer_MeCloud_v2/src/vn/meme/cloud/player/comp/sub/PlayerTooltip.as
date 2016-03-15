@@ -28,7 +28,7 @@ package vn.meme.cloud.player.comp.sub
 			this.visible = false;
 		}
 		
-		public function showRelated(v:String,x:int,y:int):void {
+		public function showRelated(v:String,x:int,y:int, x1:int, y1:int):void {
 			if (x < 10)
 				this.x = 10;
 			else if (this.player.stage.stageWidth - x < 10)
@@ -51,10 +51,11 @@ package vn.meme.cloud.player.comp.sub
 				endFill();
 				beginFill(0x555555);
 				
-				moveTo(25, -24);
-				lineTo(30, -29);
-				lineTo(35, -24);
-				lineTo(25, -24);
+				//moveTo(25, -24);
+				moveTo(x1, y1);
+				lineTo(x1 + 5, y1 - 5);
+				lineTo(x1 + 10, y1);
+				lineTo(x1, y1);
 				
 				endFill();
 			}

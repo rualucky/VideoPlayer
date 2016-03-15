@@ -7,8 +7,10 @@ package vn.meme.cloud.player.btn
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	import vn.meme.cloud.player.common.CommonUtils;
+	import vn.meme.cloud.player.comp.sub.PlayerTooltip;
 	import vn.meme.cloud.player.event.VideoPlayerEvent;
 
 	public class CloseBtn extends VideoPlayerButton
@@ -31,12 +33,17 @@ package vn.meme.cloud.player.btn
 				g.beginFill(0xffffff, 0);
 				g.drawRect(0, 0, svg.width, svg.height);
 				g.endFill();
+				var vp : VideoPlayer = VideoPlayer.getInstance();
+				if (vp) {
+					vp.related.arrangeCloseBtn();
+				}
 			});
 			addEventListener(MouseEvent.MOUSE_OVER, function():void{
-				CommonUtils.log("OVER");
+				//var point : Point = localToGlobal(new Point(0, 50));
+				//PlayerTooltip.getInstance().showRelated("Đóng", point.x, point.y, 5, -24);
 			});
 			addEventListener(MouseEvent.MOUSE_OUT, function():void{
-				CommonUtils.log("OUT");
+				//PlayerTooltip.getInstance().visible = false;
 			});
 			addEventListener(MouseEvent.CLICK, function(ev:MouseEvent):void{
 				var vp : VideoPlayer = VideoPlayer.getInstance();

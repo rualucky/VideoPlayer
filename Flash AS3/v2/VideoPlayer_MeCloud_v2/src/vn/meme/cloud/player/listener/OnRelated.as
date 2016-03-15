@@ -9,8 +9,13 @@ package vn.meme.cloud.player.listener
 	{
 		public function excuteLogic(vp:VideoPlayer, vs:VideoStage, ev:VideoPlayerEvent):Boolean
 		{
-			vs.pause();
-			vp.controls.showPlay();
+		
+			if (vs.playing) {
+				vs.pause();
+				vp.controls.showPlay();
+			} else {
+				vp.wait.hideButton();
+			}
 			vp.related.visible = true;
 			return false;
 			

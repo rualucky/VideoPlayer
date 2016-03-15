@@ -97,11 +97,11 @@ package vn.meme.cloud.player.comp.video.related
 			var len : int = data.length;
 			for (var i : int = 0; i < len; i++) {
 				itemArray[i].create(data[i], data[i].title, data[i].duration, data[i].img, this.itemTotal);
-				itemArray[i].drawItemBackground(this.itemWidth, this.itemHeight);
+				//itemArray[i].drawItemBackground(this.itemWidth, this.itemHeight);
 			}
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (vp) {
-				drawBackground(0x00cc99, 1, vp.stage.stageWidth, vp.stage.stageHeight);	
+				drawBackground(0x000000, .8, vp.stage.stageWidth, vp.stage.stageHeight);
 			}
 		}
 		
@@ -253,6 +253,7 @@ package vn.meme.cloud.player.comp.video.related
 			for (var i : int = 0; i < this.itemTotal; i++) {
 				itemArray[i].onFullScreenMode();
 			}
+			drawBackground(0x000000, .8, w, h);
 		}
 		
 		public function resizeNormalScreen(w:int, h:int):void {
@@ -261,27 +262,29 @@ package vn.meme.cloud.player.comp.video.related
 			for (var i : int = 0; i < this.itemTotal; i++) {
 				itemArray[i].onNormalScreenMode();
 			}
-			if (itemTotal == 1) {
-				arrangeOneItem();
-			}
-		}
-		
-		private function arrangeOneItem():void {
-			item1.x = ctnX + (this.itemWidth - item1.itemWidth) / 2;
+			drawBackground(0x000000, .8, w, h);
 		}
 		
 		private function setContainerSize(w:int, h:int):void {
+			/*
 			containerWidth = w * .9;
 			containerHeight = (h - 30) * .9;
 			ctnX = w * .05;
 			ctnY = (h - 30) * .05;
+			*/
+			containerWidth = w - 60;
+			containerHeight = h - 90;
+			ctnX = 30;
+			ctnY = 45;
+			//drawContainerBg(containerWidth, containerHeight, 30, 45);
+			CommonUtils.log("CONTAINER SIZE: " + containerWidth + " " + containerHeight);
 		}
 		
 		//******************** test function
 		private function drawContainerBg(w:int, h:int, posX:int = 0, posY:int = 0):void {
 			var g : Graphics = this.graphics;
 			g.clear();
-			g.beginFill(0xffffff, 1);
+			g.beginFill(0xFF0000, 1);
 			g.drawRect(posX, posY, w, h);
 			g.endFill();
 		}

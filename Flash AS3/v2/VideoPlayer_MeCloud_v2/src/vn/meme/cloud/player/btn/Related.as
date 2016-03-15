@@ -18,16 +18,17 @@ package vn.meme.cloud.player.btn
 		private var svg : SVGDocument;
 		private var WIDTH : int;
 		private var cover : Sprite;
-		
+		private var self : *;
 		public function Related()
 		{
 			super(VideoPlayerEvent.RELATED);
+			self = this;
 			WIDTH = 30;
 			svg = new SVGDocument();
 			addChild(svg);
 			cover = new Sprite();
 			addChild(cover);
-			drawBg(this, 0x00cc99);
+			drawBg(this, 0x000000);
 			drawBg(cover, 0xffffff, 0);
 			ProcessExecutor.instance.initialize(this.stage);
 			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
@@ -37,7 +38,7 @@ package vn.meme.cloud.player.btn
 				svg.y = (WIDTH - svg.height) / 2;
 				var vp : VideoPlayer = VideoPlayer.getInstance();
 				if (vp) {
-					vp.videoStage.arrangeRelatedBtn(svg.width);
+					vp.videoStage.arrangeRelatedBtn(self.width);
 				}
 			});
 			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
@@ -53,7 +54,7 @@ package vn.meme.cloud.player.btn
 		
 		override protected function onMouseOver(ev:MouseEvent=null):void {
 			var point : Point = localToGlobal(new Point(-15, 60));
-			PlayerTooltip.getInstance().showRelated("Video liên quan", point.x, point.y);
+			PlayerTooltip.getInstance().showRelated("Video liên quan", point.x, point.y, 25, -24);
 		}
 		
 		private function drawBg(obj:*, color:uint = 0x000000, alpha:Number = 1):void {
