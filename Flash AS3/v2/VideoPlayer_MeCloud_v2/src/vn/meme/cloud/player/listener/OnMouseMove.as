@@ -39,6 +39,9 @@ package vn.meme.cloud.player.listener
 					vp.controls.waterMark.show();
 					vp.controls.waterMark.y = vp.controls.waterMark.currentPosY;
 			}
+			if (vp.plugin.isPlugin) {
+				vp.plugin.show();
+			}
 			vp.wait.btnPauseAd.title.y = vp.stage.stageHeight - vp.wait.btnPauseAd.title.height - 40;
 			return true;
 		}

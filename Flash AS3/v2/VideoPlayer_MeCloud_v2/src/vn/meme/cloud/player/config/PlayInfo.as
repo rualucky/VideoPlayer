@@ -156,7 +156,7 @@ package vn.meme.cloud.player.config
 			CommonUtils.log("data optionVideoEnd");
 			
 			titleAndVideoIdInfo = this.title + " [" + this.vid +"]";
-			CommonUtils.log("title and video id");
+			CommonUtils.log("title and video id " + titleAndVideoIdInfo);
 			if (data.ga && data.ga.id){
 				if (data.ga.id is Array){
 					for (var j :int = 0; j < data.ga.id.length; j++){
@@ -170,9 +170,10 @@ package vn.meme.cloud.player.config
 				CommonUtils.log(" ga 1");
 			}
 			
-			var MeCloudGA : String = "UA-68206175-1";
-			GATracking.getInstance().loadSDK(MeCloudGA, gaIdList);
-			CommonUtils.log("ga 2");
+			//var MeCloudGA : String = "UA-68206175-1";
+			var testGA : String = "UA-67703167-3" //test ga tduy
+			GATracking.getInstance().loadSDK(testGA, gaIdList);
+			CommonUtils.log("ga 2 " + testGA);
 			//var  gg: String = "UA-67703167-2";
 			
 			//var ga2 : String = "UA-68205954-1";
@@ -203,9 +204,15 @@ package vn.meme.cloud.player.config
 			if (data.related && data.related.length > 0){
 				if (vp){
 					vp.related.container.createItem(data.related);
-					vp.related.isRelated = true;					
+					vp.related.isRelated = true;	
+					vp.plugin.isPlugin = true;
 				} 
 				//vp.related.container.createItem(data.related);
+			}
+			
+			if (data.videoShare) {
+				if (data.videoShare.sharing)
+					vp.plugin.isPlugin = true;
 			}
 			
 			///////////////////////////// VIDEO V2

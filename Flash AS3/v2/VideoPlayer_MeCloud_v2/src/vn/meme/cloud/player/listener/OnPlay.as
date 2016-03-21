@@ -37,6 +37,7 @@ package vn.meme.cloud.player.listener
 				if (vs.isEnd()){
 					vs.setVideoUrl(vp.videoStage.url);
 					vs.restartVideoStage();
+					vp.wait.btn.btnCenter.showPlay();
 				}
 				if (!vs.isEnd() && vs.fstPlay)
 					TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION,"Play", vp.playInfo.titleAndVideoIdInfo);
@@ -59,7 +60,11 @@ package vn.meme.cloud.player.listener
 			else {
 				vs.resume();
 			}
-			vp.related.hide();
+			
+			if (vp.related.visible)
+				vp.related.hide();
+			if (vp.sharing.isSharingShowing)
+				vp.sharing.hide(vp.stage.stageHeight);
 			return true;
 		}
 		

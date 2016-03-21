@@ -1,5 +1,6 @@
 package vn.meme.cloud.player.comp
 {
+	
 	import vn.meme.cloud.player.common.CommonUtils;
 
 	public class VideoPlayerSkin
@@ -9,8 +10,14 @@ package vn.meme.cloud.player.comp
 		private var isLive : Boolean;
 		private var isOnline : Boolean;
 		
+		private static var instance : VideoPlayerSkin;
+		public static function getInstance() : VideoPlayerSkin {
+			return instance; 
+		}
+		
 		public function VideoPlayerSkin()
 		{
+			instance = this;
 			_currentColor = MECLOUD_COLOR;
 			isLive = false;
 			isOnline = false;

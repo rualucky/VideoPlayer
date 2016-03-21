@@ -58,7 +58,6 @@ package vn.meme.cloud.player.listener
 			}
 			if (vp.related.isRelated){
 				vp.related.arrangeCloseBtn();
-				vp.videoStage.arrangeRelatedBtn(vp.videoStage.relatedBtn.width);
 				vp.controls.waterMark.setPositionLogo();
 				ct.resetTiming(false);
 				vp.related.container.resizeFullScreen(vp.stage.stageWidth, vp.stage.stageHeight);

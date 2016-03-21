@@ -6,6 +6,7 @@ package vn.meme.cloud.player.comp
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
+	import flash.external.ExternalInterface;
 	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetConnection;
@@ -37,6 +38,7 @@ package vn.meme.cloud.player.comp
 	import vn.meme.cloud.player.adaptive.VideoAdaptiveEvent;
 	import vn.meme.cloud.player.btn.BigPlay;
 	import vn.meme.cloud.player.btn.Related;
+	import vn.meme.cloud.player.btn.Sharing;
 	import vn.meme.cloud.player.btn.VolumeSlider;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.MidrollManager;
@@ -96,8 +98,6 @@ package vn.meme.cloud.player.comp
 		private var setupEvent : Boolean = false;
 		public var videoType : String = "MP4";
 		
-		public var relatedBtn : Related;
-		
 		/**
 		* contrucstor
 		*/
@@ -130,24 +130,22 @@ package vn.meme.cloud.player.comp
 				vp.easyVideoTitle.visible = true;
 			});
 			addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
 		}
 		
-		private function onMouseOver(ev:Event):void {
-			var vp : VideoPlayer = VideoPlayer.getInstance();
-			if (vp) {
-				this.relatedBtn.visible = true;
+		public function onMouseOver(ev:Event):void {
+			if (player.plugin.isPlugin) {
+				if (!player.plugin.isHidden) {
+					player.plugin.show();
+				}
 			}
 		}
 		
-		private function onMouseOut(ev:Event):void {
-			var vp : VideoPlayer = VideoPlayer.getInstance();
-			if (vp) 
-				this.relatedBtn.visible = false;
+		public function onMouseOut(ev:Event):void {
+			player.plugin.hide();
 		}
 		
-		private function onMouseMove(ev:Event):void {
+		public function onMouseMove(ev:Event):void {
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (vp) {
 				vp.controls.visible = true;
@@ -209,6 +207,8 @@ package vn.meme.cloud.player.comp
 		}
 				
 		public function setVideoUrl(url:String):void{
+			CommonUtils.log("SET VIDEO URL");
+			ExternalInterface.call("MeCloudVideoPlayer.test");
 			playerWidth = this.stage.width;
 			playerHeight = this.stage.height;
 			
@@ -221,7 +221,6 @@ package vn.meme.cloud.player.comp
 			// stop old
 			if (video && this.contains(video)){
 				removeChild(video);
-				removeChild(relatedBtn);
 			}
 			if (netstream){
 				netstream.close();
@@ -242,9 +241,6 @@ package vn.meme.cloud.player.comp
 			video.smoothing = true;
 			addChild(video);
 			this.createEvent();
-		
-			relatedBtn = new Related();
-			addChild(relatedBtn);
 			
 			this.volume = VideoPlayer.getInstance().controls.volumeSlider.value;
 			
@@ -253,44 +249,60 @@ package vn.meme.cloud.player.comp
 				VideoPlayer.getInstance().controls.volumeSlider.value = VolumeSlider.MAX_WIDTH / 2;
 				VideoPlayer.getInstance().controls.mute.visible = false;
 				VideoPlayer.getInstance().controls.volume.visible = true;
-				CommonUtils.log('vol : ' + 50);
 			}
 			
 		}
 		
-		public function arrangeRelatedBtn(btnWidth:Number):void {
-			var vp : VideoPlayer = VideoPlayer.getInstance();
-			if (vp) {
-				relatedBtn.x = vp.stage.stageWidth - btnWidth - 10;
-				relatedBtn.y = 10;	
+		public function onMouseClick(ev:Event):void {
+			CommonUtils.log('video stage click');
+			if (isPlaying){
+				var t : Number = new Date().time;
+				CommonUtils.log("Date().time: " + t);
+				if (t - clicked < 200){
+					if (CommonUtils.freeze()){							
+						self.dispatchEvent(new VideoPlayerEvent(
+							stage.displayState == StageDisplayState.NORMAL ? VideoPlayerEvent.FULLSCREEN : VideoPlayerEvent.NORMALSCREEN));
+					}
+					clearTimeout(clickTiming);
+				} else {
+					clickTiming = setTimeout(function():void{
+						if (CommonUtils.freeze()){
+							self.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PAUSE));
+						}
+					},200);
+				}
+				clicked = t;
+			} else {
+				self.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PLAY));
 			}
 		}
 		
 		private function createEvent():void{
 			if (this.setupEvent) return;
-			addEventListener(MouseEvent.CLICK,function(ev:Event):void{
-				CommonUtils.log('video stage click');
-				if (isPlaying){
-					var t : Number = new Date().time;
-					CommonUtils.log("Date().time: " + t);
-					if (t - clicked < 200){
-						if (CommonUtils.freeze()){							
-							self.dispatchEvent(new VideoPlayerEvent(
-								stage.displayState == StageDisplayState.NORMAL ? VideoPlayerEvent.FULLSCREEN : VideoPlayerEvent.NORMALSCREEN));
-						}
-						clearTimeout(clickTiming);
-					} else {
-						clickTiming = setTimeout(function():void{
-							if (CommonUtils.freeze()){
-								self.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PAUSE));
-							}
-						},200);
-					}
-					clicked = t;
-				} else {
-					self.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PLAY));
-				}
-			});
+			addEventListener(MouseEvent.CLICK, onMouseClick);
+//			addEventListener(MouseEvent.CLICK,function(ev:Event):void{
+//				CommonUtils.log('video stage click');
+//				if (isPlaying){
+//					var t : Number = new Date().time;
+//					CommonUtils.log("Date().time: " + t);
+//					if (t - clicked < 200){
+//						if (CommonUtils.freeze()){							
+//							self.dispatchEvent(new VideoPlayerEvent(
+//								stage.displayState == StageDisplayState.NORMAL ? VideoPlayerEvent.FULLSCREEN : VideoPlayerEvent.NORMALSCREEN));
+//						}
+//						clearTimeout(clickTiming);
+//					} else {
+//						clickTiming = setTimeout(function():void{
+//							if (CommonUtils.freeze()){
+//								self.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PAUSE));
+//							}
+//						},200);
+//					}
+//					clicked = t;
+//				} else {
+//					self.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PLAY));
+//				}
+//			});
 			this.adaptive.addEventListener(VideoAdaptiveEvent.ON_META_DATA, function(ev:VideoAdaptiveEvent):void{
 				var infoObject : * = ev.data;
 				if (!infoObject) return;
@@ -321,11 +333,6 @@ package vn.meme.cloud.player.comp
 			CommonUtils.log('Play video');
 			if (fstPlay){
 				CommonUtils.log('First Play');
-				/*
-				setTimeout(function():void{
-					CommonUtils.log(self.adaptive.netStream.bytesLoaded + ' ' + self.adaptive.netStream.bytesTotal);
-				}, 10000);
-				*/
 			}
 			playTime = 0;
 			end = false;
@@ -467,7 +474,6 @@ package vn.meme.cloud.player.comp
 		}
 		
 		public function mute():void{
-			CommonUtils.log('volume off');
 			volume = 0;
 		}
 		
@@ -555,14 +561,12 @@ package vn.meme.cloud.player.comp
 		}
 		
 		public function clearTiming():void{
-			CommonUtils.log('clear timing');
 			clearInterval(this.timing);
 			this.timing = 0;
 		}
 		
 		public function setTiming():void{
 			clearTiming();
-			CommonUtils.log('set timing');
 			timing = setInterval(onPlaying, 10);
 		}
 		

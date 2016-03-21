@@ -55,7 +55,6 @@ package vn.meme.cloud.player.listener
 			if (vp.related.isRelated){
 				vp.related.container.resizeNormalScreen(vp.stage.stageWidth, vp.stage.stageHeight);
 			}
-			vp.videoStage.arrangeRelatedBtn(vp.videoStage.relatedBtn.width);
 			vp.related.arrangeCloseBtn();
 			vp.controls.waterMark.setPositionLogo();
 			TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION,"Normal Screen", vp.playInfo.titleAndVideoIdInfo);

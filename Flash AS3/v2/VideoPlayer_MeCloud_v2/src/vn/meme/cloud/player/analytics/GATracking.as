@@ -60,7 +60,7 @@ package vn.meme.cloud.player.analytics
 			
 			this.trackEvent(TrackingCategory.PLAYER_ACTION,"Player Loaded");
 			CommonUtils.log("GA player action");
-			this.trackEvent(TrackingCategory.PLAYER_TECHNOLOGY,"Flash");
+			this.trackEvent(TrackingCategory.PLAYER_TECH,"Flash");
 			CommonUtils.log("GA player technology");
 			while (eventQueue.length > 0){
 				instance.trackEventObj(eventQueue.shift());

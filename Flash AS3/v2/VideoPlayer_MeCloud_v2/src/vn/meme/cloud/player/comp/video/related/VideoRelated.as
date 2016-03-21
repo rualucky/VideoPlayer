@@ -20,14 +20,14 @@ package vn.meme.cloud.player.comp.video.related
 	{
 		public var container : VideoRelatedContainer;
 		public var isRelated : Boolean = false;
-		private var closeBtn : CloseBtn;
+		public var closeBtn : CloseRelated
 		public function VideoRelated(player:VideoPlayer)
 		{
 			super(player);
 			this.visible = false;
 			container = new VideoRelatedContainer(player);
 			addChild(container);
-			closeBtn = new CloseBtn();
+			closeBtn = new CloseRelated();
 			addChild(closeBtn);
 		}
 		

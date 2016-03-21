@@ -9,15 +9,12 @@ package vn.meme.cloud.player.listener
 	{
 		
 		public function excuteLogic(vp : VideoPlayer, vs : VideoStage, ev:VideoPlayerEvent):Boolean{
-			vp.controls.replayBtn.visible = false;
-			if (vp.related.isRelated){
-				vp.related.hide();
-			}
 			OnPlay.getInstance().excuteLogic(vp,vs,ev);
 			OnPlay.getInstance().updateView(vp);
 			return false;
 		}
 		public function updateView(vp : VideoPlayer):void{
+			vp.controls.replayBtn.visible = false;
 		}
 		
 		public function eventName():String

@@ -40,9 +40,12 @@ package vn.meme.cloud.player.comp.sub
 		private var timeClicked : Number;
 		private var timeHover : Number;
 		private var time : Number;
+		private var posY : Number;
+		private var timeLineHeight : Number;
 		
 		public function TimeLine(player:VideoPlayer)
 		{
+			changeHeight(-2, 3);
 			this.play = 0;
 			this.load = 0;
 			sizeTiming = 0;
@@ -59,6 +62,10 @@ package vn.meme.cloud.player.comp.sub
 			this.addEventListener(MouseEvent.CLICK, onMouseClick);
 		}
 		
+		private function changeHeight(yy:Number, hei:Number): void{
+			posY = yy;
+			timeLineHeight = hei;
+		}
 		private function onMouseClick(ev:MouseEvent):void{
 			if (vs.checkHLS){		
 					this.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.SEEK, timeHover));
@@ -71,20 +78,21 @@ package vn.meme.cloud.player.comp.sub
 		private function onMouseOver(ev:MouseEvent):void{	
 			if (vs.checkHLS){
 			} else {
+				
 				clearTimeout(timing);
 				clearInterval(sizeTiming);
 				//sizeTiming = setInterval(larging,50);
-				this.scaleY = 4;
-				this.y = -1;
+				changeHeight(-11, 12);
+				redraw()
 			}
 		}
 		
 		private function onMouseOut(ev:MouseEvent):void{
+			changeHeight(-2, 3);
+			redraw();
 			clearTimeout(timing);
 			timing = setTimeout(normalMode,3000);
 			PlayerTooltip.getInstance().visible = false;
-			this.scaleY = 1;
-			this.y = 2;
 			columnLayer.visible = false;
 		}
 		
@@ -94,7 +102,7 @@ package vn.meme.cloud.player.comp.sub
 				if(vs.checkHLS){	
 				} else {				
 				PlayerTooltip.getInstance().show(TimeDisplay.toTimeDisplay((ev.localX /player.stage.stageWidth ) * player.videoStage.getLength() / 1000),
-					ev.stageX, localToGlobal(new Point(0,-4)).y, true);
+					ev.stageX, localToGlobal(new Point(0,-19)).y, true);
 				clearTimeout(timing);				
 				}				
 			}
@@ -110,6 +118,8 @@ package vn.meme.cloud.player.comp.sub
 			redraw();
 		}
 		
+		
+		
 		public function setPlay(play:Number):void{
 			this.play = play;
 			redrawPlayLayer();
@@ -123,9 +133,11 @@ package vn.meme.cloud.player.comp.sub
 		private function redraw():void{
 			var self : TimeLine = this;
 			with (graphics){
-				clear();				
+				clear();		
+				beginFill(0xffffff, 0); //0x4f4f4f
+				drawRect(0,-11,player.stage.stageWidth,12);
 				beginFill(0xffffff, .2); //0x4f4f4f
-				drawRect(0,-2,player.stage.stageWidth,3);
+				drawRect(0, posY,player.stage.stageWidth,timeLineHeight);
 				endFill();
 			}
 			redrawBuffered();
@@ -138,7 +150,7 @@ package vn.meme.cloud.player.comp.sub
 				with (bufferedLayer.graphics){
 					clear();
 					beginFill(0x777777, .4); //0x777777
-					drawRect(0,-2,player.stage.stageWidth * self.load,3);
+					drawRect(0,posY,player.stage.stageWidth * self.load,timeLineHeight);
 					endFill();
 				}
 			}
@@ -150,7 +162,7 @@ package vn.meme.cloud.player.comp.sub
 				with (playLayer.graphics){
 					clear();
 					beginFill(player.skin.currentColor); 
-					drawRect(0,-2,player.stage.stageWidth * self.play,3);
+					drawRect(0,posY,player.stage.stageWidth * self.play,timeLineHeight);
 					endFill();
 				}
 			}
@@ -161,7 +173,7 @@ package vn.meme.cloud.player.comp.sub
 			with (playLayer.graphics){
 				clear();
 				beginFill(0x3ea9f5); 
-				drawRect(0,-2,player.stage.stageWidth * rate,3);
+				drawRect(0,posY,player.stage.stageWidth * rate,timeLineHeight);
 				endFill();
 			}
 		}

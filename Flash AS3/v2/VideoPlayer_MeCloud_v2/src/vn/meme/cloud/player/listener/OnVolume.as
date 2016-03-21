@@ -23,8 +23,8 @@ package vn.meme.cloud.player.listener
 			ct.volumeSlider.volumeLastTime = ct.volumeSlider.volumeX.data.lastTime;
 			if (!ct.volumeSlider.volumeLastTime || ct.volumeSlider.volumeLastTime >= 100){
 				ct.volumeSlider.volumeLastTime = 100;
-			} else if (ct.volumeSlider.volumeLastTime <=10){
-				ct.volumeSlider.volumeLastTime = 11;
+			} else if (ct.volumeSlider.volumeLastTime <=5){
+				ct.volumeSlider.volumeLastTime = 5;
 			}
 			vs.volumeOn();
 			ct.volumeSlider.changeSlider(ct.volumeSlider.volumeLastTime / (100 / VolumeSlider.MAX_WIDTH));

@@ -21,13 +21,16 @@ package
 	
 	import vn.meme.cloud.player.btn.BigPlay;
 	import vn.meme.cloud.player.btn.Buffering;
+	import vn.meme.cloud.player.btn.Sharing;
 	import vn.meme.cloud.player.btn.subtitles.CharacterEdgeStyleFrame;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.PingUtils;
 	import vn.meme.cloud.player.comp.AdsLayer;
 	import vn.meme.cloud.player.comp.Controls;
 	import vn.meme.cloud.player.comp.VideoPlayerComponent;
+	import vn.meme.cloud.player.comp.VideoPlayerPlugin;
 	import vn.meme.cloud.player.comp.VideoPlayerSkin;
+	import vn.meme.cloud.player.comp.VideoSharing;
 	import vn.meme.cloud.player.comp.VideoStage;
 	import vn.meme.cloud.player.comp.VideoThumbnail;
 	import vn.meme.cloud.player.comp.WaitingLayer;
@@ -57,6 +60,7 @@ package
 	import vn.meme.cloud.player.listener.OnReplay;
 	import vn.meme.cloud.player.listener.OnResize;
 	import vn.meme.cloud.player.listener.OnSeek;
+	import vn.meme.cloud.player.listener.OnShare;
 	import vn.meme.cloud.player.listener.OnSignClick;
 	import vn.meme.cloud.player.listener.OnVideoEnd;
 	import vn.meme.cloud.player.listener.OnVolume;
@@ -111,6 +115,8 @@ package
 		public var pingUtils : PingUtils;
 		public var buffering : Buffering; 
 		public var related : VideoRelated;
+		public var sharing : VideoSharing;
+		public var plugin : VideoPlayerPlugin;
 		public var freeSeekTime : Number = 0;
 		public var displayedPauseAd : int = 0;
 		public var easyVideoTitle : EasyvideoTitle;
@@ -173,6 +179,7 @@ package
 			this.setupEventListener(new OnDisplaySubtile());
 			this.setupEventListener(new OnWaterMark());
 			this.setupEventListener(new OnRelated());
+			this.setupEventListener(new OnShare());
 			CommonUtils.log("setup player listener");
 			
 			// ad listener
@@ -215,7 +222,9 @@ package
 			CommonUtils.log('com 1');
 			this.setupComponent(videoStage = new VideoStage(this));CommonUtils.log('com 2');
 			this.setupComponent(thumb = new VideoThumbnail(this));CommonUtils.log('com 3');
+			this.setupComponent(plugin = new VideoPlayerPlugin(this));
 			this.setupComponent(related = new VideoRelated(this));CommonUtils.log('com 8');
+			this.setupComponent(sharing = new VideoSharing(this));
 			this.setupComponent(wait = new WaitingLayer(this));CommonUtils.log('com 5');
 			this.setupComponent(controls = new Controls(this));CommonUtils.log('com 4');
 			this.setupComponent(ads = new AdsLayer(this));CommonUtils.log('com 6');
@@ -342,9 +351,9 @@ package
 			this.setupComponent(videoStage = new VideoStage(this));
 			this.setupComponent(thumb = new VideoThumbnail(this));
 			this.setupComponent(related = new VideoRelated(this));
-			this.setupComponent(controls = new Controls(this));
-			
+			this.setupComponent(sharing = new VideoSharing(this));
 			this.setupComponent(wait = new WaitingLayer(this));
+			this.setupComponent(controls = new Controls(this));
 			this.setupComponent(ads = new AdsLayer(this));
 			this.setupComponent(PlayerTooltip.getInstance());
 			var vq : VideoQuality = playInfo.video[playInfo.defaultQuality?playInfo.defaultQuality:0];
@@ -368,9 +377,9 @@ package
 			this.setupComponent(videoStage = new VideoStage(this));
 			this.setupComponent(thumb = new VideoThumbnail(this));
 			this.setupComponent(related = new VideoRelated(this));
-			this.setupComponent(controls = new Controls(this));
-			
+			this.setupComponent(sharing = new VideoSharing(this));
 			this.setupComponent(wait = new WaitingLayer(this));
+			this.setupComponent(controls = new Controls(this));
 			this.setupComponent(ads = new AdsLayer(this));
 			this.setupComponent(PlayerTooltip.getInstance());
 			var vq : VideoQuality = playInfo.video[playInfo.defaultQuality?playInfo.defaultQuality:0];

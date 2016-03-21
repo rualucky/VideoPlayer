@@ -9,19 +9,21 @@ package vn.meme.cloud.player.btn
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.comp.sub.PlayerTooltip;
 	import vn.meme.cloud.player.event.VideoPlayerEvent;
-	
-	public class Related extends VideoPlayerButton
+
+	public class Sharing extends VideoPlayerButton
 	{
 		private var svg : SVGDocument;
 		private var WIDTH : int;
 		private var cover : Sprite;
 		private var self : *;
-		public function Related()
+		public var isShareData : Boolean;
+		private var point : Point;
+		public function Sharing()
 		{
-			super(VideoPlayerEvent.RELATED);
+			super(VideoPlayerEvent.SHARING);
+			isShareData = true;
 			self = this;
 			WIDTH = 30;
 			svg = new SVGDocument();
@@ -32,13 +34,13 @@ package vn.meme.cloud.player.btn
 			drawBg(cover, 0xffffff, 0);
 			ProcessExecutor.instance.initialize(this.stage);
 			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/btn-related.svg');
+			svg.load('asset/btn-share.svg');
 			svg.addEventListener(SVGEvent.RENDERED, function():void {
 				svg.x = (WIDTH - svg.width) / 2 - 2;
-				svg.y = (WIDTH - svg.height) / 2;
+				svg.y = (WIDTH - svg.height) / 2 - 1.5;
 				var vp : VideoPlayer = VideoPlayer.getInstance();
 				if (vp) {
-					vp.plugin.arrangeRelatedBtn(svg.width + 10);
+					vp.plugin.arrangeShareBtn(svg.width + 10);
 				}
 			});
 			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
@@ -54,8 +56,17 @@ package vn.meme.cloud.player.btn
 		}
 		
 		override protected function onMouseOver(ev:MouseEvent=null):void {
-			var point : Point = localToGlobal(new Point(-15, 60));
-			PlayerTooltip.getInstance().showRelated("Video liên quan", point.x, point.y, 25, -24);
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				if (vp.related.isRelated) {
+					point = localToGlobal(new Point(14, 60));
+					PlayerTooltip.getInstance().showRelated("Share video", point.x, point.y, -4, -24);
+				} else {
+					point = localToGlobal(new Point(-4, 60));
+					PlayerTooltip.getInstance().showRelated("Share video", point.x, point.y, 15, -24);
+				}
+			}
+			
 		}
 		
 		private function drawBg(obj:*, color:uint = 0x000000, alpha:Number = 1):void {
@@ -65,6 +76,5 @@ package vn.meme.cloud.player.btn
 			g.drawRoundRect(0, 0, WIDTH, WIDTH, 5, 5);
 			g.endFill();
 		}
-		
 	}
 }

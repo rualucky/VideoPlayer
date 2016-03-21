@@ -17,6 +17,7 @@ package vn.meme.cloud.player.btn
 	{
 		private var svg : SVGDocument;
 		private var cover : Sprite;
+		
 		public function CloseBtn()
 		{
 			super(VideoPlayerEvent.CLOSE);
@@ -35,24 +36,18 @@ package vn.meme.cloud.player.btn
 				g.endFill();
 				var vp : VideoPlayer = VideoPlayer.getInstance();
 				if (vp) {
-					vp.related.arrangeCloseBtn();
+					if (vp.plugin.shareBtn)
+						vp.sharing.closeButton.x = vp.stage.stageWidth - svg.width - 10;
+					if (vp.plugin.relatedBtn) {
+						vp.related.closeBtn.x = vp.stage.stageWidth - svg.width - 10;
+						vp.related.closeBtn.y = 10;
+					}
 				}
 			});
-			addEventListener(MouseEvent.MOUSE_OVER, function():void{
-				//var point : Point = localToGlobal(new Point(0, 50));
-				//PlayerTooltip.getInstance().showRelated("Đóng", point.x, point.y, 5, -24);
-			});
-			addEventListener(MouseEvent.MOUSE_OUT, function():void{
-				//PlayerTooltip.getInstance().visible = false;
-			});
-			addEventListener(MouseEvent.CLICK, function(ev:MouseEvent):void{
-				var vp : VideoPlayer = VideoPlayer.getInstance();
-				if (vp) {
-					vp.related.hide();
-					dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PLAY));
-				}
-				ev.stopImmediatePropagation();
-			});			
+		}
+		
+		protected function onMouseClick(ev:MouseEvent):void {
+			
 		}
 		
 	}

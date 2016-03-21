@@ -54,7 +54,7 @@ package vn.meme.cloud.player.btn
 				gr.drawRect(0, 0, 25, 5);
 				gr.endFill();			
 				gr.beginFill(0xffffff);
-				gr.drawRoundRect(25, -5, 5, 15, 5, 5); 
+				gr.drawRoundRect(25, -5, 5, 15, 3, 4); 
 				gr.endFill();			
 				gr.beginFill(0x0, 0.4);
 				gr.drawRect(30, 0, 25, 5);
@@ -97,6 +97,12 @@ package vn.meme.cloud.player.btn
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
 			if (ct) {
+				ct.mute.visible = false;
+				ct.volume.visible = true;
+				if (value <=5) {
+					ct.mute.visible = true;	
+					ct.volume.visible = false;
+				}
 				if (value > 5 && value < VOLUME_LOW) {
 					ct.volume.displayVolume(1);
 				}
@@ -158,11 +164,11 @@ package vn.meme.cloud.player.btn
 			gr.endFill();
 			gr.beginFill(0xffffff);
 			if (x <= 5){
-				gr.drawRoundRect(0, -5, 5, 15, 5, 5);
+				gr.drawRoundRect(0, -5, 5, 15, 3, 4);
 			} else if (x >= MAX_WIDTH){
-				gr.drawRoundRect(MAX_WIDTH, -5, 5, 15, 5, 5);
+				gr.drawRoundRect(MAX_WIDTH, -5, 5, 15, 3, 4);
 			} else {
-				gr.drawRoundRect(x, -5, 5, 15, 5, 5);
+				gr.drawRoundRect(x, -5, 5, 15, 3, 4);
 			}
 			gr.endFill();
 			gr.beginFill(0x0, 0.4);

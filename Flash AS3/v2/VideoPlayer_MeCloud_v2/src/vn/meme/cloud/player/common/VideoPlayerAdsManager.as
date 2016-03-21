@@ -239,6 +239,7 @@ package vn.meme.cloud.player.common
 			this.adtagCount = 1;
 			this.adtagSelect[this.adIndex] = true;
 			return this.request(adInfo.adtag[this.adIndex]);
+			//if (this.currentAd.displayRule === DISPLAY_RULE.FULL_COUNT)
 		}
 		
 		public function destroy():void{
@@ -598,7 +599,7 @@ package vn.meme.cloud.player.common
 			if (adsMoreInformation)
 				adsMoreInformation.visible = false;
 			if (displayed < currentAd.maxDisplay && retry < MAX_RETRY) {
-				if (currentAd.displayRule === DISPLAY_RULE.NOT_DUPLOCATE) {
+				if (currentAd.displayRule === DISPLAY_RULE.NOT_DUPLICATE) {
 					if (adtagCount < currentAd.adtag.length) {
 						while (true) {
 							if (currentAd.selectRule !== SELECT_RULE.RANDOM) {
@@ -623,6 +624,7 @@ package vn.meme.cloud.player.common
 					}
 					if (!adtagSelect[self.adIndex])
 						adtagCount++;
+					
 				}
 				adtagSelect[self.adIndex] = true;
 				self.requestAds(currentAd.adtag[self.adIndex])

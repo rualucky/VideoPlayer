@@ -98,12 +98,10 @@ package vn.meme.cloud.player.comp.video.related
 			itemTitle.visible = true;
 			this.alpha = 1;
 			noImageItem.visible = false;
-			effectTitleY = new Tween(itemTitle, "y", Linear.easeIn, 1, 2, .2, true);
+			effectTitleY = new Tween(itemTitle, "y", Linear.easeIn, 1, 2, .12, true);
 			effectTitleY.stop();
-			effectTitleBackgroundY = new Tween(itemTitleBackground, "y", Linear.easeIn, 1, 2, .2, true);
+			effectTitleBackgroundY = new Tween(itemTitleBackground, "y", Linear.easeIn, 1, 2, .12, true);
 			effectTitleBackgroundY.stop();
-			//effectTitleBackgroundHeight = new Tween(itemTitleBackground, "height", Linear.easeIn, itemTitleBackground.height, 500, .2, true);
-			//effectTitleBackgroundHeight.stop();
 			
 		}
 		

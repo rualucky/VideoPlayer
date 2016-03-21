@@ -85,7 +85,6 @@ package vn.meme.cloud.player.btn
 		}
 		
 		private function loadImage(url:String):void{
-			CommonUtils.log('BRAND MAIN');
 			var loader : Loader = new Loader(),
 				vp:VideoPlayer = VideoPlayer.getInstance(),
 				target_mc : Loader,
@@ -114,7 +113,6 @@ package vn.meme.cloud.player.btn
 		}
 		
 		private function loadImageHover(url:String):void{
-			CommonUtils.log('BRAND HOVER');
 			var loader : Loader = new Loader(),
 				vp:VideoPlayer = VideoPlayer.getInstance(),
 				target_mc : Loader,
