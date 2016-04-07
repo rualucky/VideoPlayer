@@ -30,14 +30,15 @@ package vn.meme.cloud.player.config.ads
 		{
 			position = pos;
 			
-			if(data.maxDisplay){
+			if(data.maxDisplay && data.maxDisplay > 0){
 				maxDisplay = data.maxDisplay;
 			} else {
-				if (position != PositionedAdInfo.PAUSE_AD){
-					maxDisplay = 1;	
-				} else {
-					maxDisplay = 99;
-				}
+				maxDisplay = 99;
+//				if (position != PositionedAdInfo.PAUSE_AD){
+//					maxDisplay = 1;	
+//				} else {
+//					maxDisplay = 99;
+//				}
 			}
 			if (data.id){
 				id = data.id;

@@ -1,10 +1,5 @@
 package vn.meme.cloud.player.comp.video.related
 {
-	import com.lorentz.SVG.display.SVG;
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.SVG.events.SVGEvent;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -46,9 +41,11 @@ package vn.meme.cloud.player.comp.video.related
 		}
 		
 		private var background : Sprite;
+		private var isInitItem : Boolean;
 		
 		public function VideoRelatedContainer(player:VideoPlayer)
 		{
+			isInitItem = false;
 			instance = this;
 			background = new Sprite();
 			addChild(background);
@@ -103,6 +100,7 @@ package vn.meme.cloud.player.comp.video.related
 			if (vp) {
 				drawBackground(0x000000, .8, vp.stage.stageWidth, vp.stage.stageHeight);
 			}
+			isInitItem = true;
 		}
 		
 		private function setItemSize(itemTotal:Number):void{
@@ -248,21 +246,25 @@ package vn.meme.cloud.player.comp.video.related
 		}
 		
 		public function resizeFullScreen(w:int, h:int):void {
-			setContainerSize(w, h);
-			setItemSize(this.itemTotal);
-			for (var i : int = 0; i < this.itemTotal; i++) {
-				itemArray[i].onFullScreenMode();
+			if (isInitItem) {
+				setContainerSize(w, h);
+				setItemSize(this.itemTotal);
+				for (var i : int = 0; i < this.itemTotal; i++) {
+					itemArray[i].onFullScreenMode();
+				}
+				drawBackground(0x000000, .8, w, h);				
 			}
-			drawBackground(0x000000, .8, w, h);
 		}
 		
 		public function resizeNormalScreen(w:int, h:int):void {
-			setContainerSize(w, h);
-			setItemSize(this.itemTotal);
-			for (var i : int = 0; i < this.itemTotal; i++) {
-				itemArray[i].onNormalScreenMode();
+			if (isInitItem) {
+				setContainerSize(w, h);
+				setItemSize(this.itemTotal);
+				for (var i : int = 0; i < this.itemTotal; i++) {
+					itemArray[i].onNormalScreenMode();
+				}
+				drawBackground(0x000000, .8, w, h);				
 			}
-			drawBackground(0x000000, .8, w, h);
 		}
 		
 		private function setContainerSize(w:int, h:int):void {
@@ -277,7 +279,6 @@ package vn.meme.cloud.player.comp.video.related
 			ctnX = 30;
 			ctnY = 45;
 			//drawContainerBg(containerWidth, containerHeight, 30, 45);
-			CommonUtils.log("CONTAINER SIZE: " + containerWidth + " " + containerHeight);
 		}
 		
 		//******************** test function

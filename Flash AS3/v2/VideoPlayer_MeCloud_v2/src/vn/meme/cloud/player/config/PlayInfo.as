@@ -42,20 +42,16 @@ package vn.meme.cloud.player.config
 		public var sub : Subtitles;
 		private var autotrack : Boolean;
 		private var subDefaultIndex : Number = 0;
-		
+		private var pp : *; //playerProfile
+		private var domainName : String = "";
+		private var isBranding : Boolean;
 		//////////////////////////// VIDEO V2
-		public var videoPoster : *;
+		
 		public function PlayInfo( data : *)
 		{
 			var vp : VideoPlayer = VideoPlayer.getInstance();
-			if (data.videoSkin) {
-				CommonUtils.log('SKIN');
-				if (vp) {
-					vp.skin.getData(data.videoSkin);
-				}
-			} else {
-				CommonUtils.log('NOT SKIN');
-			}
+			isBranding = false;
+			
 			if (data.vid)
 				this.vid = data.vid;
 			CommonUtils.log("data vid");
@@ -68,10 +64,10 @@ package vn.meme.cloud.player.config
 					var vq :VideoQuality = new VideoQuality(data.video[i]);
 					video.push(vq);
 				}
-				if (data.video.length == 1) {
-					if (vp)
-						vp.controls.quality.visible = false;
-				}
+//				if (data.video.length == 1) {
+//					if (vp)
+//						vp.controls.quality.visible = false;
+//				}
 				
 			} 
 			if (data.subtitle){
@@ -137,8 +133,13 @@ package vn.meme.cloud.player.config
 			}
 			
 			CommonUtils.log("data title");
+			titleAndVideoIdInfo = this.title + " [" + this.vid +"]";
+			CommonUtils.log("title and video id " + titleAndVideoIdInfo);
+			
 			if (data.ad){
-				ad = new AdInfo(data.ad);
+				CommonUtils.log(data.ad);
+				CommonUtils.log("1");
+				ad = new AdInfo(data.ad, titleAndVideoIdInfo);
 			} 
 			CommonUtils.log("data ad");
 			if (data.defaultQuality)
@@ -155,8 +156,6 @@ package vn.meme.cloud.player.config
 				optionVideoEnd = data.optionVideoEnd;
 			CommonUtils.log("data optionVideoEnd");
 			
-			titleAndVideoIdInfo = this.title + " [" + this.vid +"]";
-			CommonUtils.log("title and video id " + titleAndVideoIdInfo);
 			if (data.ga && data.ga.id){
 				if (data.ga.id is Array){
 					for (var j :int = 0; j < data.ga.id.length; j++){
@@ -171,9 +170,9 @@ package vn.meme.cloud.player.config
 			}
 			
 			//var MeCloudGA : String = "UA-68206175-1";
-			var testGA : String = "UA-67703167-3" //test ga tduy
-			GATracking.getInstance().loadSDK(testGA, gaIdList);
-			CommonUtils.log("ga 2 " + testGA);
+			//var testGA : String = "UA-67703167-3" //test ga tduy
+			//GATracking.getInstance().loadSDK(MeCloudGA, gaIdList);
+			//CommonUtils.log("ga 2 " + testGA);
 			//var  gg: String = "UA-67703167-2";
 			
 			//var ga2 : String = "UA-68205954-1";
@@ -185,21 +184,23 @@ package vn.meme.cloud.player.config
 			}
 			*/
 			
-			if (data.logo && data.logo.icon){
-				if (data.logo.icon.search(/(https?|file)\:\/\/.*\.svg$/i) !== -1){
-					CommonUtils.log("SVG");
-					/*ProcessExecutor.instance.initialize(stage);
-					ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-					var svgDocument:SVGDocument = new SVGDocument();
-					svgdocument.load('graphics/coloredtoucan.svg');
-					addChild(svgDocument);*/
-				} else {
-					//if (data.logo.link) logoLink = data.logo.link;	
-					//if (data.logo.hover) logoHover = data.logo.hover;
-					//var iconLoader : Loader = new Loader();
-					//iconLoader = loadImage(data.logo.icon,"icon");
-				}
-			}
+//			if (data.logo && data.logo.icon){
+//				if (data.logo.icon.search(/(https?|file)\:\/\/.*\.svg$/i) !== -1){
+//					CommonUtils.log("SVG");
+//					/*ProcessExecutor.instance.initialize(stage);
+//					ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
+//					var svgDocument:SVGDocument = new SVGDocument();
+//					svgdocument.load('graphics/coloredtoucan.svg');
+//					addChild(svgDocument);*/
+//				} else {
+//					//if (data.logo.link) logoLink = data.logo.link;	
+//					//if (data.logo.hover) logoHover = data.logo.hover;
+//					//var iconLoader : Loader = new Loader();
+//					//iconLoader = loadImage(data.logo.icon,"icon");
+//				}
+//				
+//			}
+			
 			
 			if (data.related && data.related.length > 0){
 				if (vp){
@@ -210,38 +211,116 @@ package vn.meme.cloud.player.config
 				//vp.related.container.createItem(data.related);
 			}
 			
-			if (data.videoShare) {
-				if (data.videoShare.sharing)
-					vp.plugin.isPlugin = true;
-			}
 			
-			///////////////////////////// VIDEO V2
-			if (data.videoPoster){
-				this.videoPoster = data.videoPoster;
-				if (data.videoPoster.showControlBar) {
-					if (vp) {
-						vp.controls.showControlbar(true);
+			//PLAYER PROFILE
+			if (data.playerProfile) {
+				CommonUtils.log("PLAYER PROFILE");
+				pp = data.playerProfile;
+				if (vp) {
+					// STYLING
+					if (pp.styling) {
+						//if (pp.styling.useCustomColor) {
+							vp.skin.getData(pp.styling);
+						//}
+						if (pp.styling.controlBarDisplay)
+							vp.controls.showControlbar(true);
+						if (pp.styling.playButtonPosition)
+							vp.wait.btn.setPosition(pp.styling.playButtonPosition);
+						if (!pp.styling.titleDisplay)
+							vp.wait.btn.hideTitle();
+					}
+					
+					// BRANDING
+					if (pp.branding) {
+						if (pp.branding.enable) {
+							isBranding = true;
+							domainName = "http://img.dev.mecloud.vn/player/branding/";
+							if (pp.branding.url)
+								vp.controls.productSign.setLink(pp.branding.url);
+							if (pp.branding.style == 0) {
+								vp.controls.productSign.setStype(0);
+							} else {
+								vp.controls.productSign.setStype(1);
+							}
+							if (pp.branding.logo) {
+								CommonUtils.log(domainName + pp.branding.logo);
+								vp.controls.productSign.initMain(domainName + pp.branding.logo);
+							}
+							if (pp.branding.logoHover) {
+								CommonUtils.log(domainName + pp.branding.logoHover);
+								vp.controls.productSign.initHover(domainName + pp.branding.logoHover);
+							}								
+						}
+					}
+					
+					//WATERMARK
+					if (pp.watermark) {
+						if (pp.watermark.enable) {
+							vp.controls.waterMark.init(pp.watermark);
+						}
+					}
+					
+					//PLAYSCREEN
+					if (pp.playScreen) {
+						if (pp.playScreen.showSharing) {
+							vp.plugin.allowShowShareButton = true;
+							vp.plugin.isPlugin = true;
+						}
+						if (!pp.playScreen.facebook) {
+							vp.sharing.shareFrame.hideFacebookItem();
+						}
+						if (!pp.playScreen.google) {
+							vp.sharing.shareFrame.hideGoogleItem();
+						}
+						if (!pp.playScreen.website) {
+							vp.sharing.shareFrame.hideWebsite();
+						}
+						if (!pp.playScreen.embed) {
+							vp.sharing.shareFrame.hideEmbedItem();
+						}
+						if (pp.playScreen.showRelatedButton)
+							vp.plugin.allowShowRelatedButton = true;
+						
+					}
+					//ENDSCREEN
+					if (pp.endScreen) {
+						if (pp.endScreen.option) {
+							vp.related.setOption(pp.endScreen.option);
+						}
+					}
+					
+//					if (pp.gaConfig) {
+//						gaIdList.push(pp.gaConfig);
+//					}
+				}
+			} else {
+				if (vp) {
+					vp.wait.btn.setPosition(1); // big play position top
+				}
+				if (data.logo && data.logo.icon && !isBranding) {
+					if (vp){
+						vp.controls.productSign.setStype(0);
+						if (data.logo.link)
+							vp.controls.productSign.setLink(data.logo.link);
+						if (data.logo.icon)
+							vp.controls.productSign.initMain(data.logo.icon);
+						if (data.logo.hover)
+							vp.controls.productSign.initHover(data.logo.hover);
 					}
 				}
 			}
-			if (data.videoBrand){
+			
+			if (data.list && data.list.videos && data.list.videos.length > 0) {
+				CommonUtils.log("PLAY LIST");
 				if (vp) {
-					if (data.videoBrand.link)
-						vp.controls.productSign.setLink(data.videoBrand.link);
-					if (data.videoBrand.styleBrand)
-						vp.controls.productSign.setStype(data.videoBrand.styleBrand);
-					if (data.videoBrand.image)
-						vp.controls.productSign.initMain(data.videoBrand.image);
-					if (data.videoBrand.imageHover)
-						vp.controls.productSign.initHover(data.videoBrand.imageHover);
+					vp.playList.initData(data.list);
 				}
 			}
 			
-			if (data.videoWatermark) {
-				if (vp) {
-					vp.controls.waterMark.init(data.videoWatermark);
-				}
-			}
+			var MeCloudGA : String = "UA-68206175-1";
+			//var testGA : String = "UA-67703167-3" //test ga tduy
+			GATracking.getInstance().loadSDK(MeCloudGA, gaIdList);
+			
 		}
 		
 	}

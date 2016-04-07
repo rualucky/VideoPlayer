@@ -1,9 +1,5 @@
 package vn.meme.cloud.player.btn.bigplay.item
 {
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.SVG.events.SVGEvent;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import fl.motion.easing.Back;
 	import fl.motion.easing.Bounce;
 	import fl.motion.easing.Circular;
@@ -12,11 +8,14 @@ package vn.meme.cloud.player.btn.bigplay.item
 	import fl.motion.easing.Linear;
 	import fl.motion.easing.Sine;
 	import fl.transitions.Tween;
+	import fl.transitions.TweenEvent;
 	import fl.transitions.Zoom;
 	import fl.transitions.easing.*;
 	
+	import flash.display.Bitmap;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.AntiAliasType;
@@ -25,19 +24,13 @@ package vn.meme.cloud.player.btn.bigplay.item
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
 	
-	import flashx.textLayout.events.UpdateCompleteEvent;
-	
-	import org.mangui.hls.stream.StreamBuffer;
-	
-	import spark.effects.Resize;
-	
 	import vn.meme.cloud.player.btn.BigPlay;
 	import vn.meme.cloud.player.common.CommonUtils;
+	import vn.meme.cloud.player.common.VideoPlayerImageVector;
 	
 		
 	public class BigPlayTopOrBottom extends Sprite
 	{
-		private var svg : SVGDocument;
 		private var bigPlayHeight : int;
 		private var bigPlayWidth : int;
 		private var stageWidth : Number;
@@ -62,12 +55,12 @@ package vn.meme.cloud.player.btn.bigplay.item
 		private var effectSvgY : Tween;
 		private var self : *;
 		private var cover : Sprite;
-		
+		public var bigPlayNormalHeight : Number;
+		public var bigPlayFullscreenHeight : Number;
+		private var bigPlayImg : Sprite;
 		public function BigPlayTopOrBottom()
 		{
 			self = this;
-			svg = new SVGDocument();
-			addChild(svg);
 			rawTitle = "";
 			longTitle = "";
 			position = "";
@@ -75,48 +68,68 @@ package vn.meme.cloud.player.btn.bigplay.item
 			normalScale = 1;
 			hoverScale = 1.5;
 			timeCount = 0;
+			bigPlayImg = new Sprite();
+			bigPlayImg = (VideoPlayerImageVector.drawPlayButton());
+			bigPlayImg.visible = false;
+			addChild(bigPlayImg);
 			title = new TextField();
 			title.mouseEnabled = false; 
 			textFormat = new TextFormat("Arial",14,0xffffff,true,null,null,null,null,null,null,null,null,5);
 			title.defaultTextFormat = textFormat;
 			title.wordWrap = true;
 			addChild(title);
-			effectSvgX = new Tween(svg, "scaleX", Linear.easeIn, 1, 2, .2, true);
+			effectSvgX = new Tween(bigPlayImg, "scaleX", Linear.easeIn, 1, 2, .25, true);
 			effectSvgX.stop();
-			effectSvgY = new Tween(svg, "scaleY", Linear.easeIn, 1, 2, .2, true);
+			effectSvgY = new Tween(bigPlayImg, "scaleY", Linear.easeIn, 1, 2, .25, true);
 			effectSvgY.stop();
 			cover = new Sprite();
 			addChild(cover);
 		}
 		
+		private function receiveBitmap(bm:Bitmap):Bitmap {
+			bm.smoothing = true;
+			return bm;
+		}
+		
 		public function init(position:String, bigPlayHeight:int, stageWidth:Number, stageHeight:Number, rawTitle:String, offTitle:Boolean = false):void {
+			bigPlayImg.visible = true;
 			this.position = position;
 			this.rawTitle = rawTitle;
 			this.bigPlayHeight = bigPlayHeight;
+			this.bigPlayNormalHeight = bigPlayHeight;
 			this.bigPlayWidth = this.bigPlayHeight;
 			this.stageWidth = stageWidth;
 			this.stageHeight = stageHeight;
 			drawBackground();
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/bigplay.svg');
+//			svg.load(VideoPlayerImage.BIGPLAY_SVG);
 			if (bigPlayHeight > 50) {
 				setTitleSize(28);
 				normalScale = 1.5;
 				hoverScale = 2.2;
-				svg.addEventListener(SVGEvent.RENDERED, function():void {
-					CommonUtils.log(svg.width + ' 80 ' + svg.height);
-					updateSVG(normalScale, bigPlayHeight);
-				});
+//				svg.addEventListener(SVGEvent.RENDERED, function():void {
+//					CommonUtils.log(svg.width + ' 80 ' + svg.height);
+//					updateSVG(normalScale, bigPlayHeight);
+//				});
 			} else {
-				svg.addEventListener(SVGEvent.RENDERED, function():void {
-					CommonUtils.log(svg.width + ' 50 ' + svg.height);
-					updateSVG(normalScale, bigPlayHeight);
-				});
+				setTitleSize(14);
+				normalScale = 1;
+				hoverScale = 1.5;
+//				svg.addEventListener(SVGEvent.RENDERED, function():void {
+//					CommonUtils.log(svg.width + ' 50 ' + svg.height);
+//					updateSVG(normalScale, bigPlayHeight);
+//				});
 			}
+			updateSVG(normalScale, bigPlayHeight);
+			arrangeSVG(bigPlayWidth, bigPlayHeight, bigPlayImg.width, bigPlayImg.height);	
 			drawCover();
 			if (!offTitle)
 				initTitle();
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				if (vp.stage.displayState == StageDisplayState.FULL_SCREEN) {
+					vp.wait.btn.hoverMode();
+				}
+			}
 		}
 		
 		private function initTitle():void {
@@ -183,7 +196,7 @@ package vn.meme.cloud.player.btn.bigplay.item
 					title.y = 14.5;
 				}
 			}
-			titleTween = new Tween(title, "x", Linear.easeOut, bigPlayHeight + 5, title.x, 0.12, true);
+			titleTween = new Tween(title, "x", Linear.easeOut, bigPlayHeight + 5, title.x, 0.25, true);
 		}
 		
 		private function hoverTitle():void {
@@ -231,14 +244,16 @@ package vn.meme.cloud.player.btn.bigplay.item
 			drawBackground();
 			updateSVG(normalScale, bigPlayHeight, true, hoverScale, normalScale);
 			normalTitle();
+			
 		}
 		
 		public function hoverMode():void {
 			drawBackground(true);
+			updateSVG(normalScale, bigPlayHeight, true, normalScale, hoverScale);
 			hoverTitle();
 		}
 		
-		private function setTitleSize(size:int):void {
+		public function setTitleSize(size:int):void {
 			textFormat = new TextFormat("Arial",size,0xffffff,true,null,null,null,null,null,null,null,null,5);
 			title.defaultTextFormat = textFormat;
 		}
@@ -289,20 +304,22 @@ package vn.meme.cloud.player.btn.bigplay.item
 		}
 		
 		private function arrangeSVG(bigPlayWidth:Number, bigPlayHeight:Number, svgWidth:Number, svgHeight:Number):void {
-			svg.x = (bigPlayWidth - svgWidth) / 2;
-			svg.y = (bigPlayHeight - svgHeight) / 2;
+			bigPlayImg.x = (bigPlayWidth - svgWidth) / 2;
+			bigPlayImg.y = (bigPlayHeight - svgHeight) / 2;
 		}
 		
 		private function resizeSVG(scaleNumber:Number):void {
-			svg.scaleX = scaleNumber;
-			svg.scaleY = scaleNumber;
+			bigPlayImg.scaleX = scaleNumber;
+			bigPlayImg.scaleY = scaleNumber;
 		}
 		
 		public function updateSVG(scaleNumber:Number, bigPlayHeight:Number,setEffect:Boolean = false, begin:Number = 0, end:Number = 0):void {
-			resizeSVG(scaleNumber);
-			arrangeSVG(bigPlayWidth, bigPlayHeight, svg.width, svg.height);
-			if (setEffect) 
+			if (setEffect) {
 				effectSVG(begin, end, bigPlayHeight);
+			} else {
+				resizeSVG(scaleNumber);
+				arrangeSVG(bigPlayWidth, bigPlayHeight, bigPlayImg.width, bigPlayImg.height);				
+			}
 		}
 		
 		private function effectSVG(begin:Number, end:Number, textBackgroundHeight:Number = 0):void {
@@ -312,9 +329,15 @@ package vn.meme.cloud.player.btn.bigplay.item
 			effectSvgY.finish = end;
 			effectSvgX.start();
 			effectSvgY.start();
+			effectSvgX.addEventListener(TweenEvent.MOTION_FINISH, function():void{
+				bigPlayImg.scaleX = end;
+			});
+			effectSvgY.addEventListener(TweenEvent.MOTION_FINISH, function():void{
+				bigPlayImg.scaleY = end;
+			});
 			if (timing) clearTiming();
 			timing = setInterval(function():void {
-					arrangeSVG(bigPlayWidth, textBackgroundHeight, svg.width, svg.height);
+					arrangeSVG(bigPlayWidth, textBackgroundHeight, bigPlayImg.width, bigPlayImg.height);
 					timeCount += 10;
 					if (timeCount >= effectSvgX.duration * 1000) {
 						 clearInterval(self.timing);
@@ -336,6 +359,10 @@ package vn.meme.cloud.player.btn.bigplay.item
 			g.beginFill(color, alpha);
 			g.drawRect(0, 0, stageWidth, stageHeight);
 			g.endFill();
+		}
+		
+		public function hideTitle():void {
+			title.visible = false;
 		}
 	}
 }

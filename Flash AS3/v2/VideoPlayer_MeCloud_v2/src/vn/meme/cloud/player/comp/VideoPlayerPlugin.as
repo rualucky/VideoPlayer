@@ -18,20 +18,36 @@ package vn.meme.cloud.player.comp
 		public var isPlugin : Boolean;
 		private var timing : uint;
 		public var isHidden : Boolean;
+		public var allowShowRelatedButton : Boolean;
+		public var allowShowShareButton : Boolean;
 		
 		public function VideoPlayerPlugin(player:VideoPlayer)
 		{
 			super(player);
+			allowShowRelatedButton = false;
+			allowShowShareButton = false;
 			isPlugin = false;
 			isHidden = false;
 			relatedBtn = new Related();
 			shareBtn = new Sharing();
 			addChild(relatedBtn);
 			addChild(shareBtn);
+			shareBtn.visible = false;
+			relatedBtn.visible = false;
 			this.visible = false;
-			addEventListener(MouseEvent.CLICK, onMouseClick)
+			addEventListener(MouseEvent.CLICK, onMouseClick);
 			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
-			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver)
+			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			addEventListener(MouseEvent.RIGHT_CLICK, onMouseRightClick);
+//			addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		}
+		
+//		private function onMouseMove(ev:MouseEvent):void {
+//			player.videoStage.onMouseMove(ev);	
+//		}
+		
+		private function onMouseRightClick(ev:MouseEvent):void {
+			player.videoStage.onMouseRightClick(ev);
 		}
 		
 		private function onMouseOver(ev:MouseEvent):void {
@@ -65,8 +81,8 @@ package vn.meme.cloud.player.comp
 		public function arrangeRelatedBtn(btnWidth:Number):void {
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (vp) {
-				relatedBtn.x = vp.stage.stageWidth - btnWidth - 10;
-				relatedBtn.y = 10;
+				relatedBtn.x = vp.stage.stageWidth - relatedBtn.width - 5;
+				relatedBtn.y = 15;
 			}
 		}
 		
@@ -74,17 +90,29 @@ package vn.meme.cloud.player.comp
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (vp) {
 				if (vp.related.isRelated) {
-					shareBtn.x = vp.stage.stageWidth - relatedBtn.width - btnWidth - 20;
-					shareBtn.y = 10;
+					shareBtn.x = vp.stage.stageWidth - relatedBtn.width - btnWidth - 15;
+					shareBtn.y = 16;
 				} else {
-					shareBtn.x = vp.stage.stageWidth - btnWidth - 10;
-					shareBtn.y = 10;	
+					shareBtn.x = vp.stage.stageWidth - btnWidth - 5;
+					shareBtn.y = 16;	
 				}
 			}
 		}
 		
 		public function show():void {
 			this.visible = true;
+			if (allowShowShareButton)
+				shareBtn.visible = true;
+			if (allowShowRelatedButton){
+				var vp : VideoPlayer = VideoPlayer.getInstance();
+					if (vp) {
+						if (vp.related.isRelated) {
+							relatedBtn.visible = true;
+						} else {
+							relatedBtn.visible = false;
+						}
+					}
+				}
 			isHidden = false;
 			if (timing) clearTimeout(timing);
 			timing = 0;

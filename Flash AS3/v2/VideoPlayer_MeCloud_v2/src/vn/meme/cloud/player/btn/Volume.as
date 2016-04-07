@@ -1,10 +1,8 @@
 package vn.meme.cloud.player.btn
 {
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import flash.display.Bitmap;
 	import flash.display.Graphics;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.clearTimeout;
@@ -17,36 +15,41 @@ package vn.meme.cloud.player.btn
 
 	public class Volume extends VideoPlayerButton
 	{
-		private var svgHigh : SVGDocument;
-		private var svgMedium : SVGDocument;
-		private var svgLow : SVGDocument;
+		[Embed(source="asset/volume-high.png")]
+		public static var assetHigh:Class;
 		
+		[Embed(source="asset/volume-medium.png")]
+		public static var assetMedium:Class;
+		
+		[Embed(source="asset/volume-low.png")]
+		public static var assetLow:Class;
 		private var timeout:int;
+		
+		private var volumeHigh : Sprite;
+		private var volumeMedium : Sprite;
+		private var volumeLow : Sprite;
 		
 		public function Volume()
 		{
 			super(VideoPlayerEvent.MUTE);
 			timeout = 0;
-			svgHigh = new SVGDocument();
-			svgMedium = new SVGDocument();
-			svgLow = new SVGDocument();
-			addChild(svgHigh);
-			addChild(svgMedium);
-			addChild(svgLow);
+			volumeHigh = new Sprite();
+			volumeMedium = new Sprite();
+			volumeLow = new Sprite();
+			volumeHigh.addChild(receiveBitmap(new assetHigh()));
+			volumeMedium.addChild(receiveBitmap(new assetMedium()));
+			volumeLow.addChild(receiveBitmap(new assetLow()));
+			addChild(volumeHigh);
+			volumeHigh.visible = true;
+			addChild(volumeMedium);
+			volumeMedium.visible = false;
+			addChild(volumeLow);
+			volumeLow.visible = false;
 		}
 		
-		public function init():void {
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svgHigh.load('asset/volume-high.svg');
-			svgMedium.load('asset/volume-medium.svg');
-			svgLow.load('asset/volume-low.svg');
-			displayVolume(2);
-			var g : Graphics = this.graphics;
-			g.clear();
-			g.beginFill(0x000000, 0);
-			g.drawRect(70, 5, 25, 19);
-			g.endFill();
+		private function receiveBitmap(bm:Bitmap):Bitmap{
+			bm.smoothing = true;
+			return bm;
 		}
 		
 		protected override function onMouseOver(ev:MouseEvent=null):void{
@@ -67,8 +70,7 @@ package vn.meme.cloud.player.btn
 		protected function showVolumeSlider():void{
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
-			ct.timeDisplay.y = 11;
-			ct.timeDisplay.x = 180;
+			ct.positionTimeDisplay(175, 11);
 			ct.volumeSlider.visible = true;
 			ct.volumeSlider.alpha = 1;
 		}
@@ -76,8 +78,7 @@ package vn.meme.cloud.player.btn
 		protected function hideVolumeSlider():void{
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
-			ct.timeDisplay.y = 11;
-			ct.timeDisplay.x = 75;
+			ct.positionTimeDisplay(75, 11);
 			ct.volumeSlider.visible = false;
 		}
 		
@@ -94,27 +95,28 @@ package vn.meme.cloud.player.btn
 		public function displayVolume(index:int):void {
 			switch(index) {
 				case 1 :
-					svgLow.visible = true;
-					svgMedium.visible = false;
-					svgHigh.visible = false;
+					volumeLow.visible = true;
+					volumeMedium.visible = false;
+					volumeHigh.visible = false;
 					break;
 				case 2 :
-					svgLow.visible = false;
-					svgMedium.visible = true;
-					svgHigh.visible = false;
+					volumeLow.visible = false;
+					volumeMedium.visible = true;
+					volumeHigh.visible = false;
 					break;
 				case 3 : 
-					svgLow.visible = false;
-					svgMedium.visible = false;
-					svgHigh.visible = true;
+					volumeLow.visible = false;
+					volumeMedium.visible = false;
+					volumeHigh.visible = true;
 					break;
 				default:
-					svgLow.visible = false;
-					svgMedium.visible = true;
-					svgHigh.visible = false;
+					volumeLow.visible = false;
+					volumeMedium.visible = true;
+					volumeHigh.visible = false;
 					CommonUtils.log('Default Volume');
 			}
 		}
 		
 	}
+	
 }

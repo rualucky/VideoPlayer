@@ -10,6 +10,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.external.ExternalInterface;
+	import flash.geom.Rectangle;
 	import flash.media.Video;
 	import flash.net.SharedObject;
 	import flash.net.URLRequest;
@@ -18,7 +19,11 @@ package
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
 	import flash.utils.Timer;
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
 	
+	import vn.meme.cloud.player.analytics.TrackingCategory;
+	import vn.meme.cloud.player.analytics.TrackingControl;
 	import vn.meme.cloud.player.btn.BigPlay;
 	import vn.meme.cloud.player.btn.Buffering;
 	import vn.meme.cloud.player.btn.Sharing;
@@ -28,6 +33,8 @@ package
 	import vn.meme.cloud.player.comp.AdsLayer;
 	import vn.meme.cloud.player.comp.Controls;
 	import vn.meme.cloud.player.comp.VideoPlayerComponent;
+	import vn.meme.cloud.player.comp.VideoPlayerPlayList;
+	import vn.meme.cloud.player.comp.VideoPlayerPlayListContainer;
 	import vn.meme.cloud.player.comp.VideoPlayerPlugin;
 	import vn.meme.cloud.player.comp.VideoPlayerSkin;
 	import vn.meme.cloud.player.comp.VideoSharing;
@@ -50,10 +57,13 @@ package
 	import vn.meme.cloud.player.listener.OnFullscreen;
 	import vn.meme.cloud.player.listener.OnMouseMove;
 	import vn.meme.cloud.player.listener.OnMute;
+	import vn.meme.cloud.player.listener.OnNext;
 	import vn.meme.cloud.player.listener.OnNormalScreen;
 	import vn.meme.cloud.player.listener.OnPause;
 	import vn.meme.cloud.player.listener.OnPlay;
+	import vn.meme.cloud.player.listener.OnPlayList;
 	import vn.meme.cloud.player.listener.OnPlaying;
+	import vn.meme.cloud.player.listener.OnPrevious;
 	import vn.meme.cloud.player.listener.OnQuality;
 	import vn.meme.cloud.player.listener.OnQualitySelect;
 	import vn.meme.cloud.player.listener.OnRelated;
@@ -121,6 +131,7 @@ package
 		public var displayedPauseAd : int = 0;
 		public var easyVideoTitle : EasyvideoTitle;
 		public var skin : VideoPlayerSkin;
+		public var playList : VideoPlayerPlayList;
 		
 		public function VideoPlayer()	
 		{
@@ -132,13 +143,11 @@ package
 		private function init(ev:Event = null):void{
 			try
 			{
-				
 			var self : VideoPlayer = this;
 			instance = this;
 			Security.allowDomain("*");
 			Security.allowInsecureDomain("*");
 			CommonUtils.log("allowed insecure domain");
-			
 			// common config
 			this.stage.scaleMode = StageScaleMode.NO_SCALE;
 			this.stage.quality = StageQuality.BEST;
@@ -149,7 +158,7 @@ package
 			// context menu
 			var contextMenu : ContextMenu = new ContextMenu();
 			contextMenu.hideBuiltInItems();
-			var sign:ContextMenuItem= new ContextMenuItem("Powered by MeCloud @2015 v1.02.20150508.1139");
+			var sign:ContextMenuItem= new ContextMenuItem("About MeCloud Player FLASH");
 			sign.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,function():void{
 				navigateToURL(new URLRequest('http://mecloud.vn/product'),"_blank");
 			});
@@ -180,6 +189,9 @@ package
 			this.setupEventListener(new OnWaterMark());
 			this.setupEventListener(new OnRelated());
 			this.setupEventListener(new OnShare());
+			this.setupEventListener(new OnPlayList());
+			this.setupEventListener(new OnNext());
+			this.setupEventListener(new OnPrevious());
 			CommonUtils.log("setup player listener");
 			
 			// ad listener
@@ -226,6 +238,7 @@ package
 			this.setupComponent(related = new VideoRelated(this));CommonUtils.log('com 8');
 			this.setupComponent(sharing = new VideoSharing(this));
 			this.setupComponent(wait = new WaitingLayer(this));CommonUtils.log('com 5');
+			this.setupComponent(playList = new VideoPlayerPlayList(this));
 			this.setupComponent(controls = new Controls(this));CommonUtils.log('com 4');
 			this.setupComponent(ads = new AdsLayer(this));CommonUtils.log('com 6');
 			this.setupComponent(PlayerTooltip.getInstance());CommonUtils.log('com 7');
@@ -262,13 +275,22 @@ package
 				referer = ""; CommonUtils.log("return referer");
 			}
 			
-			this.stage.dispatchEvent(new Event(Event.RESIZE));CommonUtils.log("dispatchEvent Resize");
+			this.stage.dispatchEvent(new Event(Event.RESIZE));
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				TrackingControl.sendEvent(TrackingCategory.PLAYER_EVENT,"ready", vp.playInfo.titleAndVideoIdInfo);
+			}
+			CommonUtils.log("dispatchEvent Resize");
 			} 
 			catch(error:Error) 
 			{
 				CommonUtils.log(error.name);
 				CommonUtils.log(error.message);
 				CommonUtils.log(error.getStackTrace());
+				var vp1 : VideoPlayer = VideoPlayer.getInstance();
+				if (vp1) {
+					TrackingControl.sendEvent(TrackingCategory.PLAYER_ERROR, error.message, vp.playInfo.titleAndVideoIdInfo);
+				}
 			}
 		}
 		
@@ -309,9 +331,14 @@ package
 				if (data.analyticsUrl)
 					PingUtils.url = data.analyticsUrl;
 				
-				if(data.videoPoster && data.videoPoster.autoplay){
+				if(data.playerProfile && data.playerProfile.general && data.playerProfile.general.autoplay){
 					dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PLAY));
+				} else {
+					if (data.list && data.list.autoPlay && data.list.current > 0){
+						dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.PLAY));
+					}
 				}
+				
 				
 				if (!pingUtils)
 					pingUtils = new PingUtils();
@@ -338,7 +365,7 @@ package
 		private function importAdData(data:*):void{
 			if (data && playInfo){
 				CommonUtils.log("Receive new ads config");
-				playInfo.ad = new AdInfo(data);
+				playInfo.ad = new AdInfo(data, playInfo.titleAndVideoIdInfo);
 				restart();
 			}
 		}
@@ -353,6 +380,7 @@ package
 			this.setupComponent(related = new VideoRelated(this));
 			this.setupComponent(sharing = new VideoSharing(this));
 			this.setupComponent(wait = new WaitingLayer(this));
+			this.setupComponent(playList = new VideoPlayerPlayList(this));
 			this.setupComponent(controls = new Controls(this));
 			this.setupComponent(ads = new AdsLayer(this));
 			this.setupComponent(PlayerTooltip.getInstance());

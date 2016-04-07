@@ -166,7 +166,7 @@ package vn.meme.cloud.player.comp.video.related
 		
 		private function onMouseClick(ev:MouseEvent = null):void{
 			var session: String = this.stage.loaderInfo.parameters['session'];
-			ExternalInterface.call("MeCloudVideoPlayer.loadEmbed",session, this.itemData);
+			ExternalInterface.call("MeCloudVideoPlayer.loadEmbed", session, this.itemData);
 		}
 		
 		private function toTimeDisplay(time:Number):String{			
@@ -203,6 +203,7 @@ package vn.meme.cloud.player.comp.video.related
 		
 		private function updateScreen():void {
 			itemTitle.y = itemHeight - 20;
+			itemTitle.width = itemWidth;
 			itemTitleBackground. y = itemHeight - 20;
 			itemDurationTitle.y = itemHeight - 20;
 			itemDurationTitle.x = itemWidth - itemDurationTitle.textWidth - 10;
@@ -224,7 +225,7 @@ package vn.meme.cloud.player.comp.video.related
 		private function overTitle():void {
 			drawCover(itemWidth, itemHeight);
 			itemTitle.width = itemWidth;
-			itemTitle.height = 50;
+			itemTitle.height = 40;
 			effectTitle(itemHeight - 20, 0);
 			itemDurationTitle.y = itemHeight - 20;
 			itemDurationTitle.visible = true;

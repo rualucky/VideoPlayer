@@ -7,6 +7,8 @@ package vn.meme.cloud.player.listener
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
+	import vn.meme.cloud.player.analytics.TrackingCategory;
+	import vn.meme.cloud.player.analytics.TrackingControl;
 	import vn.meme.cloud.player.btn.subtitles.Subtitle;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.VideoPlayerAdsManager;
@@ -46,6 +48,14 @@ package vn.meme.cloud.player.listener
 					(ad.interval && Math.abs(t - ad.interval) < 10000))) {
 					vp.playInfo.ad.midrollManager.lastId = ad.id;
 					VideoPlayerAdsManager.getInstance().loadAds(ad);
+				}
+			}
+			if(vs.viewingCount > 0) { 
+				var t1 : Number = (new Date().time) - vs.viewingCount;
+				if (t1 > 16000) {
+					vs.viewingCount = (new Date().time);
+					TrackingControl.sendEvent(TrackingCategory.PLAYER_EVENT, "viewing", vp.playInfo.titleAndVideoIdInfo);
+					TrackingControl.sendEvent(TrackingCategory.PLAY_THROUGHT, vs.currentTime() / vs.getLength() * 100 + "", vp.playInfo.titleAndVideoIdInfo);
 				}
 			}
 			return true;

@@ -1,8 +1,5 @@
 package vn.meme.cloud.player.btn
 {
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import flash.display.Bitmap;
 	import flash.display.Graphics;
 	import flash.events.MouseEvent;
@@ -17,26 +14,14 @@ package vn.meme.cloud.player.btn
 		public static function getInstance():NormalScreen{
 			return instance;
 		}
-		
-		private var svg : SVGDocument;
+		[Embed(source="asset/btn-exit-fullscreen.png")]
+		public static var asset:Class;
 		
 		public function NormalScreen()
 		{
 			super(VideoPlayerEvent.NORMALSCREEN);
 			instance = this;
-			svg = new SVGDocument();
-			addChild(svg);
-		}
-		
-		public function init():void{
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/btn-exit-fullscreen.svg');
-			var g : Graphics = this.graphics;
-			g.clear();
-			g.beginFill(0x000000, 0);
-			g.drawRect(0, 0, 20, 20);
-			g.endFill();
+			addChild(this.invertBitmapColor(new asset() as Bitmap));
 		}
 		
 		protected override function onMouseOver(ev:MouseEvent=null):void{

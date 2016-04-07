@@ -5,10 +5,13 @@ package vn.meme.cloud.player.btn
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
+	
+	import spark.core.ISharedDisplayObject;
 	
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.config.ads.PositionedAdInfo;
@@ -39,13 +42,14 @@ package vn.meme.cloud.player.btn
 		public var loaded : Boolean;
 		public var currentPosX : Number;
 		public var currentPosY : Number;
+		public var isShowing : Boolean;
 		
 		public function Watermark()
 		{
 			self = this;
 			loaded = false;
+			isShowing = false;
 			super(VideoPlayerEvent.WATER_MARK);
-			opacity = .7;
 			posX = 10;
 			posY = 10;
 			position = BOTTOM_RIGHT;
@@ -56,8 +60,8 @@ package vn.meme.cloud.player.btn
 		}
 		
 		public function init(data:*):void {
-			if (data.opacity) {
-				this.opacity = data.opacity;
+			if (data.transparency) {
+				this.opacity = data.transparency / 100;
 				this.alpha = this.opacity;
 			}
 			if (data.posX)
@@ -66,14 +70,16 @@ package vn.meme.cloud.player.btn
 				this.posY = data.posY;
 			if (data.position) 
 				this.position = data.position;
-			if (data.maxWidthLogo)
-				this.maxWidthLogo = data.maxWidthLogo;
-			if (data.autoHide)
-				this.autoHide = data.autoHide;
-			if (data.webLink)
-				this.webLink = data.webLink;
-			if (data.logoLink) {
-				this.logoLink = data.logoLink;
+			if (data.maxWidth)
+				this.maxWidthLogo = data.maxWidth;
+			if (data.autohide)
+				this.autoHide = data.autohide;
+			if (data.url)
+				this.webLink = data.url;
+			if (data.logo) {
+				var domainName : String = "http://img.dev.mecloud.vn/player/watermark/";
+				this.logoLink = domainName + data.logo;
+				CommonUtils.log(this.logoLink);
 				var loader : Loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onComplete);
 				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,function(er:IOErrorEvent):void{
@@ -81,6 +87,14 @@ package vn.meme.cloud.player.btn
 				});
 				loader.load(new URLRequest(this.logoLink),new LoaderContext(true));
 			}
+		}
+		
+		override protected function onMouseOver(ev:MouseEvent=null):void {
+			this.alpha = 1;	
+		}
+		
+		override protected function onMouseOut(ev:MouseEvent=null):void {
+			this.alpha = this.opacity;
 		}
 		
 		private function onComplete(ev:Event):void {
@@ -130,7 +144,7 @@ package vn.meme.cloud.player.btn
 					this.y = - 40 - this.posY;
 				} else {
 					this.x = vp.stage.stageWidth - logoCurrentWidth - this.posX;
-					this.y = - 40 - this.posY;
+					this.y = - (logoCurrentHeight + this.posY);
 				}
 				currentPosX = this.x;
 				currentPosY = this.y;
@@ -139,12 +153,19 @@ package vn.meme.cloud.player.btn
 		
 		public function show():void {
 			this.visible = true;
+			isShowing = true;
 			if (timing) clearTimeout(timing);
 			timing = 0;
 			timing = setTimeout(function ():void {
 				self.visible = false;
+				self.isShowing = false;
 				timing = 0;
 			}, 3000);
+		}
+		
+		public function hide():void {
+			this.visible = false;
+			isShowing = false;
 		}
 		
 	}

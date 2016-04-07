@@ -13,6 +13,8 @@ package vn.meme.cloud.player.adaptive
 	import org.mangui.hls.event.HLSEvent;
 	import org.osmf.media.URLResource;
 	
+	import vn.meme.cloud.player.analytics.TrackingCategory;
+	import vn.meme.cloud.player.analytics.TrackingControl;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.MidrollManager;
 	import vn.meme.cloud.player.comp.Controls;
@@ -94,8 +96,11 @@ package vn.meme.cloud.player.adaptive
 		override protected function onConnectionStatus(status:NetStatusEvent):void{
 			CommonUtils.log(status.info.code);
 			if (status.info.level == "error"){
-				CommonUtils.log('**************************************');
 				VideoErrorHandler.getInstance().handleError(status.info.code);
+				var vp : VideoPlayer = VideoPlayer.getInstance();
+				if (vp) {
+					TrackingControl.sendEvent(TrackingCategory.PLAYER_ERROR, status.info.code, vp.playInfo.titleAndVideoIdInfo);
+				}
 			} else {
 				if (status.info.code == 'NetStream.Buffer.Flush'){
 					self.dispatchEvent(new VideoAdaptiveEvent(VideoAdaptiveEvent.ON_END,null));

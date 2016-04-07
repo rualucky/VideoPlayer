@@ -1,10 +1,5 @@
 package vn.meme.cloud.player.btn
 {
-	import com.google.utils.SafeLoader;
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.SVG.events.SVGEvent;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import fl.controls.List;
 	import fl.motion.Color;
 	import fl.transitions.*;
@@ -15,6 +10,7 @@ package vn.meme.cloud.player.btn
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -42,6 +38,8 @@ package vn.meme.cloud.player.btn
 	import vn.meme.cloud.player.btn.bigplay.item.BigPlayCenter;
 	import vn.meme.cloud.player.btn.bigplay.item.BigPlayTopOrBottom;
 	import vn.meme.cloud.player.common.CommonUtils;
+	import vn.meme.cloud.player.common.VideoPlayerImageVector;
+	import vn.meme.cloud.player.comp.Controls;
 	import vn.meme.cloud.player.comp.VideoStage;
 	import vn.meme.cloud.player.event.VideoPlayerEvent;
 	import vn.meme.cloud.player.event.VideoPlayerEventListener;
@@ -61,10 +59,15 @@ package vn.meme.cloud.player.btn
 		private var btnTopOrBottom : BigPlayTopOrBottom;
 		public var btnCenter : BigPlayCenter;
 		private var defaultDisplay : Boolean = true;
+		public var isCreateButtonItem : Boolean;
+		
+		private var posiX : Number;
+		private var posiY : Number;
 		
 		public function BigPlay()
 		{
 			super(VideoPlayerEvent.BIGPLAY);
+			isCreateButtonItem = false;
 			RADIUS = 28;
 			BIGPLAY_HEIGHT = 50;
 			position = 'center';
@@ -77,24 +80,45 @@ package vn.meme.cloud.player.btn
 			addEventListener(MouseEvent.CLICK, function(ev:MouseEvent):void{
 				CommonUtils.log('click big play');
 			});
+			addEventListener(MouseEvent.MOUSE_MOVE, function(ev:MouseEvent):void {
+				posiX = Math.round(ev.localX);
+				posiY = Math.round(ev.localY);
+			});
+		}
+
+		//when fullscreen mode back to normalscreen mode
+		public function checkMouseHover(playerWidth:Number, playerHeight:Number):void {
+			if (posiX >= 0 && posiX <= playerWidth && posiY >= 0 && posiY <= playerHeight - Controls.HEIGHT - 10) {
+				hoverMode();
+			}
 		}
 		
-		public function init(isLarge:Boolean = true):void {
+		public function setPosition(index:Number = 1):void {
+			if (index == 1)
+				position = POSITION_TOP;
+			else if (index == 2)
+				position = POSITION_CENTER;
+			else 
+				position = POSITION_BOTTOM;
+		}
+		
+		public function init():void {
 			if (stage) {
-				CommonUtils.log(stage.stageWidth + ' ' + stage.stageHeight);
+				isCreateButtonItem = true;
 				if (stage.stageWidth > 750) {
 					BIGPLAY_HEIGHT = 80;
+				} else {
+					BIGPLAY_HEIGHT = 50;
 				}
 				var vp : VideoPlayer = VideoPlayer.getInstance();
-				if (vp.playInfo && vp.playInfo.videoPoster) {
-					position = vp.playInfo.videoPoster.position;
+				if (vp.playInfo) {
+					//position = vp.playInfo.videoPoster.position;
 					if (!position || (position != POSITION_BOTTOM && position != POSITION_CENTER && position != POSITION_TOP)) {
 						position = POSITION_CENTER;
 					}
 					var temp :TextField = new TextField(),
 						offTitle : Boolean = false;
-					temp.htmlText = vp.playInfo.videoPoster.title;
-					offTitle = vp.playInfo.videoPoster.offTitle;
+					temp.htmlText = vp.playInfo.title;
 					rawTitle = temp.text;
 				}
 				btnCenter.init(BIGPLAY_HEIGHT, stage.stageWidth, stage.stageHeight, rawTitle, offTitle);
@@ -160,6 +184,22 @@ package vn.meme.cloud.player.btn
 			} else {
 				btnCenter.visible = false;
 				btnTopOrBottom.visible = true;
+			}
+		}
+		
+		public function hideTitle():void {
+			if (position == POSITION_CENTER) {
+				btnCenter.hideTitle();
+			} else {
+				btnTopOrBottom.hideTitle();
+			}
+		}
+		
+		public function setTitleSize(size:Number):void {
+			if (position == POSITION_CENTER) {
+				btnCenter.setTitleSize(size);
+			} else {
+				btnTopOrBottom.setTitleSize(size);
 			}
 		}
 		

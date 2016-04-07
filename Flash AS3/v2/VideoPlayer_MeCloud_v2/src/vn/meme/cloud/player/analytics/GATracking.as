@@ -58,7 +58,7 @@ package vn.meme.cloud.player.analytics
 				CommonUtils.log("GA tracker list");
 			}
 			
-			this.trackEvent(TrackingCategory.PLAYER_ACTION,"Player Loaded");
+			this.trackEvent(TrackingCategory.PLAYER_EVENT,"Player Loaded");
 			CommonUtils.log("GA player action");
 			this.trackEvent(TrackingCategory.PLAYER_TECH,"Flash");
 			CommonUtils.log("GA player technology");
@@ -118,7 +118,6 @@ package vn.meme.cloud.player.analytics
 			}
 			if (label){
 				tracker.trackEvent(category, action, label, value);
-				CommonUtils.log("GA label");
 			} else {
 				tracker.trackEvent(category, action);
 				CommonUtils.log("GA !label");
@@ -133,7 +132,6 @@ package vn.meme.cloud.player.analytics
 					} else {
 						trackerList[i].trackEvent(category, action);	
 					}
-					CommonUtils.log("GA tracker list");
 				}
 				return false;
 			}

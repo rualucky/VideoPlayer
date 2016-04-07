@@ -13,6 +13,8 @@ package vn.meme.cloud.player.comp.sub
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
+	import vn.meme.cloud.player.analytics.TrackingCategory;
+	import vn.meme.cloud.player.analytics.TrackingControl;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.comp.VideoPlayerComponent;
 	import vn.meme.cloud.player.comp.VideoStage;
@@ -43,6 +45,10 @@ package vn.meme.cloud.player.comp.sub
 		private var posY : Number;
 		private var timeLineHeight : Number;
 		
+		private var currentTime : Number;
+		private var seekTime : Number;
+		private var percentProcess : Number;
+		
 		public function TimeLine(player:VideoPlayer)
 		{
 			changeHeight(-2, 3);
@@ -67,6 +73,18 @@ package vn.meme.cloud.player.comp.sub
 			timeLineHeight = hei;
 		}
 		private function onMouseClick(ev:MouseEvent):void{
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				currentTime = vp.videoStage.currentTime();
+				seekTime = (ev.localX / player.stage.stageWidth) * player.videoStage.getLength();
+				percentProcess = Math.round(seekTime / player.videoStage.getLength() * 100);
+				if (currentTime > seekTime) {
+					TrackingControl.sendEvent(TrackingCategory.BACKWARD_SEEK, percentProcess + "%", vp.playInfo.titleAndVideoIdInfo);
+				}
+				if (currentTime <= seekTime) {
+					TrackingControl.sendEvent(TrackingCategory.FORWARD_SEEK, percentProcess + "%", vp.playInfo.titleAndVideoIdInfo);
+				}
+			}
 			if (vs.checkHLS){		
 					this.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.SEEK, timeHover));
 			} else {			

@@ -112,7 +112,13 @@ package vn.meme.cloud.player.common
 		private var vp:VideoPlayer=VideoPlayer.getInstance();
 		private var indexOfVideo:int;
 		private var indexOfAdsPlayer:int;
+		private var normalMidAdNonLinearPositionY : Number;
+		private var isShowingMidAdNonLinear : Boolean;
 
+		private var adWidth : Number;
+		private var adHeight : Number;
+		public var playerNormalWidth : Number;
+		
 		public function VideoPlayerAdsManager()
 		{
 			self = this;
@@ -122,6 +128,8 @@ package vn.meme.cloud.player.common
 			adsLoader.addEventListener(AdsManagerLoadedEvent.ADS_MANAGER_LOADED, adsManagerLoadedHandler);
 			adsLoader.addEventListener(AdErrorEvent.AD_ERROR, adsLoadErrorHandler);
 			loading=false;
+			isShowingMidAdNonLinear = false;
+			playerNormalWidth = 0;
 		}
 		
 		private function adsManagerLoadedHandler(event:AdsManagerLoadedEvent):void
@@ -159,7 +167,6 @@ package vn.meme.cloud.player.common
 				// All AD_ERRORs indicate fatal failures. You can discard the AdsManager and
 				// resume your content in this handler.
 				adsManager.addEventListener(AdErrorEvent.AD_ERROR, adsLoadErrorHandler);
-				
 				adsManager.addEventListener(AdEvent.LOADED, onAdEvent);
 				adsManager.addEventListener(AdEvent.STARTED, onAdEvent);
 				adsManager.addEventListener(AdEvent.COMPLETED, onAdEvent);
@@ -195,11 +202,29 @@ package vn.meme.cloud.player.common
 				{
 					if (VideoPlayer.getInstance().stage.displayState == StageDisplayState.FULL_SCREEN)
 					{
-						player.ads.y=(h - adsH) - 30;
+						//player.ads.y = (h - adsH) - Controls.HEIGHT;
+						if (!isLinear) {
+							player.ads.positionWhenControlBarHide = (h - 180) - 20;
+							player.ads.positionWhenControlBarShow = (h - 180) - 50;
+							if (player.controls.wasAutoHide) {
+								player.ads.y = (h - 180) - 20;
+							} else {
+								player.ads.y = (h - 180) - 50;
+							}
+						}
 					}
 					else
 					{
-						player.ads.y=(h - adsH);
+						//player.ads.y = (h - adsH) - 10;
+						if (!isLinear) {
+							player.ads.positionWhenControlBarHide = (h - 180) + 20;
+							player.ads.positionWhenControlBarShow = (h - 180) - 10;
+							if (player.controls.wasAutoHide) {
+								player.ads.y = (h - adsH) + 20;
+							} else {
+								player.ads.y = (h - adsH) - 10;
+							}
+						}
 					}
 				}
 				else
@@ -275,6 +300,7 @@ package vn.meme.cloud.player.common
 		
 		private function onContentPauseRequested(adEvent:AdEvent):void{
 			VideoPlayer.getInstance().dispatchEvent(new VideoPlayerEvent(AdEvent.CONTENT_PAUSE_REQUESTED, adEvent, false));
+			var vp : VideoPlayer = VideoPlayer.getInstance();
 		}
 
 		private function onContentResumeRequested(adEvent:AdEvent):void{
@@ -321,21 +347,36 @@ package vn.meme.cloud.player.common
 						if (ad.linear){
 							vp.wait.show("Loading Ads...", true);
 							CommonUtils.log('Linear');
+							isLinear = true;
 							player.ads.y = 0;
 							adsManager.resize(w, player.stage.stageHeight, (isMid) ? ViewModes.NORMAL : ViewModes.FULLSCREEN);
 							player.videoStage.pause();
 						} else {
-							
 							OnPlay.getInstance().updateView(player);
 							player.videoStage.resume();
 							var h : Number = videoPlayer.getStageHeight();
 							CommonUtils.log('non linear');
-							player.ads.y = (h - 180);
+//							player.ads.y = (h - 180) - 10; 
 							if (VideoPlayer.getInstance().stage.displayState == StageDisplayState.FULL_SCREEN)
 							{
-								player.ads.y = (h - 180) - 30;
-								CommonUtils.log('-30');
+								//player.ads.y = (h - 180) - Controls.HEIGHT;
+								player.ads.positionWhenControlBarHide = (h - 180) - 20;
+								player.ads.positionWhenControlBarShow = (h - 180) - 50;
+								if (player.controls.wasAutoHide) {
+									player.ads.y = (h - 180) - 20;
+								} else {
+									player.ads.y = (h - 180) - 50;
+								}
+							} else {
+								player.ads.positionWhenControlBarHide = (h - 180) + 20;
+								player.ads.positionWhenControlBarShow = (h - 180) - 10;
+								if (player.controls.wasAutoHide) {
+									player.ads.y = (h - 180) + 20;
+								} else {
+									player.ads.y = (h - 180) - 10;
+								}
 							}
+							normalMidAdNonLinearPositionY = player.ads.y;
 							adsManager.resize(w, 180, (isMid) ? ViewModes.NORMAL : ViewModes.FULLSCREEN);
 						}
 					} /*else {
@@ -356,13 +397,19 @@ package vn.meme.cloud.player.common
 							adsManager.resize(w, 180, (isMid) ? ViewModes.NORMAL : ViewModes.FULLSCREEN);
 						}
 					}*/
+					if (vp)
+						TrackingControl.sendEvent(TrackingCategory.PLAYER_EVENT, "meAdready", vp.playInfo.titleAndVideoIdInfo);
 					break;
 				case AdEvent.STARTED:
 					// This event indicates the ad has started - the video player
 					// can adjust the UI, for example display a pause button and
 					// remaining time.
 					CommonUtils.log('[MeCloudPlayer] - AD_STARTED ' + currentAd.position + " " + adsInfo.adtagId);
-					
+					CommonUtils.log(ad.width + " " + ad.height);
+					adWidth = ad.width;
+					adHeight = ad.height;
+					if (ad.linear)
+						isLinear = true;
 					if (isVAST){
 						if (isSkippAbleVideo){
 							skipBtn = new SkipVAST(skipTime);
@@ -371,6 +418,10 @@ package vn.meme.cloud.player.common
 							player.ads.addChild(skipBtn);
 							player.ads.addChild(adsTimeTitle);
 							player.ads.addChild(adsMoreInformation);
+							if (player.stage.displayState == StageDisplayState.FULL_SCREEN) {
+								skipBtn.x = player.stage.stageWidth - 130;
+								skipBtn.y = player.stage.stageHeight * 0.94;
+							}
 						} else {
 							adsTimeTitle = new AdsTimeTitle(adTime);
 							adsMoreInformation = new AdsMoreInformation();
@@ -396,10 +447,13 @@ package vn.meme.cloud.player.common
 								vp.controls.subtitle.y = -70;
 								setTimeout(function():void{
 									vp.controls.subtitle.y = 0;
-								}, 20000);
+									//onAdEnd();
+								}, 45000);
 							}
 						}
 					}
+					if (vp)
+						TrackingControl.sendEvent(TrackingCategory.PLAYER_EVENT, "meAdstart", vp.playInfo.titleAndVideoIdInfo);
 					break;
 				case AdEvent.CLICKED:
 					CommonUtils.log("[MeCloudPlayer] - AD_CLICKED");
@@ -407,6 +461,9 @@ package vn.meme.cloud.player.common
 						adtag: adsInfo.adtagId, 
 						pos: currentAd.position
 					});
+					if (vp) {
+						TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION, "meAdclick", vp.playInfo.titleAndVideoIdInfo);
+					}
 					break;
 				case AdEvent.COMPLETED:
 					// This event indicates the ad has finished - the video player
@@ -442,6 +499,17 @@ package vn.meme.cloud.player.common
 						adtag: adsInfo.adtagId, 
 						pos: currentAd.position
 					});
+					if (currentAd.position == MIDROLL) {
+						if (!isLinear) {
+							var vp : VideoPlayer = VideoPlayer.getInstance();
+							if (vp) {
+								if (vp.stage.displayState == StageDisplayState.FULL_SCREEN) {
+									isShowingMidAdNonLinear = true;	
+								}
+							}
+							
+						}
+					}
 					break;
 				case AdEvent.SKIPPED:
 					CommonUtils.log("[MeCloudPlayer] - AD SKIPPED");
@@ -581,6 +649,10 @@ package vn.meme.cloud.player.common
 		
 		public function onAdEnd():void{
 			var vp : VideoPlayer = VideoPlayer.getInstance();
+			isLinear = false;
+			isShowingMidAdNonLinear = false;
+			adWidth = 0;
+			adHeight = 0;
 			CommonUtils.log("AD END");
 			if (currentAd.position == MIDROLL){
 				if (vp != null){
@@ -645,22 +717,70 @@ package vn.meme.cloud.player.common
 			return loading;
 		}
 
-		public function updateSize(w:Number, h:Number):void
+		public function updateSize(ww:Number, hh:Number):void
 		{
 			if (adsManager)
 			{
-				var player:VideoPlayer=VideoPlayer.getInstance(), videoPlayer:VideoStage=player.videoStage, adInfo:BasicAdInfo=(fallbackPos == 0) ? currentAd.adtag[0] : currentAd.adtag[fallbackPos], isVAST:Boolean=(currentAd.adtag[0].adType == 'vast' || currentAd.adtag[0].adType == 'VAST'), isMid:Boolean=currentAd.position == PositionedAdInfo.MID, w:Number=isMid && !isVAST ? videoPlayer.getStageWidth() : player.stage.stageWidth, h:Number=isMid && !isVAST ? videoPlayer.getStageHeight() : player.stage.stageHeight, adsH:Number=isMid && !isVAST ? 180 : h;
-				adsManager.adsContainer.width=w;
-				adsManager.adsContainer.height=adsH;
-				if (isVAST)
+				var player:VideoPlayer=VideoPlayer.getInstance(), 
+					videoPlayer:VideoStage=player.videoStage, 
+					adInfo:BasicAdInfo=(fallbackPos == 0) ? currentAd.adtag[0] : currentAd.adtag[fallbackPos], 
+					isVAST:Boolean=(currentAd.adtag[0].adType == 'vast' || currentAd.adtag[0].adType == 'VAST'), 
+					isMid:Boolean=currentAd.position == PositionedAdInfo.MID, 
+					w:Number=isMid && !isVAST ? videoPlayer.getStageWidth() : player.stage.stageWidth, 
+					h:Number=isMid && !isVAST ? videoPlayer.getStageHeight() : player.stage.stageHeight, 
+					adsH:Number=isMid && !isVAST ? 180 : h;
+				
+				CommonUtils.log("AD RESIZE");
+				CommonUtils.log(adsManager.adsContainer.width + " " + adsManager.adsContainer.height);
+				if (isLinear)
 				{
-					//skipBtn.x = player.videoStage.stage.stageWidth - 140;
-					//skipBtn.y = player.videoStage.stage.stageHeight * 0.77;
-					skipBtn.changePosition(player.stage.stageWidth, player.stage.stageHeight);
-					adsMoreInformation.changePosition(player.stage.stageWidth, player.stage.stageHeight);
+					adsManager.adsContainer.width=w;
+					adsManager.adsContainer.height=adsH;
+					if (skipBtn)
+						skipBtn.changePosition(player.stage.stageWidth, player.stage.stageHeight);
+					if (adsMoreInformation)
+						adsMoreInformation.changePosition(player.stage.stageWidth, player.stage.stageHeight);
+				} else {
+					if (currentAd.position == MIDROLL) {
+						if (player.stage.displayState == StageDisplayState.NORMAL) {
+							player.ads.x = 0;	
+							player.ads.y = normalMidAdNonLinearPositionY;
+							player.ads.positionWhenControlBarHide = (h - 180) + 20;
+							player.ads.positionWhenControlBarShow = (h - 180) - 10;
+							if (isShowingMidAdNonLinear) { //ad was started in fullscreen and when it back to normalscreen then close mid ad banner
+								onAdEnd();
+							}
+						}
+						if (player.stage.displayState == StageDisplayState.FULL_SCREEN) {
+							if (adsManager.adsContainer.width > 0) {
+								player.ads.x = (player.stage.stageWidth - adWidth) / 2;
+								if (player.controls.normalVideoWidth > adWidth) {
+									player.ads.x = (player.stage.stageWidth - player.controls.normalVideoWidth) / 2;
+								}
+							} else {
+								player.ads.x = (player.stage.stageWidth - adWidth) / 2 - 200;	
+							}
+							
+							player.ads.y = (player.stage.stageHeight - adsManager.adsContainer.height) - Controls.HEIGHT - 140;
+							player.ads.positionWhenControlBarHide = (h - 180) - 20;
+							player.ads.positionWhenControlBarShow = (h - 180) - 50;
+						}
+					}
+					
+//					player.ads.positionWhenControlBarHide = (h - 180) - 20;
+//					player.ads.positionWhenControlBarShow = (h - 180) - 50;
+//					if (player.controls.wasAutoHide) {
+//						player.ads.y = (h - 180) - 20;
+//					} else {
+//						player.ads.y = (h - 180) - 50;
+//					}
+//				} else {
+//					player.ads.positionWhenControlBarHide = (h - 180) + 20;
+//					player.ads.positionWhenControlBarShow = (h - 180) - 10;
 				}
+				//adsManager.resize(w, 180, (isMid) ? ViewModes.NORMAL : ViewModes.FULLSCREEN);
 			}
 		}
-
+		
 	}
 }

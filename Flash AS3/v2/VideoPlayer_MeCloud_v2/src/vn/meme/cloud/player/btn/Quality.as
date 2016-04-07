@@ -1,9 +1,6 @@
 package vn.meme.cloud.player.btn
 {
 		
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import fl.controls.List;
 	
 	import flash.display.Bitmap;
@@ -26,29 +23,15 @@ package vn.meme.cloud.player.btn
 
 	public class Quality extends VideoPlayerButton
 	{
-		private var svg : SVGDocument;
-		private var bg : Sprite;
 		private var timeout : uint;
+		[Embed(source="asset/btn-setting.png")]
+		public static var asset:Class;
 		
 		public function Quality()
 		{
 			super(VideoPlayerEvent.SHOW_QUALITY);
-			svg = new SVGDocument();
-			addChild(svg);
-			bg = new Sprite();
-			addChild(bg);
-			var g : Graphics = bg.graphics;
-			g.clear();
-			g.beginFill(0xffffff, 0);
-			g.drawRect(0, 0, 22, 20);
-			g.endFill();
 			timeout = 0;
-		}
-		
-		public function init():void{
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/btn-setting.svg');
+			addChild(this.invertBitmapColor(new asset() as Bitmap));
 		}
 		
 		protected override function onMouseOver(ev:MouseEvent = null):void{

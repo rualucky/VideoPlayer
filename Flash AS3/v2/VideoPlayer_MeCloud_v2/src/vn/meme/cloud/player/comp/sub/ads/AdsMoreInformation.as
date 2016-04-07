@@ -73,6 +73,7 @@ package vn.meme.cloud.player.comp.sub.ads
 		}
 		
 		public function changePosition(w:Number, h:Number):void{
+			VideoPlayerAdsManager.getInstance().adsMoreInformation.y = h - 35;
 			if (w <= 640){
 	//			VideoPlayerAdsManager.getInstance().adsMoreInformation.y = h - 35;	
 			} else {

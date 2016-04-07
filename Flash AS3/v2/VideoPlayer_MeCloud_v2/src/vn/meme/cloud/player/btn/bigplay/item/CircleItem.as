@@ -26,9 +26,9 @@ package vn.meme.cloud.player.btn.bigplay.item
 			g.beginFill(0x000000, .8);
 			g.drawCircle(0, 0, radius);
 			g.endFill();		
-			effX = new Tween(this, "width", Linear.easeIn, radius * 2, radius * 2, .08, true);
+			effX = new Tween(this, "width", Linear.easeIn, radius * 2, radius * 2, .3, true);
 			effX.stop();
-			effY = new Tween(this, "height", Linear.easeIn, radius * 2, radius * 2, .08, true);
+			effY = new Tween(this, "height", Linear.easeIn, radius * 2, radius * 2, .3, true);
 			effY.stop();
 		}
 		

@@ -16,7 +16,6 @@ package vn.meme.cloud.player.comp.video.related
 		}
 		
 		override protected function onMouseClick(ev:MouseEvent):void {
-			CommonUtils.log("CLOSE RELATED ABC");
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (vp) {
 				if (vp.videoStage.isEnd()){

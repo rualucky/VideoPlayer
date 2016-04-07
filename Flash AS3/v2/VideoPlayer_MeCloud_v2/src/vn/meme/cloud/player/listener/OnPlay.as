@@ -65,6 +65,9 @@ package vn.meme.cloud.player.listener
 				vp.related.hide();
 			if (vp.sharing.isSharingShowing)
 				vp.sharing.hide(vp.stage.stageHeight);
+			if (vp.playList.isShowing) {
+				vp.playList.toggle(vp);
+			}
 			return true;
 		}
 		

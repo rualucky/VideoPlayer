@@ -4,6 +4,7 @@ package vn.meme.cloud.player.comp
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	
+	import flash.display.Bitmap;
 	import flash.display.Graphics;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -20,7 +21,7 @@ package vn.meme.cloud.player.comp
 
 	public class VideoSharing extends VideoPlayerComponent
 	{
-		private var shareFrame : ShareFrame;
+		public var shareFrame : ShareFrame;
 		private var embedFrame : EmbedFrame;
 		public var closeButton : CloseSharing;
 		private var backButton : BackButton;
@@ -29,6 +30,12 @@ package vn.meme.cloud.player.comp
 		private var effectShareFrameX : Tween;
 		public var isSharingShowing : Boolean;
 		private var isEmbedFrameShowing : Boolean;
+		
+		[Embed(source="asset/btn-back-share.png")]
+		public static var assetBack:Class;
+		
+		[Embed(source="asset/btn-back-share-hover.png")]
+		public static var assetBackHover:Class;
 		
 		public function VideoSharing(player:VideoPlayer)
 		{
@@ -42,9 +49,9 @@ package vn.meme.cloud.player.comp
 			addChild(embedFrame);
 			closeButton = new CloseSharing();
 			addChild(closeButton);
-			backButton = new BackButton('asset/btn-back-share.svg');
+			backButton = new BackButton(receiveBitmap(new assetBack()));
 			addChild(backButton);
-			backHoverButton = new BackButton('asset/btn-back-share-hover.svg');
+			backHoverButton = new BackButton(receiveBitmap(new assetBackHover()));
 			addChild(backHoverButton);
 			backHoverButton.visible = false;
 			effectThisY = new Tween(this, "y", Linear.easeIn, 1, 1, .2, true);
@@ -61,6 +68,11 @@ package vn.meme.cloud.player.comp
 				backButton.visible = true;
 				backHoverButton.visible = false;
 			});
+		}
+		
+		private function receiveBitmap(bm:Bitmap):Bitmap {
+			bm.smoothing = true;
+			return bm;
 		}
 		
 		private function onClickBack(ev:MouseEvent):void {
@@ -123,7 +135,6 @@ package vn.meme.cloud.player.comp
 			}
 		}
 		override public function initSize(ev:Event = null):void{
-			CommonUtils.log("SHARING RESIZE");
 			var w : Number = player.stage.stageWidth, 
 				h : Number = player.stage.stageHeight;
 			if (isSharingShowing)

@@ -25,6 +25,8 @@ package vn.meme.cloud.player.listener.ads
 		public function excuteLogic(vp:VideoPlayer, vs:VideoStage, ev:VideoPlayerEvent):Boolean
 		{
 			CommonUtils.log("Ads Content resume request!");
+			vp.wait.btnPauseAd.isPlayingAds = false;
+			vp.controls.resetTiming();
 			var ads2 : VideoPlayerAdsManager = VideoPlayerAdsManager.getInstance();
 			if (vs.isEnd() &&  (ads2.currentAd.position == PositionedAdInfo.POST)){
 				vp.wait.showButton();

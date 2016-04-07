@@ -1,8 +1,5 @@
 package vn.meme.cloud.player.btn
 {
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import flash.display.Bitmap;
 	import flash.display.Graphics;
 	import flash.events.MouseEvent;
@@ -15,25 +12,13 @@ package vn.meme.cloud.player.btn
 
 	public class Mute extends VideoPlayerButton
 	{
-		
-		private var svg : SVGDocument;
+		[Embed(source="asset/volume-mute.png")]
+		public static var asset:Class;
 		
 		public function Mute()
 		{
 			super(VideoPlayerEvent.VOLUME);
-			svg = new SVGDocument();
-			addChild(svg);
-		}
-		
-		public function init():void {
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/volume-mute.svg');
-			var g : Graphics = this.graphics;
-			g.clear();
-			g.beginFill(0x000000, 0);
-			g.drawRect(70, 5, 25, 19);
-			g.endFill();
+			addChild(this.invertBitmapColor(new asset() as Bitmap));
 		}
 		
 		protected override function onMouseOver(ev:MouseEvent=null):void{
@@ -53,8 +38,7 @@ package vn.meme.cloud.player.btn
 		protected function showVolumeSlider():void{
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
-			ct.timeDisplay.y = 11;
-			ct.timeDisplay.x = 180;
+			ct.positionTimeDisplay(175, 11);
 			ct.volumeSlider.visible = true;
 			ct.volumeSlider.alpha = 1;
 		}
@@ -63,8 +47,7 @@ package vn.meme.cloud.player.btn
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			var ct : Controls = vp.controls;
 			if (ct.volumeSlider.alpha != 1){
-				ct.timeDisplay.y = 11;
-				ct.timeDisplay.x = 75;
+				ct.positionTimeDisplay(75, 11);
 				ct.volumeSlider.visible = false;
 			}
 		}

@@ -21,7 +21,7 @@ package vn.meme.cloud.player.comp
 		public function handleError(errorName:String):void{
 			switch (errorName) {
 				case "NetConnection.Call.BadVersion":
-					this.errorCode = 510;
+					this.errorCode = 510; 
 					break;
 				case "NetConnection.Call.Failed":
 					this.errorCode = 511;

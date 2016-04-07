@@ -45,8 +45,11 @@ package vn.meme.cloud.player.listener
 				ct.playBtn.visible = true;
 			}
 			
-			if (vp.wait.isPauseAdData && !vp.wait.btnPauseAd.isComplete) {
+			if (vp.wait.isPauseAdData && !vp.wait.btnPauseAd.isComplete && !vp.wait.btnPauseAd.isPlayingAds) {
 				vp.wait.showPauseAd();
+				if (vp.controls.subtitle.visible == true) {
+					vp.controls.subtitle.visible = false;
+				}
 			} else {
 				vp.wait.showBigPlay();
 			}

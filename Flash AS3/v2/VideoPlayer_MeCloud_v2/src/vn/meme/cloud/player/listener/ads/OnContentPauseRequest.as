@@ -17,6 +17,7 @@ package vn.meme.cloud.player.listener.ads
 		public function excuteLogic(vp:VideoPlayer, vs:VideoStage, ev:VideoPlayerEvent):Boolean
 		{
 			CommonUtils.log("Ads Content pause request!");
+			vp.wait.btnPauseAd.isPlayingAds = true;
 			OnPause.getInstance().excuteLogic(vp,vs,ev);
 			return true;
 		}

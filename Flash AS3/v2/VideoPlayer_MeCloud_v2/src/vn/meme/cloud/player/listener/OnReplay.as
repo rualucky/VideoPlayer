@@ -11,6 +11,12 @@ package vn.meme.cloud.player.listener
 		public function excuteLogic(vp : VideoPlayer, vs : VideoStage, ev:VideoPlayerEvent):Boolean{
 			OnPlay.getInstance().excuteLogic(vp,vs,ev);
 			OnPlay.getInstance().updateView(vp);
+			if (vp.related.isShowing) {
+				vp.related.hide();
+			}
+			if (vp.sharing.isSharingShowing) {
+				vp.sharing.hide(vp.stage.stageHeight);
+			}
 			return false;
 		}
 		public function updateView(vp : VideoPlayer):void{

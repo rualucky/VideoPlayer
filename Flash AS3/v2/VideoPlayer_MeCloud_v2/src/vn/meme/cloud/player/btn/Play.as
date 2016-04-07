@@ -1,30 +1,24 @@
 package vn.meme.cloud.player.btn
 {
 	
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import flash.display.Bitmap;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import vn.meme.cloud.player.common.CommonUtils;
+	import vn.meme.cloud.player.common.VideoPlayerImageVector;
 	import vn.meme.cloud.player.event.VideoPlayerEvent;
 	
 	public class Play extends VideoPlayerButton
 	{
-		private var svg : SVGDocument;
+		
+		[Embed(source="asset/btn-play.png")]
+		public static var asset:Class;
 		
 		public function Play()
 		{
-			super(VideoPlayerEvent.PLAY);	
-			svg = new SVGDocument();
-			addChild(svg);
-		}
-		
-		public function init():void{
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/btn-play.svg');
+			super(VideoPlayerEvent.PLAY);
+			addChild(this.invertBitmapColor(new asset() as Bitmap));
 		}
 		
 		protected override function onMouseOver(ev:MouseEvent=null):void{

@@ -2,6 +2,7 @@ package vn.meme.cloud.player.comp
 {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.clearTimeout;
@@ -72,7 +73,11 @@ package vn.meme.cloud.player.comp
 				clicked = t;
 				
 			});
-						
+			addEventListener(MouseEvent.RIGHT_CLICK, onMouseRightClick);			
+		}
+		
+		private function onMouseRightClick(ev:MouseEvent):void {
+			player.videoStage.onMouseRightClick(ev);
 		}
 		
 		private function onMouseOver(ev:MouseEvent):void{
@@ -83,7 +88,7 @@ package vn.meme.cloud.player.comp
 		}
 		
 		override public function initSize(ev:Event = null):void{
-			btn.init(player.stage.stageWidth >= 480);
+			btn.init();
 			loadingAds.init(player.stage.stageWidth, player.stage.stageHeight);
 			btnPauseAd.init(player.stage.stageWidth, player.stage.stageHeight);
 		}
@@ -143,6 +148,6 @@ package vn.meme.cloud.player.comp
 				setChildIndex(layer, btnIndex);
 			}
 		}
-
+		
 	}
 }

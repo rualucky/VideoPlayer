@@ -38,8 +38,11 @@ package vn.meme.cloud.player.btn
 			return instance;
 		}
 		
+		public var isPlayingAds : Boolean;
+		
 		public function PauseAd()
 		{
+			isPlayingAds = false;
 			itemIndex = -1;
 			isComplete = false;
 			imageList = new Vector.<PauseAdImage>();
@@ -82,8 +85,9 @@ package vn.meme.cloud.player.btn
 		}
 		
 		public function setPauseAd(pauseAd:PositionedAdInfo):void{
-			if (pauseAd.maxDisplay)
+			if (pauseAd.maxDisplay){
 				maxDisplay = pauseAd.maxDisplay;
+			}
 			if (pauseAd.displayRule)
 				displayRule = pauseAd.displayRule;
 			if (pauseAd.selectRule)
@@ -100,7 +104,6 @@ package vn.meme.cloud.player.btn
 			}
 			addChild(title);
 			this.addEventListener(MouseEvent.CLICK, function(ev:MouseEvent):void{
-				CommonUtils.log("192 KA");
 				navigateToURL(new URLRequest(clickLink));
 				ev.stopImmediatePropagation();
 			});
@@ -147,9 +150,16 @@ package vn.meme.cloud.player.btn
 				imageList[itemIndex].visible = true;
 				clickLink = imageList[itemIndex].getClickLink();
 				displayed += 1;
-				if (displayed >= maxDisplay) 
+				if (displayed >= maxDisplay){ 
 					isComplete = true;
+				}
 			} 
+		}
+		
+		public function resetConfig():void {
+			isComplete = false;
+			displayed = 0;
+//			isPlayingAds = false;
 		}
 		
 	}

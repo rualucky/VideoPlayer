@@ -56,7 +56,6 @@ package vn.meme.cloud.player.btn
 		private var str : String;
 		private var lstQuality:Sprite;
 		private var listQuality : Sprite;
-		private var tf5 : TextField;
 		private var intervalTime : uint;
 				
 		private var qualityHLSList : Vector.<Level>;

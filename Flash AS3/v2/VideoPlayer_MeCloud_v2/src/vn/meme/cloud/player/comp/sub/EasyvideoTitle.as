@@ -20,11 +20,11 @@ package vn.meme.cloud.player.comp.sub
 		public function EasyvideoTitle()
 		{
 			self = this;
-			textFormat = new TextFormat("Arial", 14, 0xffffff);
+			textFormat = new TextFormat("Arial", 13, 0xffffff);
 			tf = new TextField();
 			tf.defaultTextFormat = textFormat;
 			tf.defaultTextFormat.align = TextAlign.JUSTIFY;
-			tf.text = "Powered by MeCloud";
+			tf.text = "About MeCloud Player FLASH";
 			tf.width = tf.textWidth + 10;
 			tf.height = 20;
 			this.buttonMode = true;
@@ -40,12 +40,12 @@ package vn.meme.cloud.player.comp.sub
 		}
 		
 		public function drawTitle(x:Number, y:Number):void{
-			tf.x = x + 5;
-			tf.y = y + 2;
+			tf.x = x + 10;
+			tf.y = y + 8;
 			var g : Graphics = this.graphics
 			g.clear();
-			g.beginFill(0x248FDB, 1);
-			g.drawRoundRect(x, y, tf.textWidth + 15, tf.textHeight + 10, 10, 10);
+			g.beginFill(0x000000, .8);
+			g.drawRoundRect(x, y, tf.textWidth + 25, tf.textHeight + 20, 5, 5);
 			g.endFill();
 		}
 	}

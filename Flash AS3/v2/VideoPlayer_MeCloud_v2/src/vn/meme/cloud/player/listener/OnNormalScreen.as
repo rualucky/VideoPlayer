@@ -33,6 +33,7 @@ package vn.meme.cloud.player.listener
 			var subDisplay : SubtitleDisplay = vp.controls.subtitle;
 			if (subDisplay != null){
 				subDisplay.changeFontSizeBaseOnPlayerHeight(vp);
+				vp.controls.subtitle.y = 0;
 			}
 			vp.controls.productSign.updatePosition();
 			return true;

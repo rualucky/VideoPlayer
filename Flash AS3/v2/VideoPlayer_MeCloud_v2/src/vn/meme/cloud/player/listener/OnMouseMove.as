@@ -22,7 +22,7 @@ package vn.meme.cloud.player.listener
 		
 		public function excuteLogic(vp : VideoPlayer, vs : VideoStage, ev:VideoPlayerEvent):Boolean
 		{
-			var ct : Controls = vp.controls;
+			var ct : Controls = vp.controls; 
 			if (vp.stage.displayState == StageDisplayState.FULL_SCREEN){
 				if (vp.related.isRelated && vp.related.visible){
 					ct.resetTiming(false);
@@ -30,16 +30,20 @@ package vn.meme.cloud.player.listener
 					ct.resetTiming();
 				}
 				
-				
 			} else {
-				ct.resetTiming();
+				if (!vp.videoStage.fstPlay) {
+					if (!vp.playList.isShowing)
+						ct.resetTiming();
+					else 
+						ct.clearTiming();					
+				}
 			}
 			if (vp.controls.waterMark.loaded) {
-				if (vp.controls.waterMark.autoHide) 
+				if (vp.controls.waterMark.autoHide && !vp.playList.isShowing) 
 					vp.controls.waterMark.show();
 					vp.controls.waterMark.y = vp.controls.waterMark.currentPosY;
 			}
-			if (vp.plugin.isPlugin) {
+			if (vp.plugin.isPlugin && !vs.fstPlay) {
 				vp.plugin.show();
 			}
 			vp.wait.btnPauseAd.title.y = vp.stage.stageHeight - vp.wait.btnPauseAd.title.height - 40;

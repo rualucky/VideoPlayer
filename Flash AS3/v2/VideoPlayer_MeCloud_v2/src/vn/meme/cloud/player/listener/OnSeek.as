@@ -37,7 +37,7 @@ package vn.meme.cloud.player.listener
 				vs.seek(ev.data);
 				}
 			}
-			TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION,"Seek", vp.playInfo.titleAndVideoIdInfo);
+			//TrackingControl.sendEvent(TrackingCategory.PLAYER_ACTION,"Seek", vp.playInfo.titleAndVideoIdInfo);
 			return true;
 		}
 		

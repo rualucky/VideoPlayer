@@ -26,9 +26,9 @@ package vn.meme.cloud.player.btn.bigplay.item
 		public function init(r : int):void {
 			radius = r;
 			drawCircle();
-			effX = new Tween(this, "width", Linear.easeIn, radius * 2, radius * 2, .1, true);
+			effX = new Tween(this, "width", Linear.easeIn, radius * 2, radius * 2, .3, true);
 			effX.stop();
-			effY = new Tween(this, "height", Linear.easeIn, radius * 2, radius * 2, .1, true);
+			effY = new Tween(this, "height", Linear.easeIn, radius * 2, radius * 2, .3, true);
 			effY.stop();
 			circleOpacity = new Tween(this, "alpha", Linear.easeIn, 1, 1, .1, true);
 			circleOpacity.stop();

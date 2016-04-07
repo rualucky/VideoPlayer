@@ -1,5 +1,7 @@
 package vn.meme.cloud.player.listener
 {
+	import vn.meme.cloud.player.analytics.TrackingCategory;
+	import vn.meme.cloud.player.analytics.TrackingControl;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.MidrollManager;
 	import vn.meme.cloud.player.common.VideoPlayerAdsManager;
@@ -23,6 +25,8 @@ package vn.meme.cloud.player.listener
 		
 		public function excuteLogic(vp:VideoPlayer, vs:VideoStage, ev:VideoPlayerEvent):Boolean
 		{
+			vp.wait.btnPauseAd.resetConfig();
+			TrackingControl.sendEvent(TrackingCategory.PLAYER_EVENT, "Ended", vp.playInfo.titleAndVideoIdInfo);
 			if (vp.playInfo.ad && vp.playInfo.ad.midrollManager){
 				var midrollManager : MidrollManager = vp.playInfo.ad.midrollManager;
 				if (midrollManager != null){
@@ -41,7 +45,7 @@ package vn.meme.cloud.player.listener
 		
 		public function updateView(vp:VideoPlayer):void
 		{
-				if (vp.related.isRelated){
+				if (vp.related.allowShowRelatedFrameWhenEndVideo){
 					vp.related.show();
 					vp.wait.visible = false;
 				} else {

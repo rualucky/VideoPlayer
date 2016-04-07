@@ -1,9 +1,7 @@
 package vn.meme.cloud.player.btn
 {
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.SVG.events.SVGEvent;
-	import com.lorentz.processing.ProcessExecutor;
 	
+	import flash.display.Bitmap;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -15,32 +13,24 @@ package vn.meme.cloud.player.btn
 	
 	public class Related extends VideoPlayerButton
 	{
-		private var svg : SVGDocument;
 		private var WIDTH : int;
-		private var cover : Sprite;
 		private var self : *;
+		private var relatedImage : Sprite;
+		[Embed(source="asset/btn-related.png")]
+		public static var asset:Class;
 		public function Related()
 		{
 			super(VideoPlayerEvent.RELATED);
 			self = this;
 			WIDTH = 30;
-			svg = new SVGDocument();
-			addChild(svg);
-			cover = new Sprite();
-			addChild(cover);
-			drawBg(this, 0x000000);
-			drawBg(cover, 0xffffff, 0);
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/btn-related.svg');
-			svg.addEventListener(SVGEvent.RENDERED, function():void {
-				svg.x = (WIDTH - svg.width) / 2 - 2;
-				svg.y = (WIDTH - svg.height) / 2;
-				var vp : VideoPlayer = VideoPlayer.getInstance();
-				if (vp) {
-					vp.plugin.arrangeRelatedBtn(svg.width + 10);
-				}
-			});
+			relatedImage = new Sprite();
+			relatedImage.addChild(receiveBitmap(new asset()));
+			addChild(relatedImage);
+			drawBg(relatedImage);
+//			var vp : VideoPlayer = VideoPlayer.getInstance();
+//				if (vp) {
+//					vp.plugin.arrangeRelatedBtn(relatedImage.width + 10);
+//				}
 			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut)
 			addEventListener(MouseEvent.CLICK, function(ev:MouseEvent):void {
@@ -49,6 +39,10 @@ package vn.meme.cloud.player.btn
 			this.visible = true;
 		}
 		
+		private function receiveBitmap(bm:Bitmap):Bitmap {
+			bm.smoothing = true;
+			return bm;
+		}
 		override protected function onMouseOut(ev:MouseEvent=null):void {
 			PlayerTooltip.getInstance().visible = false;
 		}
@@ -62,7 +56,7 @@ package vn.meme.cloud.player.btn
 			var g : Graphics = obj.graphics;
 			g.clear();
 			g.beginFill(color, alpha);
-			g.drawRoundRect(0, 0, WIDTH, WIDTH, 5, 5);
+			g.drawRoundRect(-(WIDTH - relatedImage.width) / 2, - (WIDTH - relatedImage.height) / 2, WIDTH, WIDTH, 5, 5);
 			g.endFill();
 		}
 		

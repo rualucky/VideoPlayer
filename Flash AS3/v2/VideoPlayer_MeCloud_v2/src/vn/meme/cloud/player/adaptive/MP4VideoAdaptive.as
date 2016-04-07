@@ -8,6 +8,8 @@ package vn.meme.cloud.player.adaptive
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
+	import vn.meme.cloud.player.analytics.TrackingCategory;
+	import vn.meme.cloud.player.analytics.TrackingControl;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.MidrollManager;
 	import vn.meme.cloud.player.comp.VideoErrorHandler;
@@ -59,6 +61,8 @@ package vn.meme.cloud.player.adaptive
 										(vp.playInfo.ad.mid && vp.playInfo.ad.mid.length) ? vp.playInfo.ad.mid : null);
 								}
 							}
+							if (vp)
+								vp.videoStage.clearPlayerLoadTime();
 						} else {
 							if (nextStartPosition != 0){
 								nextStartPosition = (self.videoLength - (infoObject.duration * 1000)) / 1000;
@@ -171,6 +175,9 @@ package vn.meme.cloud.player.adaptive
 			if (status.info.level == "error"){
 				VideoErrorHandler.getInstance().handleError(status.info.code);
 				clearInterval(timing2);
+				if (vp) {
+					TrackingControl.sendEvent(TrackingCategory.PLAYER_ERROR, status.info.code, vp.playInfo.titleAndVideoIdInfo);
+				}
 			} else {
 				if (status.info.code == 'NetConnection.Connect.Success' || status.info.code == 'NetStream.Connect.Success'){
 					self.dispatchEvent(new VideoAdaptiveEvent(VideoAdaptiveEvent.ON_READY,null));

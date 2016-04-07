@@ -25,10 +25,12 @@ package vn.meme.cloud.player.btn
 		private var urlMain : String;
 		private var urlHover : String;
 		public static var TYPE_BOX : String = "box";
+		private var TYPE_ICON : String = "icon";
 		private var HEIGHT : int;
 		private var self : *;
 		private var isMainLoaded : Boolean;
 		private var isHoverLoaded : Boolean;
+		
 		public function ProductSign()
 		{			
 			super(VideoPlayerEvent.SIGN_CLICK);
@@ -59,10 +61,15 @@ package vn.meme.cloud.player.btn
 			loadImageHover(this.urlHover);
 		}
 		
-		public function setStype(type:String):void {
-			this.type = type;
+		public function setStype(typeNumber:Number = 0):void {
+			if (typeNumber == 0) {
+				this.type = TYPE_BOX;
+			} else { 
+				this.type = TYPE_ICON;
+			}
 			if (this.type != TYPE_BOX)
 				HEIGHT = 27 - 3;
+			CommonUtils.log(type);
 		}
 		
 		public function setLink(link:String):void {
@@ -108,6 +115,12 @@ package vn.meme.cloud.player.btn
 				self.main.visible = true;
 				self.isMainLoaded = true;
 				updatePosition();
+				var vp : VideoPlayer = VideoPlayer.getInstance();
+				if (vp && vp.playList.isLoadedData) {
+					vp.controls.nextBtn.setPositionX(0);
+					//vp.controls.previousBtn.setPositionX(45);
+				}
+				CommonUtils.log("LOGO LOADED");
 			});
 			loader.load(new URLRequest(url));
 		}
@@ -136,6 +149,7 @@ package vn.meme.cloud.player.btn
 				self.hover.visible = false;
 				self.isHoverLoaded = true;
 				updatePosition();
+				CommonUtils.log("LOGO HOVER LOADED");
 			});
 			loader.load(new URLRequest(url));
 		}
@@ -145,15 +159,20 @@ package vn.meme.cloud.player.btn
 			var ct : Controls = vp.controls;
 			if (ct) {
 				if (type == TYPE_BOX) {
-					ct.productSign.x = vp.stage.stageWidth - main.width;
+					ct.positionProductSignButton(vp.stage.stageWidth - main.width, 0);
 				} else {
-					ct.productSign.y = (Controls.HEIGHT - HEIGHT) / 2 - 2;
-					ct.productSign.x = vp.stage.stageWidth - main.width - ct.productSign.y;
+					var posY : Number = (Controls.HEIGHT - HEIGHT) / 2 - 2 + 1 / 2,
+						posX : Number = vp.stage.stageWidth - main.width - posY; 
+					ct.positionProductSignButton(posX, posY);
 				}
-				ct.fullscreenBtn.x = ct.productSign.x - 10 - ct.fullscreenBtn.width;
-				ct.normalScreenBtn.x = ct.productSign.x - 10 - ct.normalScreenBtn.width;
-				ct.quality.x = ct.fullscreenBtn.x - 10 - ct.quality.width;
-				ct.qualityList.x = ct.fullscreenBtn.x - 20 - ct.fullscreenBtn.width;
+				if (vp && vp.playList && vp.playList.isLoadedData) {
+					ct.positionFullScreenButton(ct.productSign.x - 10 - ct.fullscreenBtn.width, ct.fullscreenBtn.y);
+					ct.positionQualityButton(ct.fullscreenBtn.x - 10 - ct.quality.width, ct.quality.y);
+					ct.positionPlayListButton(ct.quality.x - 60, 11);
+				} else {
+					ct.positionFullScreenButton(ct.productSign.x - 10 - ct.fullscreenBtn.width, ct.fullscreenBtn.y);
+					ct.positionQualityButton(ct.fullscreenBtn.x - 10 - ct.quality.width, ct.quality.y);
+				}
 			}
 		}
 	}

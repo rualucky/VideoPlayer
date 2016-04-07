@@ -5,6 +5,7 @@ package vn.meme.cloud.player.comp
 	import flash.display.Graphics;
 	import flash.display.SpreadMethod;
 	import flash.display.Sprite;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
@@ -19,9 +20,12 @@ package vn.meme.cloud.player.comp
 	
 	import vn.meme.cloud.player.btn.Fullscreen;
 	import vn.meme.cloud.player.btn.Mute;
+	import vn.meme.cloud.player.btn.Next;
 	import vn.meme.cloud.player.btn.NormalScreen;
 	import vn.meme.cloud.player.btn.Pause;
 	import vn.meme.cloud.player.btn.Play;
+	import vn.meme.cloud.player.btn.PlayList;
+	import vn.meme.cloud.player.btn.Previous;
 	import vn.meme.cloud.player.btn.ProductSign;
 	import vn.meme.cloud.player.btn.Quality;
 	import vn.meme.cloud.player.btn.QualityListItem;
@@ -35,6 +39,7 @@ package vn.meme.cloud.player.comp
 	import vn.meme.cloud.player.btn.subtitles.SubtitleOn;
 	import vn.meme.cloud.player.common.CommonUtils;
 	import vn.meme.cloud.player.common.VASTAdsManager;
+	import vn.meme.cloud.player.common.VideoPlayerAdsManager;
 	import vn.meme.cloud.player.comp.sub.SubtitleDisplay;
 	import vn.meme.cloud.player.comp.sub.Subtitles;
 	import vn.meme.cloud.player.comp.sub.TimeDisplay;
@@ -44,7 +49,10 @@ package vn.meme.cloud.player.comp
 	public class Controls extends VideoPlayerComponent
 	{
 		public static const HEIGHT : int = 40;	
-
+		
+		public var previousBtn : Previous;
+		public var nextBtn : Next;
+		public var playListBtn : PlayList;
 		public var playBtn : Play;
 		public var replayBtn : Replay;
 		public var pauseBtn : Pause;
@@ -64,8 +72,12 @@ package vn.meme.cloud.player.comp
 		public var subContainer : SubtitleContainer;
 		private var timingPhase : int;
 		private var timing : int;
-		private var isShowControlbar : Boolean;
+		public var isShowControlbar : Boolean;
 		public var waterMark : Watermark;
+		
+		public var wasAutoHide : Boolean;
+		
+		public var normalVideoWidth : Number;
 		
 		private static var instance:Controls ;
 		public static function getInstance():Controls{
@@ -75,10 +87,19 @@ package vn.meme.cloud.player.comp
 		
 		public function Controls(player:VideoPlayer)
 		{
+			normalVideoWidth = 0;
+			wasAutoHide = false;
 			instance = this;
 			isShowControlbar = false;
+			addChild(previousBtn = new Previous());
+			previousBtn.visible = false;
+			addChild(nextBtn = new Next());
+			nextBtn.visible = false;
+			addChild(playListBtn = new PlayList());
+			playListBtn.visible = false;
 			addChild(waterMark = new Watermark());
 			addChild(playBtn = new Play());
+			playBtn.visible = true;
 			addChild(replayBtn = new Replay());
 			replayBtn.visible = false;
 			addChild(pauseBtn = new Pause());
@@ -103,7 +124,6 @@ package vn.meme.cloud.player.comp
 			addChild(quality = new Quality());
 			addChild(qualityList = new QualityListItem());
 			qualityList.visible = false;
-
 			addChild(productSign = new ProductSign());
 			addChild(subtitle = new SubtitleDisplay());
 			addChild(subBtn = new Subtitle());
@@ -127,20 +147,11 @@ package vn.meme.cloud.player.comp
 		}
 		
 		public function showControlbar(value : Boolean):void {
-			this.isShowControlbar = value;	
+			this.isShowControlbar = value;
+			this.visible = value;
 		}
 		
-		override public function initSize(ev:Event=null):void{
-			CommonUtils.log("CONTROLS CREATED");
-			this.playBtn.init();
-			this.pauseBtn.init();
-			this.replayBtn.init();
-			this.fullscreenBtn.init();
-			this.normalScreenBtn.init();
-			this.quality.init();
-			this.volume.init();
-			this.mute.init();
-			this.volumeSlider.init();
+		override public function initSize(ev:Event = null):void{
 			
 			this.y = player.stage.stageHeight - HEIGHT;	
 			this.x = 0;
@@ -148,92 +159,83 @@ package vn.meme.cloud.player.comp
 			var oldAlpha : Number = this.alpha;
 			
 			drawBackground(0, 2, player.stage.stageWidth, HEIGHT - 2)
-			
-			this.playBtn.x = 10;
-			this.playBtn.y = 12;
-			this.pauseBtn.x = 10;
-			this.pauseBtn.y = 12;
-			this.replayBtn.x = 8;
-			this.replayBtn.y = 11;
-			
-			//this.productSign.x = player.stage.stageWidth - 10 - this.productSign.width;
-			//this.productSign.y = 13; 
-			this.fullscreenBtn.x = player.stage.stageWidth - 10 - this.fullscreenBtn.width;
-			this.fullscreenBtn.y = 11;
-			this.normalScreenBtn.x = player.stage.stageWidth - 10 - this.normalScreenBtn.width;
-			this.normalScreenBtn.y = 11;
-			
-			this.quality.x = this.fullscreenBtn.x - 10 - this.quality.width;
-			this.quality.y = 11;
-			this.qualityList.x = this.fullscreenBtn.x - 10 - this.fullscreenBtn.width;
-			this.qualityList.y = -15;
-			this.subBtn.x = this.qualityList.x - 10 - this.subBtn.width; 
-			this.subBtn.y = 13;
-			this.subOnBtn.x = this.qualityList.x - 10 - this.subOnBtn.width;
-			this.subOnBtn.y = 13;
-			this.subContainer.x = this.subBtn.x - (this.subContainer.width - this.subBtn.width) / 2 - 25;
-			this.subContainer.y = - this.subContainer.height - 5;
-			
-			
-			this.volume.y = 7;
-			this.mute.y = 7;
-			this.volumeSlider.y = 18;
-			
-			this.volume.x = -30;
-			this.mute.x = -30;
-			this.volumeSlider.x = 75;
-			
-			this.timeDisplay.y = 11; //6
-			this.timeDisplay.x = 75; //66
+			positionPlayButton(10, 12);
+			positionVolumeButton(40, 12.5);
+			positionVolumeSliderButton(75, 18);
+			positionTimeDisplay(75, 11);
+			positionFullScreenButton(player.stage.stageWidth - 10 - this.fullscreenBtn.width, 11);
+			positionQualityButton(this.fullscreenBtn.x - 10 - this.quality.width, 11);
+			if (player.playList && player.playList.isLoadedData) {
+				positionPlayListButton(this.quality.x - 60, 11);
+			} 
 			this.timeline.initSize(ev); 
 			this.visible = false;
 			if (isShowControlbar)
 				this.visible = true;
-		}
-		
-		public function updateView(x:Number):void{
-			CommonUtils.log('UPDATE CONTROL');
-			this.productSign.x = player.stage.stageWidth - x - this.productSign.width;
-			this.fullscreenBtn.x = this.productSign.x - 10 - this.fullscreenBtn.width;
-			this.normalScreenBtn.x = this.productSign.x - 10 - this.normalScreenBtn.width;
-			
-			this.quality.x = this.fullscreenBtn.x - 10 - this.fullscreenBtn.width;
-			this.qualityList.x = this.fullscreenBtn.x - 10 - this.fullscreenBtn.width;
-			this.subBtn.x = this.quality.x - 10 - this.subBtn.width; 
-			this.subBtn.y = 13;
-			this.subOnBtn.x = this.quality.x - 10 - this.subOnBtn.width;
-			this.subOnBtn.y = 13;
-			this.subContainer.x = this.subBtn.x - (this.subContainer.width - this.subBtn.width) / 2 - 25;
-			this.subContainer.y = - this.subContainer.height - 5;
+			volumeSlider.displayVolume(volumeSlider.volumeX.data.lastTime);
+			if (player.stage.displayState == StageDisplayState.NORMAL) {
+				if (this.subContainer.x + this.subContainer.width >= player.stage.stageWidth) {
+					this.subContainer.x = player.stage.stageWidth - this.subContainer.width;
+				}
+			}
+			if (this.subtitle != null){
+				this.subtitle.changeFontSizeBaseOnPlayerHeight(player);
+				if (player.stage.displayState == StageDisplayState.NORMAL)
+					this.subtitle.y = 0;
+			}
+			CommonUtils.log("CONTROL RESIZE");
+			if (player.stage.displayState == StageDisplayState.NORMAL) {
+				player.wait.btn.checkMouseHover(player.stage.stageWidth, player.stage.stageHeight);
+				if (!player.videoStage.fstPlay) { 
+					//when fullscreen back to normalscreen, controlbar is set autohide
+					this.timingPhase = 1;
+					this.timing = setTimeout(startHide,2000);
+				}
+			}
+			waterMark.setPositionLogo(); //update watermark's position
+			if (player) {
+				if (normalVideoWidth == 0) {
+					normalVideoWidth = player.stage.stageWidth;
+				}
+			}
 		}
 		
 		public function fullscreenMode():void{
-//			this.alpha = 0.8;
+			this.qualityList.y = 0;
 			this.resetTiming();
 			this.productSign.updatePosition();
-			this.qualityList.y = 0;
+			
 		}
 		
 		public function normalScreenMode():void{
 			this.alpha = 1;	
+			this.qualityList.y = 0;
 			this.resetTiming(false);
 			this.productSign.updatePosition();
-			this.qualityList.y = 0;
+			
 		}
 		
 		public function resetTiming(goTiming:Boolean = true):void{
+			
+			wasAutoHide = false;
 			if (this.timingPhase == 1)
 				clearTimeout(timing);
 			else if (this.timingPhase == 2)
 				clearInterval(timing);
 			this.y = player.stage.stageHeight - HEIGHT;
+			if (VideoPlayerAdsManager.getInstance().currentAd && VideoPlayerAdsManager.getInstance().currentAd.position == VideoPlayerAdsManager.MIDROLL){
+				if (!VideoPlayerAdsManager.getInstance().isLinear)
+					player.ads.y = player.ads.positionWhenControlBarShow;
+			}
 			if (goTiming){
 				this.timingPhase = 1;
 				this.timing = setTimeout(startHide,2000);
 			} else this.timingPhase = 0;
+			
 		}
 		
 		private function startHide():void{
+			wasAutoHide = true;
 			var self : Controls = this;
 			this.timingPhase = 2;
 			this.timing = setInterval(function():void{
@@ -245,12 +247,16 @@ package vn.meme.cloud.player.comp
 				if (self.waterMark.position == Watermark.TOP_LEFT || self.waterMark.position == Watermark.TOP_RIGHT) {
 					self.waterMark.y -= 2;
 				}
+				if (VideoPlayerAdsManager.getInstance().currentAd && VideoPlayerAdsManager.getInstance().currentAd.position == VideoPlayerAdsManager.MIDROLL){
+					if (!VideoPlayerAdsManager.getInstance().isLinear)
+						player.ads.y += 2;
+				}
+				
 				if (self.y >= player.stage.stageHeight - 2){
 					clearInterval(timing);
 				}
 				player.wait.btnPauseAd.title.y += 2;
 			},4);
-			
 		}
 		
 		public function clearTiming():void{
@@ -293,5 +299,72 @@ package vn.meme.cloud.player.comp
 			this.pauseBtn.visible = false;
 			this.replayBtn.visible = false;
 		}
+		
+		private function positionPlayButton(posX:Number, posY:Number):void { //include playBtn, pauseBtn, replayBtn
+			this.playBtn.x = posX;
+			this.playBtn.y = posY;
+			this.pauseBtn.x = posX;
+			this.pauseBtn.y = posY;
+			this.replayBtn.x = posX - 2;
+			this.replayBtn.y = posY - 1;
+		}
+		
+		private function positionVolumeButton(posX:Number, posY:Number):void { //include muteBtn, volumeBtn
+			this.volume.x = posX;
+			this.volume.y = posY;
+			this.mute.x = posX;
+			this.mute.y = posY;
+		}
+		
+		private function positionVolumeSliderButton(posX:Number, posY:Number):void {
+			this.volumeSlider.x = posX;
+			this.volumeSlider.y = posY;
+		}
+		
+		public function positionTimeDisplay(posX:Number, posY:Number):void {
+			this.timeDisplay.x = posX;
+			this.timeDisplay.y = posY;
+		}
+		
+		public function positionQualityButton(posX:Number, posY:Number):void {
+			this.quality.x = posX;
+			this.quality.y = posY;
+			this.qualityList.x = this.quality.x - 10;
+			this.qualityList.y = 0;
+			this.subBtn.x = this.qualityList.x - this.subBtn.width; 
+			this.subBtn.y = 13;
+			this.subOnBtn.x = this.qualityList.x - this.subOnBtn.width;
+			this.subOnBtn.y = 13;
+			this.subContainer.x = this.subBtn.x - (this.subContainer.width - this.subBtn.width) / 2 - 25;
+			this.subContainer.y = - this.subContainer.height - 5;
+		}
+		
+		public function positionFullScreenButton(posX:Number, posY:Number):void {
+			this.fullscreenBtn.x = posX;
+			this.fullscreenBtn.y = posY;
+			this.normalScreenBtn.x = posX;
+			this.normalScreenBtn.y = posY;
+		}
+		
+		public function positionProductSignButton(posX:Number, posY:Number):void {
+			this.productSign.x = posX;
+			this.productSign.y = posY;
+		}
+		
+		public function positionPlayListButton(posX:Number, posY:Number):void {
+			this.playListBtn.visible = true;
+			this.previousBtn.visible = true;
+			this.nextBtn.visible = true;
+			this.playListBtn.x = posX;
+			this.playListBtn.y = posY;
+			this.nextBtn.x = posX + 30;
+			this.nextBtn.y = posY + 4;
+			this.previousBtn.x = posX - 30;
+			this.previousBtn.y = posY + 4;
+			this.subBtn.x = this.previousBtn.x - this.subBtn.width - 10;
+			this.subOnBtn.x = this.subBtn.x;
+			this.subContainer.x = this.subBtn.x - (this.subContainer.width - this.subBtn.width) / 2 - 25;
+		}
+		
 	}
 }

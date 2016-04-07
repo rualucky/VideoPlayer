@@ -1,12 +1,9 @@
 package vn.meme.cloud.player.btn.bigplay.item
 {
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.SVG.events.SVGEvent;
-	import com.lorentz.processing.ProcessExecutor;
-	
 	import fl.motion.easing.Linear;
 	import fl.transitions.Tween;
 	
+	import flash.display.Bitmap;
 	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.display.SpreadMethod;
@@ -22,12 +19,11 @@ package vn.meme.cloud.player.btn.bigplay.item
 	import flashx.textLayout.formats.TextAlign;
 	
 	import vn.meme.cloud.player.common.CommonUtils;
+	import vn.meme.cloud.player.common.VideoPlayerImageVector;
 	import vn.meme.cloud.player.comp.WaitingLayer;
 
 	public class BigPlayCenter extends Sprite
 	{
-		private var svg : SVGDocument;
-		private var svgReplay : SVGDocument;
 		private var bigPlayHeight : int;
 		private var stageWidth : Number;
 		private var stageHeight : Number;
@@ -63,6 +59,13 @@ package vn.meme.cloud.player.btn.bigplay.item
 		private var cir : CircleItem;
 		private var cirRound : CircleRoundItem;
 		
+		private var bigPlayImg : Sprite;
+		
+		[Embed(source="asset/btn-replay2.png")]
+		public static var asset:Class;
+		
+		private var bigReplayImg : Sprite;
+		
 		public function BigPlayCenter()
 		{
 			self = this;
@@ -73,11 +76,13 @@ package vn.meme.cloud.player.btn.bigplay.item
 			addChild(cir);
 			cirRound = new CircleRoundItem();
 			addChild(cirRound);
-			svg = new SVGDocument();
-			addChild(svg);
-			svgReplay = new SVGDocument();
-			addChild(svgReplay);
-			svgReplay.visible = false;
+			bigPlayImg = new Sprite();
+			bigPlayImg = (VideoPlayerImageVector.drawPlayButton());
+			bigReplayImg = new Sprite();
+			bigReplayImg.addChild(receiveBitmap(new asset()));
+			addChild(bigReplayImg);
+			bigReplayImg.visible = false;
+			addChild(bigPlayImg);
 			rawTitle = "";
 			longTitle = "";
 			normalScale = 1;
@@ -97,12 +102,16 @@ package vn.meme.cloud.player.btn.bigplay.item
 			addChild(title);
 			cover = new Sprite();
 			addChild(cover);
-			effectSvgX = new Tween(svg, "scaleX", Linear.easeIn, 1, 2, .12, true);
+			effectSvgX = new Tween(bigPlayImg, "scaleX", Linear.easeIn, 1, 2, .4, true);
 			effectSvgX.stop();
-			effectSvgY = new Tween(svg, "scaleY", Linear.easeIn, 1, 2, .12, true);
+			effectSvgY = new Tween(bigPlayImg, "scaleY", Linear.easeIn, 1, 2, .4, true);
 			effectSvgY.stop();
 		}
 		
+		private function receiveBitmap(bm:Bitmap):Bitmap {
+			bm.smoothing = true;
+			return bm;
+		}
 		public function init(bigPlayHeight:int, stageWidth:Number, stageHeight:Number, rawTitle:String, offTitle:Boolean):void {
 			this.bigPlayHeight = bigPlayHeight;
 			this.stageWidth = stageWidth;
@@ -116,19 +125,14 @@ package vn.meme.cloud.player.btn.bigplay.item
 				hoverScale = 4.5;
 				cirRound.init(46);
 			} else {
+				RADIUS = 25;
+				setTitleSize(14);
+				normalScale = 1;
+				hoverScale = 2;
 				cirRound.init(36);
 			}
-			
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/bigplay.svg');
-			svgReplay.load("asset/btn-replay.svg");
-			svg.addEventListener(SVGEvent.RENDERED, function():void{
-				updateSVG(normalScale);
-			});
-			svgReplay.addEventListener(SVGEvent.RENDERED, function():void{
-				updateSVGReplay(2, 7, 1);
-			});
+			updateSVG(normalScale);
+			updateSVGReplay(.6);
 			
 			posX = stageWidth / 2 - 2;
 			posY = stageHeight / 2;
@@ -269,7 +273,7 @@ package vn.meme.cloud.player.btn.bigplay.item
 			}
 		}
 		
-		private function setTitleSize(size:int):void {
+		public function setTitleSize(size:int):void {
 			textFormat = new TextFormat("Arial",size,0xffffff,true,null,null,null,null,null,null,null,null,5);
 			textFormat.align = TextAlign.CENTER;
 			title.defaultTextFormat = textFormat;
@@ -300,18 +304,18 @@ package vn.meme.cloud.player.btn.bigplay.item
 		}
 		
 		private function arrangeSVG(svgWidth:Number, svgHeight:Number):void {
-			svg.x = (stageWidth - svgWidth) / 2;
-			svg.y = (stageHeight - svgHeight) / 2;
+			bigPlayImg.x = (stageWidth - svgWidth) / 2;
+			bigPlayImg.y = (stageHeight - svgHeight) / 2;
 		}
 		
 		private function resizeSVG(scaleNumber:Number):void {
-			svg.scaleX = scaleNumber;
-			svg.scaleY = scaleNumber;
+			bigPlayImg.scaleX = scaleNumber;
+			bigPlayImg.scaleY = scaleNumber;
 		}
 		
 		public function updateSVG(scaleNumber:Number):void {
 			resizeSVG(scaleNumber);
-			arrangeSVG(svg.width ,svg.height);
+			arrangeSVG(bigPlayImg.width ,bigPlayImg.height);
 		}
 		
 		private function normalSVG():void {
@@ -325,10 +329,10 @@ package vn.meme.cloud.player.btn.bigplay.item
 		}
 		
 		public function updateSVGReplay(scaleNumber:Number, residualWidth:Number = 0, residualHeight:Number = 0):void {
-			svgReplay.scaleX = scaleNumber;
-			svgReplay.scaleY = scaleNumber;
-			svgReplay.x = (stageWidth - svgReplay.width) / 2 - residualWidth;
-			svgReplay.y = (stageHeight - svgReplay.height) / 2 - residualHeight;
+			bigReplayImg.scaleX = scaleNumber;
+			bigReplayImg.scaleY = scaleNumber;
+			bigReplayImg.x = (stageWidth - bigReplayImg.width) / 2 - residualWidth - 3;
+			bigReplayImg.y = (stageHeight - bigReplayImg.height) / 2 - residualHeight + 1;
 		}
 		
 		private function effectSVG(begin:Number, end:Number):void {
@@ -340,7 +344,7 @@ package vn.meme.cloud.player.btn.bigplay.item
 			effectSvgY.start();
 			if (timing) clearTiming();
 			timing = setInterval(function():void {
-				arrangeSVG(svg.width, svg.height);
+				arrangeSVG(bigPlayImg.width, bigPlayImg.height);
 				timeCount += 10;
 				if (timeCount >= effectSvgX.duration * 1000) {
 					clearInterval(self.timing);
@@ -365,13 +369,13 @@ package vn.meme.cloud.player.btn.bigplay.item
 		}
 		
 		public function showReplay():void {
-			this.svg.visible = false;
-			this.svgReplay.visible = true;
+			this.bigPlayImg.visible = false;
+			this.bigReplayImg.visible = true;
 		}
 		
 		public function showPlay():void {
-			this.svg.visible = true;
-			this.svgReplay.visible = false;
+			this.bigPlayImg.visible = true;
+			this.bigReplayImg.visible = false;
 		}
 		
 		private function clearGraphic():void {
@@ -384,6 +388,10 @@ package vn.meme.cloud.player.btn.bigplay.item
 		
 		public function normalscreenMode(): void {
 			
+		}
+		
+		public function hideTitle():void {
+			title.visible = false;
 		}
 	}
 }

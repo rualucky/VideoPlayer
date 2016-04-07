@@ -7,8 +7,8 @@ package vn.meme.cloud.player.comp
 	{
 		public static var MECLOUD_COLOR : uint = 0x3ea9f5;
 		private var _currentColor : uint;
-		private var isLive : Boolean;
-		private var isOnline : Boolean;
+		private var playButtonPosition : int;
+		private var titleDisplay : Boolean;
 		
 		private static var instance : VideoPlayerSkin;
 		public static function getInstance() : VideoPlayerSkin {
@@ -19,16 +19,14 @@ package vn.meme.cloud.player.comp
 		{
 			instance = this;
 			_currentColor = MECLOUD_COLOR;
-			isLive = false;
-			isOnline = false;
 		}
 		
 		
 		public function getData(data:*):void { // from playInfo data
-			if (data.online)
-				isOnline = true;
-			if (data.live)
-				isLive = true;
+			if (data.playButtonPosition) 
+				playButtonPosition = data.playButtonPosition;
+			if (data.titleDisplay)
+				titleDisplay = data.titleDisplay;
 			if (data.color){
 				var c : String = data.color;
 				_currentColor = uint(c.replace(/#/, "0x")); //replace first # found by 0x;

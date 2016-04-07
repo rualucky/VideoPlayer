@@ -1,10 +1,8 @@
 package vn.meme.cloud.player.btn.bigplay.item
 {
 	import com.google.testing.unittest;
-	import com.lorentz.SVG.display.SVGDocument;
-	import com.lorentz.SVG.events.SVGEvent;
-	import com.lorentz.processing.ProcessExecutor;
 	
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.filters.DropShadowFilter;
 	import flash.text.TextField;
@@ -16,16 +14,19 @@ package vn.meme.cloud.player.btn.bigplay.item
 	public class LoadingAdsItem extends Sprite
 	{
 		
-		private var svg : SVGDocument;
 		private var tf : TextField;
 		private var stageWidth : Number;
 		private var stageHeight : Number;
 		
+		private var loadingAdsImage : Sprite;
+		[Embed(source="asset/icon-loading-ads.png")]
+		public static var asset:Class;
+		
 		public function LoadingAdsItem()
 		{
-			svg = new SVGDocument();
-			svg.visible = false;
-			addChild(svg);
+			loadingAdsImage = new Sprite();
+			loadingAdsImage.addChild(receiveBitmap(new asset()));
+			addChild(loadingAdsImage);
 			addChild(tf = new TextField());
 			var tformat : TextFormat = new TextFormat("Arial",14,0xffffff);
 			tformat.align = TextFormatAlign.CENTER;
@@ -35,20 +36,20 @@ package vn.meme.cloud.player.btn.bigplay.item
 			tf.visible = false;
 		}
 		
+		private function receiveBitmap(bm:Bitmap):Bitmap {
+			bm.smoothing = true;
+			return bm;
+		}
+		
 		public function init(stageWidth:Number, stageHeight:Number):void {
 			this.stageWidth = stageWidth;
 			this.stageHeight = stageHeight;
-			ProcessExecutor.instance.initialize(this.stage);
-			ProcessExecutor.instance.percentFrameProcessingTime = 0.9;
-			svg.load('asset/icon-loading-ads.svg');
-			svg.addEventListener(SVGEvent.RENDERED, function():void {
-				updateSVG(stageWidth, stageHeight);
-			});
+			updateSVG(stageWidth, stageHeight);
 		}
 		
 		public function updateSVG(w:Number, h:Number):void {
-			svg.x = (w - 30) / 2; // w: 30, h: 30
-			svg.y = (h - 30) / 2;	
+			loadingAdsImage.x = (w - 30) / 2; // w: 30, h: 30
+			loadingAdsImage.y = (h - 30) / 2;	
 		}
 		
 		public function setText(text:String, isLoadingAds:Boolean = false):void {
@@ -56,13 +57,13 @@ package vn.meme.cloud.player.btn.bigplay.item
 			tf.text = text;
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (isLoadingAds) {
-				svg.visible = true;
+				loadingAdsImage.visible = true;
 				if (vp) {
 					tf.x = (vp.stage.stageWidth / 2) - tf.textWidth / 2;
 					tf.y = (vp.stage.stageHeight / 2) + 13;
 				}
 			} else {
-				svg.visible = false;
+				loadingAdsImage.visible = false;
 				if (vp) {
 					tf.x = (vp.stage.stageWidth / 2) - tf.textWidth / 2;
 					tf.y = (vp.stage.stageHeight / 2);

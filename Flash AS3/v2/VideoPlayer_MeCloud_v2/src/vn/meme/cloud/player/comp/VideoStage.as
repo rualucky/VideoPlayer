@@ -3,6 +3,7 @@ package vn.meme.cloud.player.comp
 	import com.hinish.spec.iab.vpaid.VPAIDSpecialValues;
 	
 	import flash.display.StageDisplayState;
+	import flash.events.ContextMenuEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
@@ -13,6 +14,8 @@ package vn.meme.cloud.player.comp
 	import flash.net.NetStream;
 	import flash.net.SharedObject;
 	import flash.sampler.NewObjectSample;
+	import flash.ui.ContextMenu;
+	import flash.ui.Mouse;
 	import flash.utils.Timer;
 	import flash.utils.clearInterval;
 	import flash.utils.clearTimeout;
@@ -36,6 +39,8 @@ package vn.meme.cloud.player.comp
 	import vn.meme.cloud.player.adaptive.MP4VideoAdaptive;
 	import vn.meme.cloud.player.adaptive.VideoAdaptive;
 	import vn.meme.cloud.player.adaptive.VideoAdaptiveEvent;
+	import vn.meme.cloud.player.analytics.TrackingCategory;
+	import vn.meme.cloud.player.analytics.TrackingControl;
 	import vn.meme.cloud.player.btn.BigPlay;
 	import vn.meme.cloud.player.btn.Related;
 	import vn.meme.cloud.player.btn.Sharing;
@@ -92,12 +97,18 @@ package vn.meme.cloud.player.comp
 		private var pcn : Number;
 		public var firstPlay:Number;
 		public var fstPlay : Boolean = true;
+		public var isStartWaitingScreen : Boolean = true;
 		public var currentPlayTime : Number;
 		private var self : *;
 		private var adaptive : VideoAdaptive;
 		private var setupEvent : Boolean = false;
 		public var videoType : String = "MP4";
+		public var viewingCount : Number = 0;
 		
+		private var playerLoadTime : uint = 0;
+		private var loadTime : int = 0;
+		private var mouseXX : Number;
+		private var mouseYY : Number;
 		/**
 		* contrucstor
 		*/
@@ -118,19 +129,22 @@ package vn.meme.cloud.player.comp
 			pingSV = false;
 			self = this;
 			
-			addEventListener(MouseEvent.RIGHT_CLICK, function(ev:Event):void{
-				var vp : VideoPlayer = VideoPlayer.getInstance(),
-					posX : Number = mouseX,
-					posY : Number = mouseY;
-				if (posX + vp.easyVideoTitle.width > vp.stage.stageWidth)
-					posX = vp.stage.stageWidth - vp.easyVideoTitle.width;
-				if (posY + vp.easyVideoTitle.height > (vp.stage.stageHeight - 30))
-					posY = vp.stage.stageHeight - 30 - vp.easyVideoTitle.height;
-				vp.easyVideoTitle.drawTitle(posX-5, posY-5);
-				vp.easyVideoTitle.visible = true;
-			});
+			addEventListener(MouseEvent.RIGHT_CLICK, onMouseRightClick);
 			addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+		}
+		
+		public function onMouseRightClick(ev:MouseEvent):void {
+//			CommonUtils.log("AAAAAAAAAAAAAAAAAA");
+//			var vp : VideoPlayer = VideoPlayer.getInstance(),
+//				posX : Number = mouseX,
+//				posY : Number = mouseY;
+//			if (posX + vp.easyVideoTitle.width > vp.stage.stageWidth)
+//				posX = vp.stage.stageWidth - vp.easyVideoTitle.width;
+//			if (posY + vp.easyVideoTitle.height > (vp.stage.stageHeight - 30))
+//				posY = vp.stage.stageHeight - 30 - vp.easyVideoTitle.height;
+//			vp.easyVideoTitle.drawTitle(posX - 5, posY - 5);
+//			vp.easyVideoTitle.visible = true;	
 		}
 		
 		public function onMouseOver(ev:Event):void {
@@ -145,7 +159,8 @@ package vn.meme.cloud.player.comp
 			player.plugin.hide();
 		}
 		
-		public function onMouseMove(ev:Event):void {
+		public function onMouseMove(ev:MouseEvent):void {
+			
 			var vp : VideoPlayer = VideoPlayer.getInstance();
 			if (vp) {
 				vp.controls.visible = true;
@@ -153,7 +168,6 @@ package vn.meme.cloud.player.comp
 		}
 		
 		override public function initSize(ev:Event = null):void{
-			
 			this.stageWidth = player.stage.stageWidth;
 			if (player.stage.displayState == StageDisplayState.NORMAL)
 				this.stageHeight = player.stage.stageHeight - Controls.HEIGHT;
@@ -189,6 +203,11 @@ package vn.meme.cloud.player.comp
 			video.height = this.stageWidth * hRatio/wRatio;
 			video.x = 0;
 			video.y = 0;
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp) {
+				video.x = (vp.stage.stageWidth - video.width) / 2;
+				video.y = (vp.stage.stageHeight - video.height) / 2;	
+			}
 		}
 		
 		private function handleVideoType():void{
@@ -208,7 +227,6 @@ package vn.meme.cloud.player.comp
 				
 		public function setVideoUrl(url:String):void{
 			CommonUtils.log("SET VIDEO URL");
-			ExternalInterface.call("MeCloudVideoPlayer.test");
 			playerWidth = this.stage.width;
 			playerHeight = this.stage.height;
 			
@@ -329,10 +347,31 @@ package vn.meme.cloud.player.comp
 			this.setupEvent = true;
 		}
 		
+		public function clearPlayerLoadTime():void {
+			clearInterval(playerLoadTime);
+			var vp : VideoPlayer = VideoPlayer.getInstance();
+			if (vp)
+				TrackingControl.sendEvent(TrackingCategory.LOADING_TIME, loadTime+"", vp.playInfo.titleAndVideoIdInfo);
+		}
+		
 		public function play():void{
 			CommonUtils.log('Play video');
 			if (fstPlay){
 				CommonUtils.log('First Play');
+				playerLoadTime = setInterval(function():void{ 
+					loadTime += 1;
+				}, 1); // 1 miliseconds
+				var vp : VideoPlayer = VideoPlayer.getInstance();
+				if (vp) {
+					if (vp.controls.isShowControlbar == false) {
+						vp.controls.showControlbar(true);
+					} else {
+						vp.controls.resetTiming();
+					}
+				}
+			}
+			if (viewingCount == 0){
+				viewingCount = (new Date().time);
 			}
 			playTime = 0;
 			end = false;
@@ -431,6 +470,7 @@ package vn.meme.cloud.player.comp
 			this.adaptive.netStream.pause();
 			player.controls.showReplay();
 			player.wait.btn.btnCenter.showReplay();
+			viewingCount = 0;
 			this.dispatchEvent(new VideoPlayerEvent(VideoPlayerEvent.VIDEO_END));
 		}
 		
